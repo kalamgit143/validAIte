@@ -92,7 +92,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
               <h2 className="text-3xl font-bold mb-4">
                 Deliver Trust Through
                 <br />
-                <span className="text-blue-200">Six Integrated Modules</span>
+                <span className="text-blue-200">Integrated Complaince</span>
               </h2>
               <p className="text-blue-100 text-lg leading-relaxed">
                 Enterprise-grade AI governance with NIST RMF and EU TEVV compliance. 
