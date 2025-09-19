@@ -546,7 +546,7 @@ const RiskAssessment: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg">
                   <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-4 flex items-center space-x-2">
-                    <Crown className="w-5 h-5" />
+                    <Users className="w-5 h-5" />
                     <span>CIO / CDO</span>
                   </h4>
                   <div className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
