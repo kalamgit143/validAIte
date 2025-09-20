@@ -2204,7 +2204,7 @@ const DataInputForm: React.FC = () => {
                     <option value="High (80-89%)">High (80-89%)</option>
                     <option value="Medium (70-79%)">Medium (70-79%)</option>
                     <option value="Low (60-69%)">Low (60-69%)</option>
-                    <option value="Very Low (<60%)">Very Low (<60%)</option>
+                    <option value="Very Low (&lt;60%)">Very Low (&lt;60%)</option>
                   </select>
                 </div>
               </div>
