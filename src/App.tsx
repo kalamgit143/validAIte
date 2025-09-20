@@ -132,10 +132,12 @@ function App() {
     { 
       category: 'Risk Mapping & Governance',
       items: [
+        { id: 'data-input', label: 'Use Case Definition', icon: Database },
         { id: 'risk-assessment', label: 'Risk Classification', icon: Shield },
         { id: 'model-governance', label: 'Governance Controls', icon: Settings },
         { id: 'compliance-framework', label: 'Framework Mapping', icon: FileText },
-        { id: 'data-input', label: 'Use Case Definition', icon: Database },
+        { id: 'regulatory-compliance', label: 'Regulatory Reports', icon: Shield },
+        { id: 'audit-trail', label: 'Evidence Packs', icon: Eye },
       ]
     },
     
@@ -195,8 +197,6 @@ function App() {
       category: 'Compliance Reporting',
       items: [
         { id: 'compliance-reporting', label: 'Compliance Reporting', icon: FileText },
-        { id: 'regulatory-compliance', label: 'Regulatory Reports', icon: Shield },
-        { id: 'audit-trail', label: 'Evidence Packs', icon: Eye },
         { id: 'reports', label: 'Compliance Reports', icon: FileText },
       ]
     },
