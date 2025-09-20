@@ -758,8 +758,8 @@ const DataInputForm: React.FC = () => {
           </div>
         )}
       </div>
-    );
-  };
+    </div>
+  );
 
   const renderStep5 = () => {
     if (governanceMatrix.length === 0) {
