@@ -1440,11 +1440,11 @@ const DataInputForm: React.FC = () => {
               className="w-full px-4 py-2 bg-white dark:bg-gray-600 border border-blue-300 dark:border-blue-600 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select Volume</option>
-              <option value="low">< 1K users/month</option>
+              <option value="low">&lt; 1K users/month</option>
               <option value="medium">1K - 10K users/month</option>
               <option value="high">10K - 100K users/month</option>
               <option value="very_high">100K - 1M users/month</option>
-              <option value="enterprise">> 1M users/month</option>
+              <option value="enterprise">&gt; 1M users/month</option>
             </select>
           </div>
         </div>
