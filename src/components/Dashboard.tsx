@@ -843,32 +843,6 @@ const Dashboard: React.FC = () => {
             </button>
           </div>
         </div>
-
-        {/* Role Selection */}
-        <div className="flex flex-wrap gap-3">
-          {userRoles.map((role) => {
-            const Icon = role.icon;
-            return (
-              <button
-                key={role.id}
-                onClick={() => setSelectedRole(role.id)}
-                className={`flex items-center space-x-3 px-6 py-4 rounded-xl transition-all duration-200 ${
-                  selectedRole === role.id
-                    ? `bg-gradient-to-r ${role.color} text-white shadow-lg transform scale-105`
-                    : 'bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
-                }`}
-              >
-                <Icon className="w-5 h-5" />
-                <div className="text-left">
-                  <div className="font-semibold">{role.name}</div>
-                  <div className={`text-xs ${selectedRole === role.id ? 'text-white/80' : 'text-gray-500 dark:text-gray-400'}`}>
-                    {role.title}
-                  </div>
-                </div>
-              </button>
-            );
-          })}
-        </div>
       </div>
 
       {/* Role-Specific Header */}
@@ -902,6 +876,22 @@ const Dashboard: React.FC = () => {
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {currentDashboard.keyMetrics.map((metric, index) => (
+          <div className="relative">
+            <select
+              value={selectedRole}
+              onChange={(e) => setSelectedRole(e.target.value)}
+              className="px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 appearance-none pr-10 min-w-48"
+            >
+              {userRoles.map((role) => (
+                <option key={role.id} value={role.id}>
+                  {role.name} - {role.title}
+                </option>
+              ))}
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <Crown className="w-4 h-4 text-gray-400" />
+            </div>
+          </div>
           <MetricCard key={index} {...metric} />
         ))}
       </div>
