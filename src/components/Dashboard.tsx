@@ -819,12 +819,14 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Main Dashboard Header */}
+      <div className="mb-6">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">AI Governance Dashboard</h2>
+        <p className="text-gray-600 dark:text-gray-400">Role-based insights for AI governance and oversight</p>
+      </div>
+
       {/* Role Selector Header */}
       <div className="flex items-start justify-between">
-        <div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">AI Governance Dashboard</h2>
-          <p className="text-gray-600 dark:text-gray-400">Role-based insights for AI governance and oversight</p>
-        </div>
         <div className="flex items-center space-x-4">
           <div className="relative">
             <select
