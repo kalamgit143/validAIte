@@ -234,11 +234,11 @@ const ApplicationSetup: React.FC = () => {
             className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
           >
             <option value="">Select Volume</option>
-            <option value="< 1K users/month">< 1K users/month</option>
+            <option value="< 1K users/month">{"< 1K users/month"}</option>
             <option value="1K - 10K users/month">1K - 10K users/month</option>
             <option value="10K - 100K users/month">10K - 100K users/month</option>
             <option value="100K - 1M users/month">100K - 1M users/month</option>
-            <option value="> 1M users/month">> 1M users/month</option>
+            <option value="> 1M users/month">{"> 1M users/month"}</option>
           </select>
         </div>
       </div>
