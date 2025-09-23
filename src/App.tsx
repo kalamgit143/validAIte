@@ -133,11 +133,6 @@ function App() {
       category: 'Risk Mapping & Governance',
       items: [
         { id: 'data-input', label: 'Use Case Definition', icon: Database },
-        { id: 'risk-assessment', label: 'Risk Classification', icon: Shield },
-        { id: 'model-governance', label: 'Governance Controls', icon: Settings },
-        { id: 'compliance-framework', label: 'Framework Mapping', icon: FileText },
-        { id: 'regulatory-compliance', label: 'Regulatory Reports', icon: Shield },
-        { id: 'audit-trail', label: 'Evidence Packs', icon: Eye },
       ]
     },
     
@@ -269,15 +264,6 @@ function App() {
       case 'reports':
         return <Reports />;
       
-      case 'risk-assessment':
-        return <RiskAssessment />;
-      case 'compliance-framework':
-        return <ComplianceFramework />;
-      case 'model-governance':
-        return <ModelGovernance />;
-      case 'audit-trail':
-        return <AuditTrail />;
-      
       case 'model-validation':
         return <ModelValidation />;
       case 'ethical-ai':
@@ -286,8 +272,6 @@ function App() {
         return <BiasAuditing />;
       case 'explainability':
         return <ExplainabilityAI />;
-      case 'regulatory-compliance':
-        return <RegulatoryCompliance />;
       case 'model-documentation':
         return <ModelDocumentation />;
       
