@@ -1817,8 +1817,8 @@ const DataInputForm: React.FC = () => {
           </div>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
 
   const renderGovernanceMatrix = () => {
     if (governanceMatrix.length === 0) {
