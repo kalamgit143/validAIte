@@ -1828,50 +1828,58 @@ const DataInputForm: React.FC = () => {
 
     return (
       <div className="space-y-6">
-        <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Governance Matrix Review</h3>
-          <p className="text-gray-600 dark:text-gray-400">Complete traceability from use cases to compliance</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white">Governance Matrix</h3>
+            <p className="text-gray-600 dark:text-gray-400">Review complete governance matrix with full traceability</p>
+          </div>
+          <div className="flex items-center space-x-3">
+            <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+              Regenerate Matrix
+            </button>
+            <button className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+              Export Evidence Pack
+            </button>
+          </div>
         </div>
 
-        {/* Summary Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-            <div className="text-center">
+        {/* Governance Matrix Review */}
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between mb-6">
+            <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Complete Traceability Matrix</h4>
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-600 dark:text-gray-400">
+                {governanceMatrix.length} total mappings
+              </span>
+            </div>
+          </div>
+
+          {/* Summary Statistics */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
               <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{useCases.length}</div>
               <div className="text-sm text-blue-600 dark:text-blue-400">Use Cases</div>
             </div>
-          </div>
-          
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-            <div className="text-center">
+            
+            <div className="text-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
               <div className="text-2xl font-bold text-red-600 dark:text-red-400">{selectedRisks.length}</div>
               <div className="text-sm text-red-600 dark:text-red-400">Identified Risks</div>
             </div>
-          </div>
-          
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-            <div className="text-center">
+            
+            <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
               <div className="text-2xl font-bold text-green-600 dark:text-green-400">{controls.length}</div>
               <div className="text-sm text-green-600 dark:text-green-400">Controls</div>
             </div>
-          </div>
-          
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-            <div className="text-center">
+            
+            <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
               <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                 {new Set(applicationData.regulatoryScope).size}
               </div>
               <div className="text-sm text-purple-600 dark:text-purple-400">Frameworks</div>
             </div>
           </div>
-        </div>
 
-        {/* Governance Matrix Table */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Traceability Matrix</h4>
-          </div>
-          
+          {/* Governance Matrix Table */}
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50 dark:bg-gray-700">
@@ -1969,6 +1977,8 @@ const DataInputForm: React.FC = () => {
     }
   };
 
+  const renderGovernanceControls = () => renderEstablishControls();
+
   return (
     <div className="space-y-6">
       {/* Section Navigation */}
@@ -2007,36 +2017,6 @@ const DataInputForm: React.FC = () => {
           {activeSection === 'risk-classification' && renderRiskClassification()}
           {activeSection === 'governance-controls' && renderGovernanceControls()}
           {activeSection === 'governance-matrix' && renderGovernanceMatrix()}
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderApplicationSetup = () => (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white">Application Setup</h3>
-          <p className="text-gray-600 dark:text-gray-400">Configure your GenAI application with NIST RMF governance context</p>
-        </div>
-        <div className="flex items-center space-x-3">
-          <span className="text-sm text-gray-600 dark:text-gray-400">
-            Step {currentStep} of 5: {getStepTitle()}
-          </span>
-        </div>
-      </div>
-
-      {/* Progress Steps */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between">
-                console.log('Proceeding to Trust Metrics Engine...');
-              }}
-              className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
-            >
-              <span>Continue to Trust Metrics Engine</span>
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          )}
         </div>
       </div>
     </div>
