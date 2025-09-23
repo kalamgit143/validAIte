@@ -820,44 +820,42 @@ const Dashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Role Selector Header */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">AI Governance Dashboard</h2>
-            <p className="text-gray-600 dark:text-gray-400">Role-based insights for AI governance and oversight</p>
-          </div>
-          <div className="flex items-center space-x-3">
-            <div className="relative">
-              <select
-                value={selectedRole}
-                onChange={(e) => setSelectedRole(e.target.value)}
-                className="px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 appearance-none pr-10 min-w-64"
-              >
-                {userRoles.map((role) => (
-                  <option key={role.id} value={role.id}>
-                    {role.name} - {role.title}
-                  </option>
-                ))}
-              </select>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                <Crown className="w-4 h-4 text-gray-400" />
-              </div>
-            </div>
+      <div className="flex items-start justify-between">
+        <div>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">AI Governance Dashboard</h2>
+          <p className="text-gray-600 dark:text-gray-400">Role-based insights for AI governance and oversight</p>
+        </div>
+        <div className="flex items-center space-x-4">
+          <div className="relative">
             <select
-              value={selectedTimeframe}
-              onChange={(e) => setSelectedTimeframe(e.target.value)}
-              className="px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
+              value={selectedRole}
+              onChange={(e) => setSelectedRole(e.target.value)}
+              className="px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 appearance-none pr-10 min-w-80 text-sm font-medium shadow-sm"
             >
-              <option value="7d">Last 7 days</option>
-              <option value="30d">Last 30 days</option>
-              <option value="90d">Last 90 days</option>
-              <option value="1y">Last year</option>
+              {userRoles.map((role) => (
+                <option key={role.id} value={role.id}>
+                  {role.name} - {role.title}
+                </option>
+              ))}
             </select>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
-              <Download className="w-4 h-4" />
-              <span>Export Report</span>
-            </button>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <Crown className="w-4 h-4 text-gray-400" />
+            </div>
           </div>
+          <select
+            value={selectedTimeframe}
+            onChange={(e) => setSelectedTimeframe(e.target.value)}
+            className="px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm font-medium shadow-sm"
+          >
+            <option value="7d">Last 7 days</option>
+            <option value="30d">Last 30 days</option>
+            <option value="90d">Last 90 days</option>
+            <option value="1y">Last year</option>
+          </select>
+          <button className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 flex items-center space-x-2 shadow-sm font-medium">
+            <Download className="w-4 h-4" />
+            <span>Export Report</span>
+          </button>
         </div>
       </div>
 
