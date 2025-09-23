@@ -38,7 +38,13 @@ import TenantSettings from './components/TenantSettings';
 import Dashboard from './components/Dashboard';
 import Applications from './components/Applications';
 import SettingsPanel from './components/Settings';
-import DataInputForm from './components/DataInputForm';
+
+// Risk Mapping & Governance Components
+import ApplicationSetup from './components/ApplicationSetup';
+import UseCaseDefinition from './components/UseCaseDefinition';
+import RiskClassification from './components/RiskClassification';
+import GovernanceControls from './components/GovernanceControls';
+import GovernanceMatrix from './components/GovernanceMatrix';
 
 // Trust Modules
 import TrustMetricsEngine from './components/TrustMetricsEngine';
@@ -218,12 +224,18 @@ function App() {
         return <Dashboard />;
       case 'applications':
         return <Applications />;
+      
+      // Risk Mapping & Governance
       case 'application-setup':
+        return <ApplicationSetup />;
       case 'use-case-definition':
+        return <UseCaseDefinition />;
       case 'risk-classification':
+        return <RiskClassification />;
       case 'governance-controls':
+        return <GovernanceControls />;
       case 'governance-matrix':
-        return <DataInputForm />;
+        return <GovernanceMatrix />;
       
       // Trust Modules
       case 'trust-metrics':
