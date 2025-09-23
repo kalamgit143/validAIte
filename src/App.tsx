@@ -132,7 +132,11 @@ function App() {
     { 
       category: 'Risk Mapping & Governance',
       items: [
-        { id: 'data-input', label: 'Use Case Definition', icon: Database },
+        { id: 'application-setup', label: 'Application Setup', icon: Database },
+        { id: 'use-case-definition', label: 'Use Case Definition', icon: FileText },
+        { id: 'risk-classification', label: 'Risk Classification', icon: AlertTriangle },
+        { id: 'governance-controls', label: 'Governance Controls', icon: Shield },
+        { id: 'governance-matrix', label: 'Governance Matrix', icon: Target },
       ]
     },
     
@@ -214,7 +218,11 @@ function App() {
         return <Dashboard />;
       case 'applications':
         return <Applications />;
-      case 'data-input':
+      case 'application-setup':
+      case 'use-case-definition':
+      case 'risk-classification':
+      case 'governance-controls':
+      case 'governance-matrix':
         return <DataInputForm />;
       
       // Trust Modules

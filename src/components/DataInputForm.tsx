@@ -128,6 +128,7 @@ interface GovernanceMatrixRow {
 
 const DataInputForm: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [activeSection, setActiveSection] = useState('application-setup');
   const [activeTab, setActiveTab] = useState('setup');
   
   // Application Setup State
@@ -1970,10 +1971,53 @@ const DataInputForm: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Section Navigation */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div className="border-b border-gray-200 dark:border-gray-700">
+          <div className="flex space-x-8 px-6">
+            {[
+              { id: 'application-setup', label: 'Application Setup', icon: Database },
+              { id: 'use-case-definition', label: 'Use Case Definition', icon: FileText },
+              { id: 'risk-classification', label: 'Risk Classification', icon: AlertTriangle },
+              { id: 'governance-controls', label: 'Governance Controls', icon: Shield },
+              { id: 'governance-matrix', label: 'Governance Matrix', icon: Target }
+            ].map(section => {
+              const Icon = section.icon;
+              return (
+                <button
+                  key={section.id}
+                  onClick={() => setActiveSection(section.id)}
+                  className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors flex items-center space-x-2 ${
+                    activeSection === section.id
+                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{section.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        
+        <div className="p-6">
+          {activeSection === 'application-setup' && renderApplicationSetup()}
+          {activeSection === 'use-case-definition' && renderUseCaseDefinition()}
+          {activeSection === 'risk-classification' && renderRiskClassification()}
+          {activeSection === 'governance-controls' && renderGovernanceControls()}
+          {activeSection === 'governance-matrix' && renderGovernanceMatrix()}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderApplicationSetup = () => (
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Risk Mapping & Governance</h2>
-          <p className="text-gray-600 dark:text-gray-400">NIST RMF and EU TEVV compliant risk assessment and governance framework</p>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white">Application Setup</h3>
+          <p className="text-gray-600 dark:text-gray-400">Configure your GenAI application with NIST RMF governance context</p>
         </div>
         <div className="flex items-center space-x-3">
           <span className="text-sm text-gray-600 dark:text-gray-400">
@@ -1985,71 +2029,6 @@ const DataInputForm: React.FC = () => {
       {/* Progress Steps */}
       <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between">
-          {[1, 2, 3, 4, 5].map((step) => (
-            <div key={step} className="flex items-center">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center font-medium ${
-                step <= currentStep
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-              }`}>
-                {step < currentStep ? <CheckCircle className="w-5 h-5" /> : step}
-              </div>
-              {step < 5 && (
-                <div className={`w-16 h-1 mx-4 ${
-                  step < currentStep ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'
-                }`} />
-              )}
-            </div>
-          ))}
-        </div>
-        <div className="flex justify-between mt-4 text-sm text-gray-600 dark:text-gray-400">
-          <span>Application Setup</span>
-          <span>Use Cases</span>
-          <span>Risk Classification</span>
-          <span>Controls</span>
-          <span>Matrix Review</span>
-        </div>
-      </div>
-
-      {/* Step Content */}
-      <div>
-        {currentStep === 1 && renderApplicationSetup()}
-        {currentStep === 2 && renderUseCaseDefinition()}
-        {currentStep === 3 && renderRiskClassification()}
-        {currentStep === 4 && renderEstablishControls()}
-        {currentStep === 5 && renderGovernanceMatrix()}
-      </div>
-
-      {/* Navigation */}
-      <div className="flex items-center justify-between">
-        <button
-          onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
-          disabled={currentStep === 1}
-          className="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
-        >
-          <ChevronLeft className="w-4 h-4" />
-          <span>Previous</span>
-        </button>
-
-        <div className="flex items-center space-x-3">
-          <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2">
-            <Save className="w-4 h-4" />
-            <span>Save Draft</span>
-          </button>
-          
-          {currentStep < 5 ? (
-            <button
-              onClick={() => setCurrentStep(Math.min(5, currentStep + 1))}
-              disabled={!canProceedToNext()}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
-            >
-              <span>Next</span>
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                // Navigate to Trust Metrics Engine
                 console.log('Proceeding to Trust Metrics Engine...');
               }}
               className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
