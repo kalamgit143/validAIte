@@ -827,6 +827,22 @@ const Dashboard: React.FC = () => {
             <p className="text-gray-600 dark:text-gray-400">Role-based insights for AI governance and oversight</p>
           </div>
           <div className="flex items-center space-x-3">
+            <div className="relative">
+              <select
+                value={selectedRole}
+                onChange={(e) => setSelectedRole(e.target.value)}
+                className="px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 appearance-none pr-10 min-w-64"
+              >
+                {userRoles.map((role) => (
+                  <option key={role.id} value={role.id}>
+                    {role.name} - {role.title}
+                  </option>
+                ))}
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <Crown className="w-4 h-4 text-gray-400" />
+              </div>
+            </div>
             <select
               value={selectedTimeframe}
               onChange={(e) => setSelectedTimeframe(e.target.value)}
@@ -876,22 +892,6 @@ const Dashboard: React.FC = () => {
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {currentDashboard.keyMetrics.map((metric, index) => (
-          <div className="relative">
-            <select
-              value={selectedRole}
-              onChange={(e) => setSelectedRole(e.target.value)}
-              className="px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 appearance-none pr-10 min-w-48"
-            >
-              {userRoles.map((role) => (
-                <option key={role.id} value={role.id}>
-                  {role.name} - {role.title}
-                </option>
-              ))}
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <Crown className="w-4 h-4 text-gray-400" />
-            </div>
-          </div>
           <MetricCard key={index} {...metric} />
         ))}
       </div>
