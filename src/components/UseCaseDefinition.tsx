@@ -33,12 +33,67 @@ import {
   Workflow,
   GitBranch,
   Timer,
-  Layers
+  Layers,
+  Search,
+  Filter,
+  XCircle
 } from 'lucide-react';
 
 const UseCaseDefinition: React.FC = () => {
   const [activeSection, setActiveSection] = useState('definition');
+  const [activeTab, setActiveTab] = useState('existing');
+  const [activeStep, setActiveStep] = useState(1);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterIndustry, setFilterIndustry] = useState('all');
+
+  const existingUseCases = [
+    {
+      id: 'uc_001',
+      name: 'Healthcare Triage Assistant',
+      description: 'AI-powered medical triage system for emergency departments',
+      industry: 'Healthcare',
+      riskLevel: 'High Risk',
+      status: 'approved',
+      createdBy: 'Dr. Sarah Chen',
+      createdAt: '2024-01-10T09:00:00Z',
+      lastUpdated: '2024-01-15T14:00:00Z',
+      stakeholders: ['Patients', 'Healthcare Providers', 'Regulators'],
+      complianceFrameworks: ['EU AI Act', 'HIPAA', 'GDPR', 'Medical Device Regulation'],
+      businessImpact: 'Reduce diagnostic errors by 40%, improve patient flow',
+      tags: ['medical', 'triage', 'emergency', 'high-risk']
+    },
+    {
+      id: 'uc_002',
+      name: 'Financial Lending Copilot',
+      description: 'AI assistant for fair and compliant lending decisions',
+      industry: 'Financial Services',
+      riskLevel: 'High Risk',
+      status: 'under_review',
+      createdBy: 'Mike Johnson',
+      createdAt: '2024-01-12T14:00:00Z',
+      lastUpdated: '2024-01-14T16:30:00Z',
+      stakeholders: ['Loan Applicants', 'Financial Institution', 'Regulators'],
+      complianceFrameworks: ['EU AI Act', 'ECOA', 'FCRA', 'SOX', 'GDPR'],
+      businessImpact: 'Improve lending accuracy while ensuring fairness',
+      tags: ['finance', 'lending', 'fairness', 'high-risk']
+    },
+    {
+      id: 'uc_003',
+      name: 'Enterprise Productivity Copilot',
+      description: 'AI assistant for enterprise productivity and automation',
+      industry: 'Enterprise Software',
+      riskLevel: 'Limited Risk',
+      status: 'approved',
+      createdBy: 'Alex Kim',
+      createdAt: '2024-01-08T11:00:00Z',
+      lastUpdated: '2024-01-13T10:00:00Z',
+      stakeholders: ['Employees', 'Management', 'IT Department'],
+      complianceFrameworks: ['EU AI Act', 'GDPR', 'ISO 27001'],
+      businessImpact: 'Increase productivity by 35%, reduce manual tasks',
+      tags: ['enterprise', 'productivity', 'automation', 'limited-risk']
+    }
+  ];
 
   const useCaseDefinitions = [
     {
@@ -253,12 +308,101 @@ const UseCaseDefinition: React.FC = () => {
     }
   ];
 
+  const [formData, setFormData] = useState({
+    // Basic Information
+    name: '',
+    description: '',
+    industry: '',
+    riskLevel: '',
+    
+    // System Context
+    organizationalContext: '',
+    technicalContext: '',
+    businessContext: '',
+    regulatoryContext: '',
+    
+    // Intended Use
+    primaryPurpose: '',
+    targetUsers: '',
+    operationalEnvironment: '',
+    humanOversight: '',
+    
+    // Performance Requirements
+    accuracyThreshold: '',
+    latencyRequirement: '',
+    availabilityTarget: '',
+    throughputCapacity: '',
+    
+    // Risk Assessment
+    impactAssessment: '',
+    vulnerabilityAnalysis: '',
+    threatModeling: '',
+    
+    // Data Governance
+    trainingDataSources: '',
+    dataQuality: '',
+    dataPrivacy: '',
+    dataLineage: '',
+    
+    // Human Oversight
+    humanInTheLoop: '',
+    overrideMechanisms: '',
+    competencyRequirements: '',
+    escalationProcedures: '',
+    
+    // Transparency
+    explainabilityFeatures: '',
+    userNotification: '',
+    decisionAuditTrail: '',
+    publicDocumentation: '',
+    
+    // Technical Documentation
+    modelArchitecture: '',
+    trainingProcedure: '',
+    evaluationMetrics: '',
+    knownLimitations: '',
+    
+    // Stakeholder Analysis
+    stakeholderGroups: [],
+    engagementPlan: '',
+    ethicalConsiderations: '',
+    
+    // Risk Analysis
+    potentialMisuse: '',
+    domainHarms: '',
+    
+    // Compliance
+    nistControls: [],
+    euAiActRequirements: [],
+    additionalStandards: [],
+    
+    // Governance
+    riskOwner: '',
+    securityOwner: '',
+    complianceOfficer: '',
+    domainExpert: '',
+    
+    // Monitoring
+    monitoringPlan: '',
+    reviewSchedule: '',
+    incidentResponse: ''
+  });
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'approved': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
-      case 'under_review': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
+      case 'under_review': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
       case 'draft': return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400';
       case 'rejected': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400';
+    }
+  };
+
+  const getRiskLevelColor = (level: string) => {
+    switch (level) {
+      case 'High Risk': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
+      case 'Limited Risk': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
+      case 'Minimal Risk': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
       default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400';
     }
   };
@@ -268,8 +412,242 @@ const UseCaseDefinition: React.FC = () => {
       case 'approved': return <CheckCircle className="w-4 h-4" />;
       case 'under_review': return <Clock className="w-4 h-4" />;
       case 'draft': return <Edit className="w-4 h-4" />;
-      case 'rejected': return <AlertTriangle className="w-4 h-4" />;
+      case 'rejected': return <XCircle className="w-4 h-4" />;
       default: return <FileText className="w-4 h-4" />;
+    }
+  };
+
+  const filteredUseCases = existingUseCases.filter(useCase => {
+    const matchesSearch = searchQuery === '' || 
+      useCase.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      useCase.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      useCase.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchesIndustry = filterIndustry === 'all' || useCase.industry === filterIndustry;
+    return matchesSearch && matchesIndustry;
+  });
+
+  const steps = [
+    {
+      id: 1,
+      title: 'Basic Info',
+      description: 'Use case overview',
+      icon: FileText
+    },
+    {
+      id: 2,
+      title: 'System Context',
+      description: 'NIST RMF context',
+      icon: Building
+    },
+    {
+      id: 3,
+      title: 'Intended Use',
+      description: 'Purpose & users',
+      icon: Target
+    },
+    {
+      id: 4,
+      title: 'Performance',
+      description: 'Requirements',
+      icon: BarChart3
+    },
+    {
+      id: 5,
+      title: 'Risk Assessment',
+      description: 'EU TEVV risks',
+      icon: AlertTriangle
+    },
+    {
+      id: 6,
+      title: 'Data Governance',
+      description: 'EU TEVV data',
+      icon: Database
+    },
+    {
+      id: 7,
+      title: 'Human Oversight',
+      description: 'EU TEVV oversight',
+      icon: Users
+    },
+    {
+      id: 8,
+      title: 'Transparency',
+      description: 'EU TEVV transparency',
+      icon: Eye
+    },
+    {
+      id: 9,
+      title: 'Technical Docs',
+      description: 'EU TEVV technical',
+      icon: Code
+    },
+    {
+      id: 10,
+      title: 'Stakeholders',
+      description: 'Impact analysis',
+      icon: Users
+    },
+    {
+      id: 11,
+      title: 'Compliance',
+      description: 'Framework mapping',
+      icon: Shield
+    },
+    {
+      id: 12,
+      title: 'Governance',
+      description: 'Approval & monitoring',
+      icon: Crown
+    }
+  ];
+
+  const getStepColor = (stepId: number) => {
+    const colors = [
+      'from-blue-600 to-blue-700',
+      'from-purple-600 to-purple-700',
+      'from-green-600 to-green-700',
+      'from-yellow-600 to-yellow-700',
+      'from-red-600 to-red-700',
+      'from-indigo-600 to-indigo-700',
+      'from-pink-600 to-pink-700',
+      'from-teal-600 to-teal-700',
+      'from-orange-600 to-orange-700',
+      'from-cyan-600 to-cyan-700',
+      'from-violet-600 to-violet-700',
+      'from-emerald-600 to-emerald-700'
+    ];
+    return colors[(stepId - 1) % colors.length];
+  };
+
+  const renderCurrentStep = () => {
+    switch (activeStep) {
+      case 1:
+        return (
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Basic Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Use Case Name *
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  placeholder="Healthcare Triage Assistant"
+                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Industry Domain *
+                </label>
+                <select 
+                  value={formData.industry}
+                  onChange={(e) => setFormData({...formData, industry: e.target.value})}
+                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select Industry</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Financial Services">Financial Services</option>
+                  <option value="Government">Government</option>
+                  <option value="Enterprise">Enterprise</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Description *
+              </label>
+              <textarea
+                value={formData.description}
+                onChange={(e) => setFormData({...formData, description: e.target.value})}
+                placeholder="AI-powered medical triage system for emergency departments"
+                className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 h-24 resize-none"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                EU AI Act Risk Level *
+              </label>
+              <select 
+                value={formData.riskLevel}
+                onChange={(e) => setFormData({...formData, riskLevel: e.target.value})}
+                className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select Risk Level</option>
+                <option value="Unacceptable Risk">Unacceptable Risk (Prohibited)</option>
+                <option value="High Risk">High Risk (Mandatory TEVV)</option>
+                <option value="Limited Risk">Limited Risk (Transparency)</option>
+                <option value="Minimal Risk">Minimal Risk (No Obligations)</option>
+              </select>
+            </div>
+          </div>
+        );
+      
+      case 2:
+        return (
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">NIST RMF System Context</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Organizational Context *
+                </label>
+                <textarea
+                  value={formData.organizationalContext}
+                  onChange={(e) => setFormData({...formData, organizationalContext: e.target.value})}
+                  placeholder="How this AI system fits within organizational structure"
+                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 h-24 resize-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Technical Context *
+                </label>
+                <textarea
+                  value={formData.technicalContext}
+                  onChange={(e) => setFormData({...formData, technicalContext: e.target.value})}
+                  placeholder="Technical architecture and system dependencies"
+                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 h-24 resize-none"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Business Context *
+                </label>
+                <textarea
+                  value={formData.businessContext}
+                  onChange={(e) => setFormData({...formData, businessContext: e.target.value})}
+                  placeholder="Business objectives and value proposition"
+                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 h-24 resize-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Regulatory Context *
+                </label>
+                <textarea
+                  value={formData.regulatoryContext}
+                  onChange={(e) => setFormData({...formData, regulatoryContext: e.target.value})}
+                  placeholder="Applicable regulations and compliance requirements"
+                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 h-24 resize-none"
+                />
+              </div>
+            </div>
+          </div>
+        );
+      
+      default:
+        return (
+          <div className="text-center py-12">
+            <div className="text-gray-500 dark:text-gray-400">
+              Step {activeStep} content will be implemented here
+            </div>
+          </div>
+        );
     }
   };
 
@@ -290,354 +668,188 @@ const UseCaseDefinition: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Use Case Definition</h2>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">Define specific use cases and interaction scenarios with NIST RMF and EU TEVV compliance</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Define specific use cases and interaction scenarios</p>
         </div>
-        <div className="flex items-center space-x-3">
-          <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2">
-            <Download className="w-4 h-4" />
-            <span>Export Use Cases</span>
-          </button>
-          <button 
-            onClick={() => setShowCreateModal(true)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Define New Use Case</span>
-          </button>
-        </div>
+        <button 
+          onClick={() => setShowCreateModal(true)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Define New Use Case</span>
+        </button>
       </div>
 
-      {/* Navigation Tabs */}
+      {/* Use Case Tabs */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
         <div className="border-b border-gray-200 dark:border-gray-700">
           <div className="flex space-x-8 px-6">
-            {[
-              { id: 'definition', label: 'Use Case Definitions', icon: FileText },
-              { id: 'templates', label: 'Compliance Templates', icon: Target }
-            ].map(tab => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveSection(tab.id)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors flex items-center space-x-2 ${
-                    activeSection === tab.id
-                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
+            {['existing', 'export'].map(tab => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`py-4 px-1 border-b-2 font-medium text-sm capitalize transition-colors ${
+                  activeTab === tab
+                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                {tab === 'existing' ? 'Existing Use Cases' : 'Export Use Cases'}
+              </button>
+            ))}
           </div>
         </div>
 
         <div className="p-6">
-          {activeSection === 'definition' ? (
+          {activeTab === 'existing' && (
             <div className="space-y-6">
-              {useCaseDefinitions.map((useCase) => (
-                <div key={useCase.id} className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-700 rounded-xl p-6">
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-3">
-                        <h3 className="text-xl font-bold text-blue-900 dark:text-blue-100">{useCase.name}</h3>
-                        <div className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(useCase.status)}`}>
-                          {getStatusIcon(useCase.status)}
-                          <span className="capitalize">{useCase.status.replace('_', ' ')}</span>
-                        </div>
-                      </div>
-                      <p className="text-blue-800 dark:text-blue-200 mb-4">{useCase.description}</p>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <div>
-                          <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">Approved By</span>
-                          <div className="text-blue-900 dark:text-blue-100">{useCase.approvedBy}</div>
-                        </div>
-                        <div>
-                          <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">Created</span>
-                          <div className="text-blue-900 dark:text-blue-100">{new Date(useCase.createdAt).toLocaleDateString()}</div>
-                        </div>
-                        <div>
-                          <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">Use Case ID</span>
-                          <div className="text-blue-900 dark:text-blue-100 font-mono">{useCase.id}</div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center space-x-2">
-                      <button className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-lg transition-colors">
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-lg transition-colors">
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-lg transition-colors">
-                        <Download className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* NIST RMF Sections */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    {/* System Context (NIST RMF) */}
-                    <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
-                        <Building className="w-4 h-4 text-blue-600" />
-                        <span>System Context (NIST RMF)</span>
-                      </h4>
-                      <div className="space-y-3 text-sm">
-                        <div>
-                          <span className="font-medium text-gray-700 dark:text-gray-300">Organizational Context:</span>
-                          <p className="text-gray-600 dark:text-gray-400 mt-1">{useCase.systemContext.organizationalContext}</p>
-                        </div>
-                        <div>
-                          <span className="font-medium text-gray-700 dark:text-gray-300">Technical Context:</span>
-                          <p className="text-gray-600 dark:text-gray-400 mt-1">{useCase.systemContext.technicalContext}</p>
-                        </div>
-                        <div>
-                          <span className="font-medium text-gray-700 dark:text-gray-300">Business Context:</span>
-                          <p className="text-gray-600 dark:text-gray-400 mt-1">{useCase.systemContext.businessContext}</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Intended Use */}
-                    <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
-                        <Target className="w-4 h-4 text-green-600" />
-                        <span>Intended Use & Purpose</span>
-                      </h4>
-                      <div className="space-y-3 text-sm">
-                        <div>
-                          <span className="font-medium text-gray-700 dark:text-gray-300">Primary Purpose:</span>
-                          <p className="text-gray-600 dark:text-gray-400 mt-1">{useCase.intendedUse.primaryPurpose}</p>
-                        </div>
-                        <div>
-                          <span className="font-medium text-gray-700 dark:text-gray-300">Target Users:</span>
-                          <p className="text-gray-600 dark:text-gray-400 mt-1">{useCase.intendedUse.targetUsers}</p>
-                        </div>
-                        <div>
-                          <span className="font-medium text-gray-700 dark:text-gray-300">Human Oversight:</span>
-                          <p className="text-gray-600 dark:text-gray-400 mt-1">{useCase.intendedUse.humanOversight}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* EU TEVV Sections */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    {/* Risk Assessment (EU TEVV) */}
-                    <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
-                        <AlertTriangle className="w-4 h-4 text-red-600" />
-                        <span>Risk Assessment (EU TEVV)</span>
-                      </h4>
-                      <div className="space-y-3 text-sm">
-                        <div>
-                          <span className="font-medium text-gray-700 dark:text-gray-300">AI Act Classification:</span>
-                          <p className="text-gray-600 dark:text-gray-400 mt-1">{useCase.riskAssessment.aiActClassification}</p>
-                        </div>
-                        <div>
-                          <span className="font-medium text-gray-700 dark:text-gray-300">Impact Assessment:</span>
-                          <p className="text-gray-600 dark:text-gray-400 mt-1">{useCase.riskAssessment.impactAssessment}</p>
-                        </div>
-                        <div>
-                          <span className="font-medium text-gray-700 dark:text-gray-300">Threat Modeling:</span>
-                          <p className="text-gray-600 dark:text-gray-400 mt-1">{useCase.riskAssessment.threatModeling}</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Data Governance */}
-                    <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
-                        <Database className="w-4 h-4 text-purple-600" />
-                        <span>Data Governance (EU TEVV)</span>
-                      </h4>
-                      <div className="space-y-3 text-sm">
-                        <div>
-                          <span className="font-medium text-gray-700 dark:text-gray-300">Training Data:</span>
-                          <p className="text-gray-600 dark:text-gray-400 mt-1">{useCase.dataGovernance.trainingDataSources}</p>
-                        </div>
-                        <div>
-                          <span className="font-medium text-gray-700 dark:text-gray-300">Data Privacy:</span>
-                          <p className="text-gray-600 dark:text-gray-400 mt-1">{useCase.dataGovernance.dataPrivacy}</p>
-                        </div>
-                        <div>
-                          <span className="font-medium text-gray-700 dark:text-gray-300">Data Lineage:</span>
-                          <p className="text-gray-600 dark:text-gray-400 mt-1">{useCase.dataGovernance.dataLineage}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Human Oversight & Transparency */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    {/* Human Oversight Measures */}
-                    <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
-                        <Users className="w-4 h-4 text-green-600" />
-                        <span>Human Oversight Measures</span>
-                      </h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center space-x-2">
-                          <CheckCircle className="w-4 h-4 text-green-500" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">{useCase.humanOversightMeasures.humanInTheLoop}</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <CheckCircle className="w-4 h-4 text-green-500" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">{useCase.humanOversightMeasures.overrideMechanisms}</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <CheckCircle className="w-4 h-4 text-green-500" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">{useCase.humanOversightMeasures.escalationProcedures}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Transparency Measures */}
-                    <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
-                        <Eye className="w-4 h-4 text-yellow-600" />
-                        <span>Transparency Measures</span>
-                      </h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center space-x-2">
-                          <CheckCircle className="w-4 h-4 text-green-500" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">{useCase.transparencyMeasures.explainabilityFeatures}</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <CheckCircle className="w-4 h-4 text-green-500" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">{useCase.transparencyMeasures.userNotification}</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <CheckCircle className="w-4 h-4 text-green-500" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">{useCase.transparencyMeasures.decisionAuditTrail}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Stakeholder Analysis */}
-                  <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm mb-6">
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
-                      <Users className="w-4 h-4 text-purple-600" />
-                      <span>Stakeholder Analysis & Engagement</span>
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {useCase.stakeholderAnalysis.map((stakeholder, index) => (
-                        <div key={index} className="border-l-4 border-purple-300 pl-3 bg-purple-50/50 dark:bg-purple-900/10 p-3 rounded-r-lg">
-                          <div className="font-medium text-gray-900 dark:text-white text-sm">{stakeholder.group}</div>
-                          <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                            <strong>Impact:</strong> {stakeholder.impact}
-                          </div>
-                          <div className="text-xs text-gray-600 dark:text-gray-400">
-                            <strong>Concerns:</strong> {stakeholder.concerns}
-                          </div>
-                          <div className="text-xs text-gray-600 dark:text-gray-400">
-                            <strong>Engagement:</strong> {stakeholder.engagementPlan}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Risk Analysis */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Potential Misuse Cases */}
-                    <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
-                        <AlertTriangle className="w-4 h-4 text-yellow-600" />
-                        <span>Potential Misuse Cases</span>
-                      </h4>
-                      <div className="space-y-2">
-                        {useCase.potentialMisuse.map((misuse, index) => (
-                          <div key={index} className="flex items-start space-x-2">
-                            <AlertTriangle className="w-4 h-4 text-yellow-500 mt-0.5" />
-                            <span className="text-sm text-gray-700 dark:text-gray-300">{misuse}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Domain-Specific Harms */}
-                    <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
-                        <Shield className="w-4 h-4 text-red-600" />
-                        <span>Domain-Specific Harms</span>
-                      </h4>
-                      <div className="space-y-2">
-                        {useCase.domainHarms.map((harm, index) => (
-                          <div key={index} className="flex items-start space-x-2">
-                            <Shield className="w-4 h-4 text-red-500 mt-0.5" />
-                            <span className="text-sm text-gray-700 dark:text-gray-300">{harm}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+              {/* Filters */}
+              <div className="flex flex-wrap items-center gap-4">
+                <div className="flex-1 min-w-64">
+                  <div className="relative">
+                    <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Search use cases..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    />
                   </div>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {useCaseTemplates.map((template) => (
-                  <div key={template.id} className="bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:shadow-lg transition-all">
-                    <div className="flex items-center space-x-3 mb-4">
-                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-white" />
+                
+                <select
+                  value={filterIndustry}
+                  onChange={(e) => setFilterIndustry(e.target.value)}
+                  className="px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="all">All Industries</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Financial Services">Financial Services</option>
+                  <option value="Enterprise Software">Enterprise Software</option>
+                  <option value="Government">Government</option>
+                </select>
+
+                <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2">
+                  <Filter className="w-4 h-4" />
+                  <span>More Filters</span>
+                </button>
+              </div>
+
+              {/* Use Cases Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {filteredUseCases.map((useCase) => (
+                  <div key={useCase.id} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                          <FileText className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-900 dark:text-white">{useCase.name}</h3>
+                          <div className="flex items-center space-x-2 mt-1">
+                            <div className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(useCase.status)}`}>
+                              {getStatusIcon(useCase.status)}
+                              <span className="capitalize">{useCase.status.replace('_', ' ')}</span>
+                            </div>
+                            <div className={`px-2 py-1 rounded-full text-xs font-medium ${getRiskLevelColor(useCase.riskLevel)}`}>
+                              {useCase.riskLevel}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                          <Eye className="w-4 h-4" />
+                        </button>
+                        <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                          <Download className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{useCase.description}</p>
+
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <span className="text-xs text-gray-500 dark:text-gray-500">Industry</span>
+                        <div className="font-medium text-gray-900 dark:text-white">{useCase.industry}</div>
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900 dark:text-white">{template.name}</h3>
-                        <div className="flex items-center space-x-2">
-                          <p className="text-sm text-gray-600 dark:text-gray-400">{template.industry}</p>
-                          <span className="px-2 py-1 bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300 text-xs rounded">
-                            {template.riskLevel}
+                        <span className="text-xs text-gray-500 dark:text-gray-500">Created By</span>
+                        <div className="font-medium text-gray-900 dark:text-white">{useCase.createdBy}</div>
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                      <span className="text-xs text-gray-500 dark:text-gray-500">Business Impact</span>
+                      <div className="text-sm text-gray-900 dark:text-white">{useCase.businessImpact}</div>
+                    </div>
+
+                    <div className="mb-4">
+                      <span className="text-xs text-gray-500 dark:text-gray-500">Stakeholders</span>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {useCase.stakeholders.slice(0, 3).map((stakeholder, index) => (
+                          <span key={index} className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 text-xs rounded">
+                            {stakeholder}
                           </span>
-                        </div>
+                        ))}
+                        {useCase.stakeholders.length > 3 && (
+                          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded">
+                            +{useCase.stakeholders.length - 3} more
+                          </span>
+                        )}
                       </div>
                     </div>
-                    
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{template.description}</p>
-                    
-                    <div className="space-y-3">
-                      <div>
-                        <span className="text-xs font-medium text-gray-500 dark:text-gray-500">Required NIST/TEVV Sections:</span>
-                        <div className="grid grid-cols-1 gap-1 mt-2">
-                          {template.requiredSections.slice(0, 4).map((section, index) => (
-                            <div key={index} className="flex items-center space-x-2">
-                              <CheckCircle className="w-3 h-3 text-green-500" />
-                              <span className="text-xs text-gray-700 dark:text-gray-300">{section}</span>
-                            </div>
-                          ))}
-                          {template.requiredSections.length > 4 && (
-                            <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-                              +{template.requiredSections.length - 4} more sections...
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <span className="text-xs font-medium text-gray-500 dark:text-gray-500">Risk Areas:</span>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {template.riskAreas.map((risk, index) => (
-                            <span key={index} className="px-2 py-1 bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300 text-xs rounded">
-                              {risk}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
+
+                    <div className="flex flex-wrap gap-1">
+                      {useCase.tags.map((tag, index) => (
+                        <span key={index} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded">
+                          {tag}
+                        </span>
+                      ))}
                     </div>
-                    
-                    <button className="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                      Use NIST/TEVV Template
-                    </button>
+
+                    <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-500 pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
+                      <span>Created: {new Date(useCase.createdAt).toLocaleDateString()}</span>
+                      <span>Updated: {new Date(useCase.lastUpdated).toLocaleDateString()}</span>
+                    </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'export' && (
+            <div className="space-y-6">
+              <div className="text-center py-12">
+                <Download className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Export Use Cases</h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                  Export use case definitions for compliance documentation and audit purposes
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
+                  <button className="px-6 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex flex-col items-center space-y-2">
+                    <FileText className="w-6 h-6" />
+                    <span className="font-medium">PDF Report</span>
+                    <span className="text-xs opacity-80">Comprehensive documentation</span>
+                  </button>
+                  
+                  <button className="px-6 py-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex flex-col items-center space-y-2">
+                    <Database className="w-6 h-6" />
+                    <span className="font-medium">Excel Export</span>
+                    <span className="text-xs opacity-80">Structured data format</span>
+                  </button>
+                  
+                  <button className="px-6 py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex flex-col items-center space-y-2">
+                    <Code className="w-6 h-6" />
+                    <span className="font-medium">JSON Export</span>
+                    <span className="text-xs opacity-80">API integration format</span>
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -647,795 +859,88 @@ const UseCaseDefinition: React.FC = () => {
       {/* Create Use Case Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Define New Use Case (NIST RMF + EU TEVV Compliant)</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Define New Use Case</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                Create a comprehensive use case definition with full NIST RMF and EU TEVV compliance requirements
+                Create comprehensive use case definition with NIST RMF and EU TEVV compliance
               </p>
             </div>
             
-            <div className="p-6 space-y-8">
-              {/* Basic Information */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                  <FileText className="w-5 h-5 text-blue-600" />
-                  <span>Basic Information</span>
-                </h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Use Case Name *
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Healthcare Triage Assistant"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
+            {/* Progress Steps */}
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex items-center justify-between">
+                {steps.map((step, index) => {
+                  const Icon = step.icon;
+                  const isActive = activeStep === step.id;
+                  const isCompleted = activeStep > step.id;
                   
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Industry Domain *
-                    </label>
-                    <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500">
-                      <option value="">Select Industry</option>
-                      {industries.map(industry => (
-                        <option key={industry} value={industry}>{industry}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Use Case Description *
-                  </label>
-                  <textarea
-                    placeholder="AI-powered medical triage system for emergency departments reducing diagnostic errors by 40%"
-                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 h-20 resize-none"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      EU AI Act Risk Classification *
-                    </label>
-                    <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500">
-                      <option value="">Select Classification</option>
-                      <option value="unacceptable">Unacceptable Risk (Prohibited)</option>
-                      <option value="high">High Risk (Mandatory TEVV)</option>
-                      <option value="limited">Limited Risk (Transparency)</option>
-                      <option value="minimal">Minimal Risk (No Obligations)</option>
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      NIST Risk Level *
-                    </label>
-                    <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500">
-                      <option value="">Select Risk Level</option>
-                      <option value="low">Low Risk</option>
-                      <option value="medium">Medium Risk</option>
-                      <option value="high">High Risk</option>
-                      <option value="critical">Critical Risk</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* NIST RMF System Context */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                  <Building className="w-5 h-5 text-blue-600" />
-                  <span>NIST RMF System Context</span>
-                </h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Organizational Context *
-                    </label>
-                    <textarea
-                      placeholder="How this AI system fits within organizational structure and processes"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Technical Context *
-                    </label>
-                    <textarea
-                      placeholder="Technical architecture, integration points, and system dependencies"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Business Context *
-                    </label>
-                    <textarea
-                      placeholder="Business objectives, success metrics, and value proposition"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Regulatory Context *
-                    </label>
-                    <textarea
-                      placeholder="Applicable regulations, compliance requirements, and legal considerations"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Intended Use & Purpose */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                  <Target className="w-5 h-5 text-green-600" />
-                  <span>Intended Use & Purpose (NIST RMF)</span>
-                </h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Primary Purpose *
-                    </label>
-                    <textarea
-                      placeholder="Main function and objective of the AI system"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Target Users *
-                    </label>
-                    <textarea
-                      placeholder="Specific user groups and their roles"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Operational Environment *
-                    </label>
-                    <textarea
-                      placeholder="Where and how the system will be deployed and operated"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Human Oversight Requirements *
-                    </label>
-                    <textarea
-                      placeholder="Required human oversight, review, and intervention mechanisms"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* EU TEVV Data Governance */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                  <Database className="w-5 h-5 text-purple-600" />
-                  <span>Data Governance (EU TEVV)</span>
-                </h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Training Data Sources *
-                    </label>
-                    <textarea
-                      placeholder="Description of training data sources, collection methods, and validation"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Data Quality Assurance *
-                    </label>
-                    <textarea
-                      placeholder="Data quality measures, validation procedures, and bias testing"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Data Privacy & Protection *
-                    </label>
-                    <textarea
-                      placeholder="Privacy protection measures, consent management, and data rights"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Data Lineage & Traceability *
-                    </label>
-                    <textarea
-                      placeholder="Data lineage tracking, provenance documentation, and audit trails"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Performance Requirements */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                  <BarChart3 className="w-5 h-5 text-green-600" />
-                  <span>Performance Requirements (NIST RMF)</span>
-                </h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Accuracy Threshold *
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="95% diagnostic accuracy"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Latency Requirement *
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="< 30 seconds response time"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Availability Target *
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="99.9% uptime"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Throughput Capacity *
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="500 patients/hour peak capacity"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Reliability Metrics *
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Mean time between failures > 720 hours"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Human Oversight Measures (EU TEVV) */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                  <Users className="w-5 h-5 text-green-600" />
-                  <span>Human Oversight Measures (EU TEVV)</span>
-                </h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Human-in-the-Loop Requirements *
-                    </label>
-                    <textarea
-                      placeholder="Describe required human involvement in decision-making process"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Override Mechanisms *
-                    </label>
-                    <textarea
-                      placeholder="How humans can override or modify AI decisions"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Competency Requirements *
-                    </label>
-                    <textarea
-                      placeholder="Required qualifications and training for human operators"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Escalation Procedures *
-                    </label>
-                    <textarea
-                      placeholder="Procedures for escalating uncertain or high-risk cases"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Transparency & Explainability (EU TEVV) */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                  <Eye className="w-5 h-5 text-yellow-600" />
-                  <span>Transparency & Explainability (EU TEVV)</span>
-                </h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Explainability Features *
-                    </label>
-                    <textarea
-                      placeholder="How the system explains its decisions to users"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      User Notification Systems *
-                    </label>
-                    <textarea
-                      placeholder="How users are informed about AI assistance and limitations"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Decision Audit Trail *
-                    </label>
-                    <textarea
-                      placeholder="Logging and traceability of AI decisions"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Public Documentation *
-                    </label>
-                    <textarea
-                      placeholder="Public-facing documentation and transparency reports"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Risk Analysis */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                  <AlertTriangle className="w-5 h-5 text-red-600" />
-                  <span>Risk Analysis & Threat Modeling</span>
-                </h4>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Potential Misuse Cases *
-                  </label>
-                  <textarea
-                    placeholder="List potential misuse scenarios (e.g., self-diagnosis by patients, replacement of medical judgment)"
-                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 h-24 resize-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Domain-Specific Harms *
-                  </label>
-                  <textarea
-                    placeholder="Identify potential harms specific to your domain (e.g., medical misdiagnosis, delayed treatment)"
-                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 h-24 resize-none"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Vulnerability Analysis *
-                    </label>
-                    <textarea
-                      placeholder="Technical vulnerabilities and attack vectors"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Threat Modeling *
-                    </label>
-                    <textarea
-                      placeholder="Systematic threat identification and analysis"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Stakeholder Impact Assessment */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                  <Users className="w-5 h-5 text-purple-600" />
-                  <span>Stakeholder Impact Assessment</span>
-                </h4>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    Key Stakeholder Groups *
-                  </label>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {['Patients/End Users', 'Healthcare Providers', 'Regulators', 'Society at Large', 'Organization', 'Technology Partners', 'Ethics Committees', 'Patient Advocates'].map(stakeholder => (
-                      <label key={stakeholder} className="flex items-center space-x-2">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">{stakeholder}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Stakeholder Engagement Plan *
-                  </label>
-                  <textarea
-                    placeholder="How stakeholders will be engaged throughout the AI lifecycle (consultation, feedback, monitoring)"
-                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 h-24 resize-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Ethical Considerations *
-                  </label>
-                  <textarea
-                    placeholder="Describe ethical considerations and principles that apply to this use case"
-                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 h-24 resize-none"
-                  />
-                </div>
-              </div>
-
-              {/* Technical Documentation (EU TEVV) */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                  <Code className="w-5 h-5 text-indigo-600" />
-                  <span>Technical Documentation (EU TEVV)</span>
-                </h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Model Architecture *
-                    </label>
-                    <textarea
-                      placeholder="Detailed model architecture and design decisions"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Training Procedure *
-                    </label>
-                    <textarea
-                      placeholder="Training methodology, hyperparameters, and validation approach"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Evaluation Metrics *
-                    </label>
-                    <textarea
-                      placeholder="Comprehensive evaluation metrics and benchmarks"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Known Limitations *
-                    </label>
-                    <textarea
-                      placeholder="Known limitations, constraints, and boundary conditions"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Compliance Mapping */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                  <Shield className="w-5 h-5 text-purple-600" />
-                  <span>Compliance Framework Mapping</span>
-                </h4>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    NIST RMF Controls *
-                  </label>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    {['GOVERN-1.1', 'GOVERN-1.2', 'MAP-1.1', 'MAP-1.2', 'MEASURE-1.1', 'MEASURE-2.1', 'MANAGE-1.1', 'MANAGE-1.2'].map(control => (
-                      <label key={control} className="flex items-center space-x-2">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300 font-mono">{control}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    EU AI Act Requirements *
-                  </label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {['Art-9 Risk Management', 'Art-10 Data Governance', 'Art-11 Technical Documentation', 'Art-12 Record Keeping', 'Art-13 Transparency', 'Art-14 Human Oversight', 'Art-15 Accuracy & Robustness', 'Art-16 Cybersecurity'].map(requirement => (
-                      <label key={requirement} className="flex items-center space-x-2">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">{requirement}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    Additional Standards & Regulations
-                  </label>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {['GDPR', 'HIPAA', 'SOX', 'CCPA', 'ISO 27001', 'SOC 2', 'FDA Medical Device', 'ECOA Fair Lending', 'FedRAMP', 'PCI DSS', 'ISO 13485', 'IEC 62304'].map(standard => (
-                      <label key={standard} className="flex items-center space-x-2">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">{standard}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* TEVV Testing Requirements */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                  <TestTube className="w-5 h-5 text-green-600" />
-                  <span>TEVV Testing Requirements</span>
-                </h4>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    Required Testing Types *
-                  </label>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {['Functional Testing', 'Performance Testing', 'Security Testing', 'Bias Testing', 'Robustness Testing', 'Safety Testing', 'Usability Testing', 'Integration Testing', 'Regression Testing', 'Stress Testing', 'Penetration Testing', 'Accessibility Testing'].map(testType => (
-                      <label key={testType} className="flex items-center space-x-2">
-                        <input type="checkbox" defaultChecked className="rounded border-gray-300" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">{testType}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Evaluation Benchmarks *
-                    </label>
-                    <textarea
-                      placeholder="Industry benchmarks and evaluation standards"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Validation Criteria *
-                    </label>
-                    <textarea
-                      placeholder="Success criteria and acceptance thresholds"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Verification Requirements *
-                  </label>
-                  <textarea
-                    placeholder="Independent verification and third-party assessment requirements"
-                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-24 resize-none"
-                  />
-                </div>
-              </div>
-
-              {/* Governance & Approval */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                  <Crown className="w-5 h-5 text-indigo-600" />
-                  <span>Governance & Approval Requirements</span>
-                </h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Risk Owner (CIO/CDO) *
-                    </label>
-                    <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                      <option value="">Select Risk Owner</option>
-                      <option>Sarah Chen (CIO)</option>
-                      <option>Mike Johnson (CDO)</option>
-                      <option>Alex Kim (CTO)</option>
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Security Owner (CISO) *
-                    </label>
-                    <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                      <option value="">Select Security Owner</option>
-                      <option>Alex Kim (CISO)</option>
-                      <option>Emily Davis (Deputy CISO)</option>
-                      <option>Jordan Smith (Security Lead)</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Compliance Officer *
-                    </label>
-                    <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                      <option value="">Select Compliance Officer</option>
-                      <option>Emily Davis (Compliance)</option>
-                      <option>Taylor Brown (Risk)</option>
-                      <option>Jordan Smith (Audit)</option>
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Domain Expert *
-                    </label>
-                    <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                      <option value="">Select Domain Expert</option>
-                      <option>Dr. Sarah Chen (Medical)</option>
-                      <option>Lisa Rodriguez (Financial)</option>
-                      <option>Mark Thompson (Government)</option>
-                      <option>Jennifer Wu (Enterprise)</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    Required Approvals for Deployment *
-                  </label>
-                  <div className="space-y-2">
-                    {['Risk Assessment Completion', 'Security Review Approval', 'Compliance Validation', 'Ethics Review (High Risk)', 'Domain Expert Validation', 'Performance Benchmarking', 'TEVV Execution Completion', 'Documentation Completeness', 'Stakeholder Sign-off'].map(approval => (
-                      <label key={approval} className="flex items-center space-x-2">
-                        <input type="checkbox" defaultChecked className="rounded border-gray-300" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">{approval}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Monitoring & Maintenance */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white flex items-center space-x-2">
-                  <Activity className="w-5 h-5 text-green-600" />
-                  <span>Monitoring & Maintenance Plan</span>
-                </h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Continuous Monitoring Plan *
-                    </label>
-                    <textarea
-                      placeholder="Real-time monitoring, drift detection, and performance tracking"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-20 resize-none"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Periodic Review Schedule *
-                    </label>
-                    <textarea
-                      placeholder="Regular review cycles, update procedures, and maintenance schedule"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-20 resize-none"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Incident Response Plan *
-                  </label>
-                  <textarea
-                    placeholder="Procedures for handling AI system failures, bias incidents, and security breaches"
-                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-24 resize-none"
-                  />
-                </div>
+                  return (
+                    <div key={step.id} className="flex items-center">
+                      <button
+                        onClick={() => setActiveStep(step.id)}
+                        className={`flex flex-col items-center space-y-2 p-3 rounded-xl transition-all ${
+                          isActive 
+                            ? `bg-gradient-to-r ${getStepColor(step.id)} text-white shadow-lg transform scale-105`
+                            : isCompleted
+                            ? 'bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400'
+                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        }`}
+                      >
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                          isActive ? 'bg-white/20' : ''
+                        }`}>
+                          {isCompleted ? <CheckCircle className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
+                        </div>
+                        <div className="text-center">
+                          <div className="font-semibold text-xs">{step.title}</div>
+                        </div>
+                      </button>
+                      {index < steps.length - 1 && (
+                        <div className={`w-12 h-1 mx-2 rounded-full ${
+                          activeStep > step.id ? 'bg-green-500' : 'bg-gray-200 dark:bg-gray-700'
+                        }`} />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
+            
+            {/* Step Content */}
+            <div className="p-6 min-h-96">
+              {renderCurrentStep()}
+            </div>
 
+            {/* Navigation */}
             <div className="p-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+              <button
+                onClick={() => setActiveStep(Math.max(1, activeStep - 1))}
+                disabled={activeStep === 1}
+                className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Previous
+              </button>
+              
               <div className="text-sm text-gray-600 dark:text-gray-400">
-                * Required fields • Use case will trigger comprehensive governance workflow with NIST RMF and EU TEVV compliance
+                Step {activeStep} of {steps.length}
               </div>
-              <div className="flex items-center space-x-3">
+              
+              {activeStep < steps.length ? (
+                <button
+                  onClick={() => setActiveStep(Math.min(steps.length, activeStep + 1))}
+                  className={`px-6 py-3 bg-gradient-to-r ${getStepColor(activeStep)} text-white rounded-lg hover:opacity-90 transition-all shadow-lg`}
+                >
+                  Next Step
+                </button>
+              ) : (
                 <button 
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                  className="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:opacity-90 transition-all shadow-lg"
                 >
-                  Cancel
+                  Submit for Approval
                 </button>
-                <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-                  Save Draft
-                </button>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                  Define Use Case
-                </button>
-              </div>
+              )}
             </div>
           </div>
         </div>
