@@ -89,34 +89,34 @@ function App() {
 
   // Role-based navigation configuration
   const roleBasedNavigation = {
-    'Platform Admin': {
+    'AI Risk Manager (NIST RMF)': {
       sections: ['Platform', 'Risk Mapping & Governance', 'Trust Metrics Engine', 'TEVV Automation Suite', 'Validation Lab (HITL)', 'Continuous Monitoring', 'Compliance Reporting', 'Organization']
     },
-    'Compliance Engineer': {
+    'AI Compliance Officer (Regulatory)': {
       sections: ['Platform', 'Risk Mapping & Governance', 'Compliance Reporting', 'Organization'],
       workflow: 'Risk Assessment → Compliance Validation → Regulatory Reporting'
     },
-    'QA Engineer': {
+    'AI Quality Engineer (ISO 25010)': {
       sections: ['Platform', 'TEVV Automation Suite', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
       workflow: 'Test Design → TEVV Execution → Validation Lab → Trust Metrics'
     },
-    'Security Engineer': {
+    'AI Security Officer (ISO 27001)': {
       sections: ['Platform', 'Risk Mapping & Governance', 'TEVV Automation Suite', 'Continuous Monitoring'],
       workflow: 'Risk Classification → Security Testing → Continuous Monitoring'
     },
-    'Domain Expert': {
+    'Domain Expert (HITL Validation)': {
       sections: ['Platform', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
       workflow: 'Human Validation → Expert Review → Trust Assessment'
     },
-    'AI Engineer': {
+    'TEVV Engineer (EU AI Act)': {
       sections: ['Platform', 'Trust Metrics Engine', 'TEVV Automation Suite', 'Continuous Monitoring'],
       workflow: 'Model Development → Trust Evaluation → Automated Testing → Monitoring'
     },
-    'Ethics Reviewer': {
+    'AI Ethics Reviewer (IEEE 2857)': {
       sections: ['Platform', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
       workflow: 'Ethical Assessment → Human Review → Bias Auditing'
     },
-    'Automation Architect': {
+    'DevSecOps Engineer (CI/CD)': {
       sections: ['Platform', 'TEVV Automation Suite', 'Continuous Monitoring'],
       workflow: 'CI/CD Integration → Automated Testing → Performance Monitoring'
     }
@@ -466,9 +466,12 @@ function App() {
                       {currentUser?.role && roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation]?.workflow && (
                         <div className="text-xs font-normal text-gray-500 dark:text-gray-400 mt-1 normal-case">
                           {section.category === 'Risk Mapping & Governance' && currentUser.role === 'Compliance Engineer' ? 'Risk Assessment Workflow' :
-                           section.category === 'TEVV Automation Suite' && currentUser.role === 'QA Engineer' ? 'Test Execution Workflow' :
+                           section.category === 'TEVV Automation Suite' && currentUser.role === 'AI Quality Engineer (ISO 25010)' ? 'Test Execution Workflow' :
                            section.category === 'Validation Lab (HITL)' && currentUser.role === 'Domain Expert' ? 'Expert Review Workflow' :
-                           section.category === 'Continuous Monitoring' && currentUser.role === 'Security Engineer' ? 'Security Monitoring' : ''}
+                           section.category === 'Continuous Monitoring' && currentUser.role === 'AI Security Officer (ISO 27001)' ? 'Security Monitoring' : 
+                           section.category === 'Risk Mapping & Governance' && currentUser.role === 'AI Compliance Officer (Regulatory)' ? 'Risk Assessment Workflow' :
+                           section.category === 'TEVV Automation Suite' && currentUser.role === 'TEVV Engineer (EU AI Act)' ? 'EU TEVV Execution' :
+                           section.category === 'Validation Lab (HITL)' && currentUser.role === 'AI Ethics Reviewer (IEEE 2857)' ? 'Ethics Review Workflow' : ''}
                         </div>
                       )}
                     </h3>
@@ -488,17 +491,23 @@ function App() {
                             <Icon className={`w-5 h-5 ${activeTab === item.id ? 'text-white' : ''}`} />
                             <span>{item.label}</span>
                             {/* Role-specific workflow indicators */}
-                            {currentUser?.role === 'Compliance Engineer' && ['application-setup', 'risk-classification'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-red-500 rounded-full"></div>
-                            )}
                             {currentUser?.role === 'AI Compliance Officer (Regulatory)' && ['application-setup', 'risk-classification'].includes(item.id) && (
                               <div className="ml-auto w-2 h-2 bg-red-500 rounded-full"></div>
                             )}
-                            {currentUser?.role === 'TEVV Engineer (EU AI Act)' && ['tevv-automation', 'validation-lab'].includes(item.id) && (
+                            {currentUser?.role === 'TEVV Engineer (EU AI Act)' && ['tevv-automation', 'model-validation'].includes(item.id) && (
                               <div className="ml-auto w-2 h-2 bg-green-500 rounded-full"></div>
                             )}
                             {currentUser?.role === 'Domain Expert (HITL Validation)' && ['validation-lab', 'ethical-ai'].includes(item.id) && (
                               <div className="ml-auto w-2 h-2 bg-amber-500 rounded-full"></div>
+                            )}
+                            {currentUser?.role === 'AI Quality Engineer (ISO 25010)' && ['tevv-automation', 'trust-metrics'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-blue-500 rounded-full"></div>
+                            )}
+                            {currentUser?.role === 'AI Security Officer (ISO 27001)' && ['risk-classification', 'continuous-monitoring'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-red-500 rounded-full"></div>
+                            )}
+                            {currentUser?.role === 'AI Ethics Reviewer (IEEE 2857)' && ['validation-lab', 'bias-auditing'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-purple-500 rounded-full"></div>
                             )}
                           </button>
                         );
