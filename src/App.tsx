@@ -138,7 +138,7 @@ function App() {
     setCurrentUser({
       name: `${data.firstName} ${data.lastName}`,
       email: data.email,
-      role: data.role || 'Platform Admin',
+      role: data.role || 'AI Risk Manager (NIST RMF)',
       tenant: data.tenantName,
       avatar: null
     });

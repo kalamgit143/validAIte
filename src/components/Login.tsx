@@ -218,14 +218,14 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
                   onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
                   className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  <option value="Platform Admin">Platform Admin</option>
-                  <option value="Compliance Engineer">Compliance Engineer</option>
-                  <option value="QA Engineer">QA Engineer</option>
-                  <option value="Security Engineer">Security Engineer</option>
-                  <option value="Domain Expert">Domain Expert</option>
-                  <option value="AI Engineer">AI Engineer</option>
-                  <option value="Ethics Reviewer">Ethics Reviewer</option>
-                  <option value="Automation Architect">Automation Architect</option>
+                  <option value="AI Risk Manager (NIST RMF)">AI Risk Manager (NIST RMF)</option>
+                  <option value="TEVV Engineer (EU AI Act)">TEVV Engineer (EU AI Act)</option>
+                  <option value="AI Security Officer (ISO 27001)">AI Security Officer (ISO 27001)</option>
+                  <option value="AI Compliance Officer (Regulatory)">AI Compliance Officer (Regulatory)</option>
+                  <option value="Domain Expert (HITL Validation)">Domain Expert (HITL Validation)</option>
+                  <option value="AI Ethics Reviewer (IEEE 2857)">AI Ethics Reviewer (IEEE 2857)</option>
+                  <option value="AI Quality Engineer (ISO 25010)">AI Quality Engineer (ISO 25010)</option>
+                  <option value="DevSecOps Engineer (CI/CD)">DevSecOps Engineer (CI/CD)</option>
                 </select>
               </div>
             </div>
