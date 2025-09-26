@@ -138,7 +138,7 @@ function App() {
     setCurrentUser({
       name: `${data.firstName} ${data.lastName}`,
       email: data.email,
-      role: data.role || 'AI Risk Manager (NIST RMF)',
+      role: data.role || 'Platform Admin',
       tenant: data.tenantName,
       avatar: null
     });
@@ -491,10 +491,13 @@ function App() {
                             {currentUser?.role === 'Compliance Engineer' && ['application-setup', 'risk-classification'].includes(item.id) && (
                               <div className="ml-auto w-2 h-2 bg-red-500 rounded-full"></div>
                             )}
-                            {currentUser?.role === 'QA Engineer' && ['tevv-automation', 'validation-lab'].includes(item.id) && (
+                            {currentUser?.role === 'AI Compliance Officer (Regulatory)' && ['application-setup', 'risk-classification'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-red-500 rounded-full"></div>
+                            )}
+                            {currentUser?.role === 'TEVV Engineer (EU AI Act)' && ['tevv-automation', 'validation-lab'].includes(item.id) && (
                               <div className="ml-auto w-2 h-2 bg-green-500 rounded-full"></div>
                             )}
-                            {currentUser?.role === 'Domain Expert' && ['validation-lab', 'ethical-ai'].includes(item.id) && (
+                            {currentUser?.role === 'Domain Expert (HITL Validation)' && ['validation-lab', 'ethical-ai'].includes(item.id) && (
                               <div className="ml-auto w-2 h-2 bg-amber-500 rounded-full"></div>
                             )}
                           </button>
