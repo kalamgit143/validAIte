@@ -209,6 +209,29 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Role
+              </label>
+              <div className="relative">
+                <Users className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <select
+                  value={formData.role || 'Platform Admin'}
+                  onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
+                  className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="Platform Admin">Platform Admin</option>
+                  <option value="Compliance Engineer">Compliance Engineer</option>
+                  <option value="QA Engineer">QA Engineer</option>
+                  <option value="Security Engineer">Security Engineer</option>
+                  <option value="Domain Expert">Domain Expert</option>
+                  <option value="AI Engineer">AI Engineer</option>
+                  <option value="Ethics Reviewer">Ethics Reviewer</option>
+                  <option value="Automation Architect">Automation Architect</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Password
               </label>
               <div className="relative">

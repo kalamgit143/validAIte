@@ -87,12 +87,47 @@ function App() {
   const [showSignup, setShowSignup] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
+  // Role-based navigation configuration
+  const roleBasedNavigation = {
+    'Platform Admin': {
+      sections: ['Platform', 'Risk Mapping & Governance', 'Trust Metrics Engine', 'TEVV Automation Suite', 'Validation Lab (HITL)', 'Continuous Monitoring', 'Compliance Reporting', 'Organization']
+    },
+    'Compliance Engineer': {
+      sections: ['Platform', 'Risk Mapping & Governance', 'Compliance Reporting', 'Organization'],
+      workflow: 'Risk Assessment → Compliance Validation → Regulatory Reporting'
+    },
+    'QA Engineer': {
+      sections: ['Platform', 'TEVV Automation Suite', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
+      workflow: 'Test Design → TEVV Execution → Validation Lab → Trust Metrics'
+    },
+    'Security Engineer': {
+      sections: ['Platform', 'Risk Mapping & Governance', 'TEVV Automation Suite', 'Continuous Monitoring'],
+      workflow: 'Risk Classification → Security Testing → Continuous Monitoring'
+    },
+    'Domain Expert': {
+      sections: ['Platform', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
+      workflow: 'Human Validation → Expert Review → Trust Assessment'
+    },
+    'AI Engineer': {
+      sections: ['Platform', 'Trust Metrics Engine', 'TEVV Automation Suite', 'Continuous Monitoring'],
+      workflow: 'Model Development → Trust Evaluation → Automated Testing → Monitoring'
+    },
+    'Ethics Reviewer': {
+      sections: ['Platform', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
+      workflow: 'Ethical Assessment → Human Review → Bias Auditing'
+    },
+    'Automation Architect': {
+      sections: ['Platform', 'TEVV Automation Suite', 'Continuous Monitoring'],
+      workflow: 'CI/CD Integration → Automated Testing → Performance Monitoring'
+    }
+  };
+
   // Mock authentication handlers
   const handleLogin = (credentials: any) => {
     setCurrentUser({
       name: 'Sarah Chen',
       email: credentials.email,
-      role: 'Platform Admin',
+      role: credentials.role || 'Platform Admin',
       tenant: 'Acme Corporation',
       avatar: null
     });
@@ -103,7 +138,7 @@ function App() {
     setCurrentUser({
       name: `${data.firstName} ${data.lastName}`,
       email: data.email,
-      role: 'Platform Admin',
+      role: data.role || 'Platform Admin',
       tenant: data.tenantName,
       avatar: null
     });
@@ -114,6 +149,21 @@ function App() {
     setCurrentUser(null);
     setIsAuthenticated(false);
     setActiveTab('dashboard');
+  };
+
+  // Filter navigation items based on user role
+  const getFilteredNavItems = () => {
+    if (!currentUser?.role) return navItems;
+    
+    const allowedSections = roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation]?.sections || [];
+    
+    return navItems.filter(section => allowedSections.includes(section.category));
+  };
+
+  // Get current user's workflow
+  const getCurrentWorkflow = () => {
+    if (!currentUser?.role) return null;
+    return roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation]?.workflow || null;
   };
 
   // Show authentication screens if not logged in
@@ -316,7 +366,7 @@ function App() {
           <div className="flex items-center space-x-4">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors lg:hidden"
             >
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -326,7 +376,9 @@ function App() {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900 dark:text-white">QUALIZEAL</h1>
-                <p className="text-xs text-gray-600 dark:text-gray-400">{currentUser?.tenant || 'GenAI Trust Platform'}</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  {currentUser?.role || 'GenAI Trust Platform'} • {currentUser?.tenant}
+                </p>
               </div>
             </div>
           </div>
@@ -344,6 +396,16 @@ function App() {
                 <div className="text-xs text-gray-600 dark:text-gray-400">{currentUser?.role}</div>
               </div>
             </div>
+
+            {/* Workflow Indicator */}
+            {getCurrentWorkflow() && (
+              <div className="hidden lg:flex items-center space-x-2 px-3 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <Activity className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <span className="text-xs text-blue-800 dark:text-blue-300 font-medium">
+                  {getCurrentWorkflow()}
+                </span>
+              </div>
+            )}
 
             <div className="relative">
               <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -383,9 +445,9 @@ function App() {
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className={`${sidebarOpen ? 'w-80' : 'w-0'} transition-all duration-300 overflow-hidden bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 min-h-screen shadow-sm`}>
+        <aside className={`${sidebarOpen ? 'w-80' : 'w-0'} lg:w-80 transition-all duration-300 overflow-hidden bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 min-h-screen shadow-sm`}>
           <nav className="p-4 space-y-6 h-screen overflow-y-auto">
-            {navItems.map((section, sectionIndex) => (
+            {getFilteredNavItems().map((section, sectionIndex) => (
               <div key={sectionIndex}>
                 {section.items.length > 0 && (
                   <>
@@ -401,6 +463,14 @@ function App() {
                       'text-gray-500 dark:text-gray-400'
                     }`}>
                       {section.category}
+                      {currentUser?.role && roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation]?.workflow && (
+                        <div className="text-xs font-normal text-gray-500 dark:text-gray-400 mt-1 normal-case">
+                          {section.category === 'Risk Mapping & Governance' && currentUser.role === 'Compliance Engineer' ? 'Risk Assessment Workflow' :
+                           section.category === 'TEVV Automation Suite' && currentUser.role === 'QA Engineer' ? 'Test Execution Workflow' :
+                           section.category === 'Validation Lab (HITL)' && currentUser.role === 'Domain Expert' ? 'Expert Review Workflow' :
+                           section.category === 'Continuous Monitoring' && currentUser.role === 'Security Engineer' ? 'Security Monitoring' : ''}
+                        </div>
+                      )}
                     </h3>
                     <div className="space-y-2">
                       {section.items.map((item) => {
@@ -417,6 +487,16 @@ function App() {
                           >
                             <Icon className={`w-5 h-5 ${activeTab === item.id ? 'text-white' : ''}`} />
                             <span>{item.label}</span>
+                            {/* Role-specific workflow indicators */}
+                            {currentUser?.role === 'Compliance Engineer' && ['application-setup', 'risk-classification'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-red-500 rounded-full"></div>
+                            )}
+                            {currentUser?.role === 'QA Engineer' && ['tevv-automation', 'validation-lab'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-green-500 rounded-full"></div>
+                            )}
+                            {currentUser?.role === 'Domain Expert' && ['validation-lab', 'ethical-ai'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-amber-500 rounded-full"></div>
+                            )}
                           </button>
                         );
                       })}
