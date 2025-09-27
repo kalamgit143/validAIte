@@ -127,6 +127,66 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
         </div>
       </div>
 
+      {/* Left Panel - Branding & Features */}
+      <div className="hidden lg:flex lg:w-1/2 xl:w-2/5 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 p-12 flex-col justify-between text-white relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/20 to-transparent"></div>
+          <div className="absolute top-1/4 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="relative z-10">
+          <div className="flex items-center space-x-3 mb-8">
+            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+              <Brain className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold">validAIte</h1>
+              <p className="text-blue-100">GenAI Testing & Validation Platform</p>
+            </div>
+          </div>
+
+          <div className="space-y-8">
+            <div>
+              <p className="text-blue-100 text-lg leading-relaxed">
+                Enterprise-grade AI governance with NIST RMF and EU TEVV compliance. 
+                Quantify trust through accuracy, fairness, robustness, and continuous monitoring.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6">
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <div key={index} className="flex items-start space-x-4 p-4 bg-white/10 backdrop-blur-sm rounded-xl">
+                    <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                      <Icon className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-white mb-1">{feature.title}</h3>
+                      <p className="text-blue-100 text-sm">{feature.description}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <div className="relative z-10 text-center">
+          <p className="text-blue-200 text-sm">
+            Trusted by 500+ organizations worldwide
+          </p>
+          <div className="flex items-center justify-center space-x-6 mt-4 opacity-60">
+            <div className="w-8 h-8 bg-white/20 rounded"></div>
+            <div className="w-8 h-8 bg-white/20 rounded"></div>
+            <div className="w-8 h-8 bg-white/20 rounded"></div>
+            <div className="w-8 h-8 bg-white/20 rounded"></div>
+          </div>
+        </div>
+      </div>
+
       {/* Right Panel - Login Form */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
