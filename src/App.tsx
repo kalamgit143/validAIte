@@ -508,29 +508,20 @@ function App() {
                             <Icon className={`w-5 h-5 ${activeTab === item.id ? 'text-white' : ''}`} />
                             <span>{item.label}</span>
                             {/* Role-specific workflow indicators */}
-                            {currentUser?.role === 'AI Risk Manager (NIST RMF)' && ['governance-matrix', 'risk-classification'].includes(item.id) && (
+                            {currentUser?.role === 'AI Governance Lead (Risk + Compliance)' && ['governance-matrix', 'risk-classification', 'trust-metrics', 'compliance-reporting'].includes(item.id) && (
                               <div className="ml-auto w-2 h-2 bg-blue-500 rounded-full" title="Risk Acceptance Authority"></div>
                             )}
-                            {currentUser?.role === 'AI Compliance Officer (Regulatory)' && ['compliance-reporting', 'governance-controls'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-red-500 rounded-full"></div>
+                            {currentUser?.role === 'QA Engineer (ISO 25010, Manual Validation)' && ['trust-metrics', 'tevv-automation', 'validation-lab'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-green-500 rounded-full" title="Manual Validation Authority"></div>
                             )}
-                            {currentUser?.role === 'AI Quality Engineer (ISO 25010)' && ['tevv-automation', 'trust-metrics'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-green-500 rounded-full"></div>
+                            {currentUser?.role === 'Automation / TEVV Engineer (EU AI Act, Test Automation)' && ['trust-metrics', 'tevv-automation', 'continuous-monitoring'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-purple-500 rounded-full" title="TEVV Automation Authority"></div>
                             )}
-                            {currentUser?.role === 'AI Security Officer (ISO 27001)' && ['risk-classification', 'continuous-monitoring'].includes(item.id) && (
+                            {currentUser?.role === 'AI SecOps Engineer (Security + DevSecOps)' && ['risk-classification', 'tevv-automation', 'trust-metrics', 'validation-lab', 'continuous-monitoring'].includes(item.id) && (
                               <div className="ml-auto w-2 h-2 bg-red-600 rounded-full" title="Incident Response Authority"></div>
                             )}
-                            {currentUser?.role === 'Domain Expert (HITL Validation)' && ['validation-lab'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-amber-500 rounded-full"></div>
-                            )}
-                            {currentUser?.role === 'TEVV Engineer (EU AI Act)' && ['tevv-automation', 'trust-metrics'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-violet-500 rounded-full" title="EU TEVV Authority"></div>
-                            )}
-                            {currentUser?.role === 'AI Ethics Reviewer (IEEE 2857)' && ['validation-lab', 'trust-metrics'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-purple-500 rounded-full" title="Ethics Independence"></div>
-                            )}
-                            {currentUser?.role === 'DevSecOps Engineer (CI/CD)' && ['tevv-automation', 'continuous-monitoring'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-gray-500 rounded-full" title="Pipeline Guardrails"></div>
+                            {currentUser?.role === 'Domain & Ethics Reviewer (Domain + Ethics)' && ['risk-classification', 'trust-metrics', 'tevv-automation', 'validation-lab', 'continuous-monitoring'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-amber-500 rounded-full" title="Domain Ethics Authority"></div>
                             )}
                           </button>
                         );
