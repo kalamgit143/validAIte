@@ -90,35 +90,52 @@ function App() {
   // Role-based navigation configuration
   const roleBasedNavigation = {
     'AI Risk Manager (NIST RMF)': {
-      sections: ['Platform', 'Risk Mapping & Governance', 'Trust Metrics Engine', 'TEVV Automation Suite', 'Validation Lab (HITL)', 'Continuous Monitoring', 'Compliance Reporting', 'Organization']
+      sections: ['Platform', 'Risk Mapping & Governance', 'Trust Metrics Engine', 'Compliance Reporting', 'Organization'],
+      workflow: 'Risk Governance → Risk Acceptance Decisions → Strategic Oversight',
+      responsibilities: ['Risk acceptance decisions', 'Strategic AI oversight', 'NIST RMF GOVERN & MAP functions', 'Final risk tolerance decisions'],
+      restrictions: ['No day-to-day testing execution', 'No technical test design']
     },
     'AI Compliance Officer (Regulatory)': {
-      sections: ['Platform', 'Risk Mapping & Governance', 'Compliance Reporting', 'Organization'],
-      workflow: 'Risk Assessment → Compliance Validation → Regulatory Reporting'
+      sections: ['Platform', 'Risk Mapping & Governance', 'Compliance Reporting'],
+      workflow: 'Regulatory Mapping → Evidence Collection → Compliance Sign-off',
+      responsibilities: ['Regulatory sign-off authority', 'Audit evidence packs', 'Compliance framework mapping', 'Regulatory submission approval'],
+      restrictions: ['No TEVV execution', 'No technical testing', 'Read-only on technical modules']
     },
     'AI Quality Engineer (ISO 25010)': {
       sections: ['Platform', 'TEVV Automation Suite', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
-      workflow: 'Test Design → TEVV Execution → Validation Lab → Trust Metrics'
+      workflow: 'Test Design → TEVV Execution → Traceability Matrix → Defect Triage',
+      responsibilities: ['Traceability matrix ownership', 'Defect triage and feedback loop', 'ISO 25010 quality dimensions', 'Test execution and validation'],
+      restrictions: ['No risk acceptance decisions', 'No compliance sign-off']
     },
     'AI Security Officer (ISO 27001)': {
       sections: ['Platform', 'Risk Mapping & Governance', 'TEVV Automation Suite', 'Continuous Monitoring'],
-      workflow: 'Risk Classification → Security Testing → Continuous Monitoring'
+      workflow: 'Security Risk Assessment → Red-team Testing → Incident Response',
+      responsibilities: ['Incident response ownership', 'OWASP LLM Top 10 testing', 'Security monitoring and SOC integration', 'Residual risk collaboration'],
+      restrictions: ['No business risk decisions', 'No compliance sign-off']
     },
     'Domain Expert (HITL Validation)': {
       sections: ['Platform', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
-      workflow: 'Human Validation → Expert Review → Trust Assessment'
+      workflow: 'Domain Validation → Expert Review → Business Meaningfulness',
+      responsibilities: ['Domain-specific scenario creation', 'Business meaningfulness validation', 'Subject matter expertise', 'Human oversight per EU AI Act'],
+      restrictions: ['No test execution', 'No technical testing', 'Validation and metrics review only']
     },
     'TEVV Engineer (EU AI Act)': {
       sections: ['Platform', 'Trust Metrics Engine', 'TEVV Automation Suite', 'Continuous Monitoring'],
-      workflow: 'Model Development → Trust Evaluation → Automated Testing → Monitoring'
+      workflow: 'EU TEVV Execution → Evidence Automation → Regression Testing',
+      responsibilities: ['EU TEVV compliance execution', 'Automated evidence collection', 'Cross-module regression runs', 'Risk-to-test traceability'],
+      restrictions: ['No risk acceptance', 'No compliance sign-off', 'Technical execution focus']
     },
     'AI Ethics Reviewer (IEEE 2857)': {
       sections: ['Platform', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
-      workflow: 'Ethical Assessment → Human Review → Bias Auditing'
+      workflow: 'Ethical Assessment → Independent Review → Threshold Definition',
+      responsibilities: ['Ethical threshold definition', 'Independent ethics review', 'IEEE 2857 standards compliance', 'Bias and fairness oversight'],
+      restrictions: ['Independent from dev/test teams', 'No technical execution', 'Ethics review and approval only']
     },
     'DevSecOps Engineer (CI/CD)': {
       sections: ['Platform', 'TEVV Automation Suite', 'Continuous Monitoring'],
-      workflow: 'CI/CD Integration → Automated Testing → Performance Monitoring'
+      workflow: 'Pipeline Integration → Automated Guardrails → Infrastructure Monitoring',
+      responsibilities: ['Pipeline guardrails ownership', 'CI/CD TEVV integration', 'Infrastructure monitoring', 'Deployment automation'],
+      restrictions: ['Read-only governance access', 'No risk decisions', 'No compliance sign-off', 'Technical infrastructure focus']
     }
   };
 
@@ -463,15 +480,20 @@ function App() {
                       'text-gray-500 dark:text-gray-400'
                     }`}>
                       {section.category}
-                      {currentUser?.role && roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation]?.workflow && (
+                      {currentUser?.role && roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation] && (
                         <div className="text-xs font-normal text-gray-500 dark:text-gray-400 mt-1 normal-case">
-                          {section.category === 'Risk Mapping & Governance' && currentUser.role === 'Compliance Engineer' ? 'Risk Assessment Workflow' :
-                           section.category === 'TEVV Automation Suite' && currentUser.role === 'AI Quality Engineer (ISO 25010)' ? 'Test Execution Workflow' :
-                           section.category === 'Validation Lab (HITL)' && currentUser.role === 'Domain Expert' ? 'Expert Review Workflow' :
-                           section.category === 'Continuous Monitoring' && currentUser.role === 'AI Security Officer (ISO 27001)' ? 'Security Monitoring' : 
-                           section.category === 'Risk Mapping & Governance' && currentUser.role === 'AI Compliance Officer (Regulatory)' ? 'Risk Assessment Workflow' :
-                           section.category === 'TEVV Automation Suite' && currentUser.role === 'TEVV Engineer (EU AI Act)' ? 'EU TEVV Execution' :
-                           section.category === 'Validation Lab (HITL)' && currentUser.role === 'AI Ethics Reviewer (IEEE 2857)' ? 'Ethics Review Workflow' : ''}
+                          {/* Show role-specific workflow for this section */}
+                          {section.category === 'Risk Mapping & Governance' && currentUser.role.includes('Risk Manager') ? 'GOVERN & MAP Functions' :
+                           section.category === 'Risk Mapping & Governance' && currentUser.role.includes('Compliance Officer') ? 'Regulatory Mapping' :
+                           section.category === 'Risk Mapping & Governance' && currentUser.role.includes('Security Officer') ? 'Security Risk Assessment' :
+                           section.category === 'TEVV Automation Suite' && currentUser.role.includes('Quality Engineer') ? 'ISO 25010 Testing' :
+                           section.category === 'TEVV Automation Suite' && currentUser.role.includes('TEVV Engineer') ? 'EU TEVV Execution' :
+                           section.category === 'TEVV Automation Suite' && currentUser.role.includes('DevSecOps') ? 'CI/CD Integration' :
+                           section.category === 'Validation Lab (HITL)' && currentUser.role.includes('Domain Expert') ? 'Expert Validation' :
+                           section.category === 'Validation Lab (HITL)' && currentUser.role.includes('Ethics Reviewer') ? 'IEEE 2857 Ethics' :
+                           section.category === 'Trust Metrics Engine' && currentUser.role.includes('Quality Engineer') ? 'Quality Metrics' :
+                           section.category === 'Continuous Monitoring' && currentUser.role.includes('Security Officer') ? 'Security Monitoring' :
+                           section.category === 'Compliance Reporting' && currentUser.role.includes('Compliance Officer') ? 'Regulatory Reports' : ''}
                         </div>
                       )}
                     </h3>
