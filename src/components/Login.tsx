@@ -192,6 +192,26 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Role
+              </label>
+              <div className="relative">
+                <Users className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <select
+                  value={formData.role || 'AI Governance Lead (Risk + Compliance)'}
+                  onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
+                  className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="AI Governance Lead (Risk + Compliance)">AI Governance Lead (Risk + Compliance)</option>
+                  <option value="QA Engineer (ISO 25010, Manual Validation)">QA Engineer (ISO 25010, Manual Validation)</option>
+                  <option value="Automation / TEVV Engineer (EU AI Act, Test Automation)">Automation / TEVV Engineer (EU AI Act, Test Automation)</option>
+                  <option value="AI SecOps Engineer (Security + DevSecOps)">AI SecOps Engineer (Security + DevSecOps)</option>
+                  <option value="Domain & Ethics Reviewer (Domain + Ethics)">Domain & Ethics Reviewer (Domain + Ethics)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Email Address
               </label>
               <div className="relative">
@@ -204,26 +224,6 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
                   required
                   className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Role
-              </label>
-              <div className="relative">
-                <Users className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <select
-                  value={formData.role || 'Platform Admin'}
-                  onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
-                  className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="AI Governance Lead (Risk + Compliance)">AI Governance Lead (Risk + Compliance)</option>
-                  <option value="QA Engineer (ISO 25010, Manual Validation)">QA Engineer (ISO 25010, Manual Validation)</option>
-                  <option value="Automation / TEVV Engineer (EU AI Act, Test Automation)">Automation / TEVV Engineer (EU AI Act, Test Automation)</option>
-                  <option value="AI SecOps Engineer (Security + DevSecOps)">AI SecOps Engineer (Security + DevSecOps)</option>
-                  <option value="Domain & Ethics Reviewer (Domain + Ethics)">Domain & Ethics Reviewer (Domain + Ethics)</option>
-                </select>
               </div>
             </div>
 
