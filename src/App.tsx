@@ -480,20 +480,15 @@ function App() {
                       'text-gray-500 dark:text-gray-400'
                     }`}>
                       {section.category}
-                      {currentUser?.role && roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation] && (
+                      {currentUser?.role && roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation]?.workflow && (
                         <div className="text-xs font-normal text-gray-500 dark:text-gray-400 mt-1 normal-case">
-                          {/* Show role-specific workflow for this section */}
-                          {section.category === 'Risk Mapping & Governance' && currentUser.role.includes('Risk Manager') ? 'GOVERN & MAP Functions' :
-                           section.category === 'Risk Mapping & Governance' && currentUser.role.includes('Compliance Officer') ? 'Regulatory Mapping' :
-                           section.category === 'Risk Mapping & Governance' && currentUser.role.includes('Security Officer') ? 'Security Risk Assessment' :
-                           section.category === 'TEVV Automation Suite' && currentUser.role.includes('Quality Engineer') ? 'ISO 25010 Testing' :
-                           section.category === 'TEVV Automation Suite' && currentUser.role.includes('TEVV Engineer') ? 'EU TEVV Execution' :
-                           section.category === 'TEVV Automation Suite' && currentUser.role.includes('DevSecOps') ? 'CI/CD Integration' :
-                           section.category === 'Validation Lab (HITL)' && currentUser.role.includes('Domain Expert') ? 'Expert Validation' :
-                           section.category === 'Validation Lab (HITL)' && currentUser.role.includes('Ethics Reviewer') ? 'IEEE 2857 Ethics' :
-                           section.category === 'Trust Metrics Engine' && currentUser.role.includes('Quality Engineer') ? 'Quality Metrics' :
-                           section.category === 'Continuous Monitoring' && currentUser.role.includes('Security Officer') ? 'Security Monitoring' :
-                           section.category === 'Compliance Reporting' && currentUser.role.includes('Compliance Officer') ? 'Regulatory Reports' : ''}
+                          {section.category === 'Risk Mapping & Governance' && currentUser.role === 'Compliance Engineer' ? 'Risk Assessment Workflow' :
+                           section.category === 'TEVV Automation Suite' && currentUser.role === 'AI Quality Engineer (ISO 25010)' ? 'Test Execution Workflow' :
+                           section.category === 'Validation Lab (HITL)' && currentUser.role === 'Domain Expert' ? 'Expert Review Workflow' :
+                           section.category === 'Continuous Monitoring' && currentUser.role === 'AI Security Officer (ISO 27001)' ? 'Security Monitoring' : 
+                           section.category === 'Risk Mapping & Governance' && currentUser.role === 'AI Compliance Officer (Regulatory)' ? 'Risk Assessment Workflow' :
+                           section.category === 'TEVV Automation Suite' && currentUser.role === 'TEVV Engineer (EU AI Act)' ? 'EU TEVV Execution' :
+                           section.category === 'Validation Lab (HITL)' && currentUser.role === 'AI Ethics Reviewer (IEEE 2857)' ? 'Ethics Review Workflow' : ''}
                         </div>
                       )}
                     </h3>
@@ -513,23 +508,29 @@ function App() {
                             <Icon className={`w-5 h-5 ${activeTab === item.id ? 'text-white' : ''}`} />
                             <span>{item.label}</span>
                             {/* Role-specific workflow indicators */}
-                            {currentUser?.role === 'AI Compliance Officer (Regulatory)' && ['application-setup', 'risk-classification'].includes(item.id) && (
+                            {currentUser?.role === 'AI Risk Manager (NIST RMF)' && ['governance-matrix', 'risk-classification'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-blue-500 rounded-full" title="Risk Acceptance Authority"></div>
+                            )}
+                            {currentUser?.role === 'AI Compliance Officer (Regulatory)' && ['compliance-reporting', 'governance-controls'].includes(item.id) && (
                               <div className="ml-auto w-2 h-2 bg-red-500 rounded-full"></div>
-                            )}
-                            {currentUser?.role === 'TEVV Engineer (EU AI Act)' && ['tevv-automation', 'model-validation'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-green-500 rounded-full"></div>
-                            )}
-                            {currentUser?.role === 'Domain Expert (HITL Validation)' && ['validation-lab', 'ethical-ai'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-amber-500 rounded-full"></div>
                             )}
                             {currentUser?.role === 'AI Quality Engineer (ISO 25010)' && ['tevv-automation', 'trust-metrics'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-blue-500 rounded-full"></div>
+                              <div className="ml-auto w-2 h-2 bg-green-500 rounded-full"></div>
                             )}
                             {currentUser?.role === 'AI Security Officer (ISO 27001)' && ['risk-classification', 'continuous-monitoring'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-red-500 rounded-full"></div>
+                              <div className="ml-auto w-2 h-2 bg-red-600 rounded-full" title="Incident Response Authority"></div>
                             )}
-                            {currentUser?.role === 'AI Ethics Reviewer (IEEE 2857)' && ['validation-lab', 'bias-auditing'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-purple-500 rounded-full"></div>
+                            {currentUser?.role === 'Domain Expert (HITL Validation)' && ['validation-lab'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-amber-500 rounded-full"></div>
+                            )}
+                            {currentUser?.role === 'TEVV Engineer (EU AI Act)' && ['tevv-automation', 'trust-metrics'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-violet-500 rounded-full" title="EU TEVV Authority"></div>
+                            )}
+                            {currentUser?.role === 'AI Ethics Reviewer (IEEE 2857)' && ['validation-lab', 'trust-metrics'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-purple-500 rounded-full" title="Ethics Independence"></div>
+                            )}
+                            {currentUser?.role === 'DevSecOps Engineer (CI/CD)' && ['tevv-automation', 'continuous-monitoring'].includes(item.id) && (
+                              <div className="ml-auto w-2 h-2 bg-gray-500 rounded-full" title="Pipeline Guardrails"></div>
                             )}
                           </button>
                         );
