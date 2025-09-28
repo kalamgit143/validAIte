@@ -595,4 +595,4 @@ const GovernanceMatrix: React.FC<GovernanceMatrixProps> = ({
   );
 };
 
-export default GovernanceControls;
+export default GovernanceMatrix;
