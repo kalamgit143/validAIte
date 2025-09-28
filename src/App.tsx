@@ -89,53 +89,75 @@ function App() {
 
   // Role-based navigation configuration
   const roleBasedNavigation = {
-    'AI Risk Manager (NIST RMF)': {
+    'AI Governance Lead (Risk + Compliance)': {
       sections: ['Platform', 'Risk Mapping & Governance', 'Trust Metrics Engine', 'Compliance Reporting', 'Organization'],
-      workflow: 'Risk Governance → Risk Acceptance Decisions → Strategic Oversight',
-      responsibilities: ['Risk acceptance decisions', 'Strategic AI oversight', 'NIST RMF GOVERN & MAP functions', 'Final risk tolerance decisions'],
-      restrictions: ['No day-to-day testing execution', 'No technical test design']
+      workflow: 'Risk Mapping → Trust Thresholds → Compliance Sign-off → Drift Review',
+      responsibilities: ['Risk acceptance decisions', 'Compliance sign-off authority', 'Trust threshold approval', 'Governance-level decisions'],
+      restrictions: ['No day-to-day testing execution', 'No technical test design'],
+      actionPermissions: {
+        'Risk Mapping & Governance': ['C', 'E', 'A', 'V'],
+        'Trust Metrics Engine': ['C', 'A', 'V'], // thresholds only
+        'TEVV Automation Suite': ['V'],
+        'Validation Lab (HITL)': ['A', 'V'], // approve reports
+        'Continuous Monitoring': ['A', 'V'], // governance alerts
+        'Compliance Reporting': ['C', 'E', 'A', 'V']
+      }
     },
-    'AI Compliance Officer (Regulatory)': {
-      sections: ['Platform', 'Risk Mapping & Governance', 'Compliance Reporting'],
-      workflow: 'Regulatory Mapping → Evidence Collection → Compliance Sign-off',
-      responsibilities: ['Regulatory sign-off authority', 'Audit evidence packs', 'Compliance framework mapping', 'Regulatory submission approval'],
-      restrictions: ['No TEVV execution', 'No technical testing', 'Read-only on technical modules']
-    },
-    'AI Quality Engineer (ISO 25010)': {
+    'QA Engineer (ISO 25010, Manual Validation)': {
       sections: ['Platform', 'TEVV Automation Suite', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
-      workflow: 'Test Design → TEVV Execution → Traceability Matrix → Defect Triage',
-      responsibilities: ['Traceability matrix ownership', 'Defect triage and feedback loop', 'ISO 25010 quality dimensions', 'Test execution and validation'],
-      restrictions: ['No risk acceptance decisions', 'No compliance sign-off']
+      workflow: 'Manual Trust Validation → TEVV Design → HITL Testing → QA Evidence',
+      responsibilities: ['Manual validation ownership', 'Traceability matrix maintenance', 'ISO 25010 quality dimensions', 'Defect triage and feedback'],
+      restrictions: ['No risk acceptance decisions', 'No compliance sign-off'],
+      actionPermissions: {
+        'Risk Mapping & Governance': ['C', 'E', 'V'], // use cases, suggest risks
+        'Trust Metrics Engine': ['R', 'V'], // manual validations
+        'TEVV Automation Suite': ['R', 'V'], // manual/exploratory tests
+        'Validation Lab (HITL)': ['R', 'V'], // manual HITL validation
+        'Continuous Monitoring': ['V'],
+        'Compliance Reporting': ['C', 'V'] // upload manual evidence
+      }
     },
-    'AI Security Officer (ISO 27001)': {
-      sections: ['Platform', 'Risk Mapping & Governance', 'TEVV Automation Suite', 'Continuous Monitoring'],
-      workflow: 'Security Risk Assessment → Red-team Testing → Incident Response',
-      responsibilities: ['Incident response ownership', 'OWASP LLM Top 10 testing', 'Security monitoring and SOC integration', 'Residual risk collaboration'],
-      restrictions: ['No business risk decisions', 'No compliance sign-off']
-    },
-    'Domain Expert (HITL Validation)': {
-      sections: ['Platform', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
-      workflow: 'Domain Validation → Expert Review → Business Meaningfulness',
-      responsibilities: ['Domain-specific scenario creation', 'Business meaningfulness validation', 'Subject matter expertise', 'Human oversight per EU AI Act'],
-      restrictions: ['No test execution', 'No technical testing', 'Validation and metrics review only']
-    },
-    'TEVV Engineer (EU AI Act)': {
+    'Automation / TEVV Engineer (EU AI Act, Test Automation)': {
       sections: ['Platform', 'Trust Metrics Engine', 'TEVV Automation Suite', 'Continuous Monitoring'],
-      workflow: 'EU TEVV Execution → Evidence Automation → Regression Testing',
-      responsibilities: ['EU TEVV compliance execution', 'Automated evidence collection', 'Cross-module regression runs', 'Risk-to-test traceability'],
-      restrictions: ['No risk acceptance', 'No compliance sign-off', 'Technical execution focus']
+      workflow: 'Trust Automation → TEVV Execution → CI/CD Integration → Evidence Automation',
+      responsibilities: ['EU TEVV compliance execution', 'Automated evidence collection', 'Cross-module regression runs', 'Pipeline integration'],
+      restrictions: ['No risk acceptance', 'No compliance sign-off', 'Technical execution focus'],
+      actionPermissions: {
+        'Risk Mapping & Governance': ['E', 'V'], // tag testable risks
+        'Trust Metrics Engine': ['C', 'E', 'R', 'V'],
+        'TEVV Automation Suite': ['C', 'E', 'R', 'V'],
+        'Validation Lab (HITL)': ['V'],
+        'Continuous Monitoring': ['V'],
+        'Compliance Reporting': ['C', 'V'] // export evidence logs
+      }
     },
-    'AI Ethics Reviewer (IEEE 2857)': {
-      sections: ['Platform', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
-      workflow: 'Ethical Assessment → Independent Review → Threshold Definition',
-      responsibilities: ['Ethical threshold definition', 'Independent ethics review', 'IEEE 2857 standards compliance', 'Bias and fairness oversight'],
-      restrictions: ['Independent from dev/test teams', 'No technical execution', 'Ethics review and approval only']
+    'AI SecOps Engineer (Security + DevSecOps)': {
+      sections: ['Platform', 'Risk Mapping & Governance', 'TEVV Automation Suite', 'Continuous Monitoring'],
+      workflow: 'Security Risk Input → Adversarial Testing → Security Validation → Incident Response',
+      responsibilities: ['Incident response ownership', 'Security testing and red-teaming', 'Pipeline guardrails', 'Security monitoring'],
+      restrictions: ['No business risk decisions', 'No compliance sign-off'],
+      actionPermissions: {
+        'Risk Mapping & Governance': ['C', 'E', 'V'], // security risks
+        'Trust Metrics Engine': ['R', 'V'], // security trust metrics
+        'TEVV Automation Suite': ['R', 'V'], // security tests
+        'Validation Lab (HITL)': ['R', 'V'], // security HITL validations
+        'Continuous Monitoring': ['C', 'E', 'R', 'A', 'V'], // full ownership
+        'Compliance Reporting': ['C', 'V'] // security evidence
+      }
     },
-    'DevSecOps Engineer (CI/CD)': {
-      sections: ['Platform', 'TEVV Automation Suite', 'Continuous Monitoring'],
-      workflow: 'Pipeline Integration → Automated Guardrails → Infrastructure Monitoring',
-      responsibilities: ['Pipeline guardrails ownership', 'CI/CD TEVV integration', 'Infrastructure monitoring', 'Deployment automation'],
-      restrictions: ['Read-only governance access', 'No risk decisions', 'No compliance sign-off', 'Technical infrastructure focus']
+    'Domain & Ethics Reviewer (Domain + Ethics)': {
+      sections: ['Platform', 'Risk Mapping & Governance', 'Trust Metrics Engine', 'Validation Lab (HITL)', 'Continuous Monitoring'],
+      workflow: 'Domain Risk Input → Domain Trust Validation → Ethical HITL Review → Domain Evidence',
+      responsibilities: ['Ethical threshold definition', 'Domain correctness validation', 'Independent ethics review', 'Fairness oversight'],
+      restrictions: ['Independent from dev/test teams', 'No technical execution', 'Ethics and domain focus only'],
+      actionPermissions: {
+        'Risk Mapping & Governance': ['C', 'E', 'V'], // domain/ethical risks
+        'Trust Metrics Engine': ['R', 'V'], // bias/fairness checks
+        'TEVV Automation Suite': ['V'], // domain edge cases input
+        'Validation Lab (HITL)': ['R', 'V'], // fairness/ethics validation
+        'Continuous Monitoring': ['V'], // domain anomaly spotting
+        'Compliance Reporting': ['C', 'V'] // fairness/ethics notes
+      }
     }
   };
 
@@ -170,11 +192,8 @@ function App() {
 
   // Filter navigation items based on user role
   const getFilteredNavItems = () => {
-    if (!currentUser?.role) return navItems;
-    
-    const allowedSections = roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation]?.sections || [];
-    
-    return navItems.filter(section => allowedSections.includes(section.category));
+    // All users see all sections - RBAC controls actions within components
+    return navItems;
   };
 
   // Get current user's workflow
@@ -183,6 +202,18 @@ function App() {
     return roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation]?.workflow || null;
   };
 
+  // Get user's action permissions for a specific module
+  const getUserPermissions = (module: string) => {
+    if (!currentUser?.role) return [];
+    const roleConfig = roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation];
+    return roleConfig?.actionPermissions?.[module] || ['V']; // Default to view-only
+  };
+
+  // Check if user can perform specific action
+  const canPerformAction = (module: string, action: 'C' | 'E' | 'R' | 'A' | 'V') => {
+    const permissions = getUserPermissions(module);
+    return permissions.includes(action);
+  };
   // Show authentication screens if not logged in
   if (!isAuthenticated) {
     if (showSignup) {
@@ -480,15 +511,35 @@ function App() {
                       'text-gray-500 dark:text-gray-400'
                     }`}>
                       {section.category}
-                      {currentUser?.role && roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation]?.workflow && (
+                      {currentUser?.role && (
                         <div className="text-xs font-normal text-gray-500 dark:text-gray-400 mt-1 normal-case">
-                          {section.category === 'Risk Mapping & Governance' && currentUser.role === 'Compliance Engineer' ? 'Risk Assessment Workflow' :
-                           section.category === 'TEVV Automation Suite' && currentUser.role === 'AI Quality Engineer (ISO 25010)' ? 'Test Execution Workflow' :
-                           section.category === 'Validation Lab (HITL)' && currentUser.role === 'Domain Expert' ? 'Expert Review Workflow' :
-                           section.category === 'Continuous Monitoring' && currentUser.role === 'AI Security Officer (ISO 27001)' ? 'Security Monitoring' : 
-                           section.category === 'Risk Mapping & Governance' && currentUser.role === 'AI Compliance Officer (Regulatory)' ? 'Risk Assessment Workflow' :
-                           section.category === 'TEVV Automation Suite' && currentUser.role === 'TEVV Engineer (EU AI Act)' ? 'EU TEVV Execution' :
-                           section.category === 'Validation Lab (HITL)' && currentUser.role === 'AI Ethics Reviewer (IEEE 2857)' ? 'Ethics Review Workflow' : ''}
+                          {/* Role-based action indicators */}
+                          {section.category === 'Risk Mapping & Governance' && (
+                            getUserPermissions('Risk Mapping & Governance').includes('A') ? 'C•E•A•V' :
+                            getUserPermissions('Risk Mapping & Governance').includes('C') ? 'C•E•V' :
+                            getUserPermissions('Risk Mapping & Governance').includes('E') ? 'E•V' : 'V'
+                          )}
+                          {section.category === 'Trust Metrics Engine' && (
+                            getUserPermissions('Trust Metrics Engine').includes('A') ? 'C•A•V' :
+                            getUserPermissions('Trust Metrics Engine').includes('R') ? 'R•V' :
+                            getUserPermissions('Trust Metrics Engine').includes('C') ? 'C•E•R•V' : 'V'
+                          )}
+                          {section.category === 'TEVV Automation Suite' && (
+                            getUserPermissions('TEVV Automation Suite').includes('C') ? 'C•E•R•V' :
+                            getUserPermissions('TEVV Automation Suite').includes('R') ? 'R•V' : 'V'
+                          )}
+                          {section.category === 'Validation Lab (HITL)' && (
+                            getUserPermissions('Validation Lab (HITL)').includes('A') ? 'A•V' :
+                            getUserPermissions('Validation Lab (HITL)').includes('R') ? 'R•V' : 'V'
+                          )}
+                          {section.category === 'Continuous Monitoring' && (
+                            getUserPermissions('Continuous Monitoring').includes('C') ? 'C•E•R•A•V' :
+                            getUserPermissions('Continuous Monitoring').includes('A') ? 'A•V' : 'V'
+                          )}
+                          {section.category === 'Compliance Reporting' && (
+                            getUserPermissions('Compliance Reporting').includes('A') ? 'C•E•A•V' :
+                            getUserPermissions('Compliance Reporting').includes('C') ? 'C•V' : 'V'
+                          )}
                         </div>
                       )}
                     </h3>
@@ -507,9 +558,80 @@ function App() {
                           >
                             <Icon className={`w-5 h-5 ${activeTab === item.id ? 'text-white' : ''}`} />
                             <span>{item.label}</span>
-                            {/* Role-specific workflow indicators */}
-                            {currentUser?.role === 'AI Governance Lead (Risk + Compliance)' && ['governance-matrix', 'risk-classification', 'trust-metrics', 'compliance-reporting'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-blue-500 rounded-full" title="Risk Acceptance Authority"></div>
+                            {/* RBAC Action Indicators */}
+                            {(() => {
+                              const moduleMap: { [key: string]: string } = {
+                                'application-setup': 'Risk Mapping & Governance',
+                                'use-case-definition': 'Risk Mapping & Governance',
+                                'risk-classification': 'Risk Mapping & Governance',
+                                'governance-controls': 'Risk Mapping & Governance',
+                                'governance-matrix': 'Risk Mapping & Governance',
+                                'trust-metrics': 'Trust Metrics Engine',
+                                'evaluations': 'Trust Metrics Engine',
+                                'benchmarks': 'Trust Metrics Engine',
+                                'bias-auditing': 'Trust Metrics Engine',
+                                'explainability': 'Trust Metrics Engine',
+                                'analytics': 'Trust Metrics Engine',
+                                'tevv-automation': 'TEVV Automation Suite',
+                                'model-validation': 'TEVV Automation Suite',
+                                'playground': 'TEVV Automation Suite',
+                                'prompt-testing': 'TEVV Automation Suite',
+                                'model-comparison': 'TEVV Automation Suite',
+                                'datasets': 'TEVV Automation Suite',
+                                'validation-lab': 'Validation Lab (HITL)',
+                                'human-feedback': 'Validation Lab (HITL)',
+                                'ethical-ai': 'Validation Lab (HITL)',
+                                'experiments': 'Validation Lab (HITL)',
+                                'model-documentation': 'Validation Lab (HITL)',
+                                'continuous-monitoring': 'Continuous Monitoring',
+                                'traces': 'Continuous Monitoring',
+                                'observability': 'Continuous Monitoring',
+                                'data-drift': 'Continuous Monitoring',
+                                'guardrails': 'Continuous Monitoring',
+                                'alerts': 'Continuous Monitoring',
+                                'compliance-reporting': 'Compliance Reporting',
+                                'reports': 'Compliance Reporting'
+                              };
+                              
+                              const module = moduleMap[item.id];
+                              if (!module) return null;
+                              
+                              const permissions = getUserPermissions(module);
+                              const hasCreate = permissions.includes('C');
+                              const hasApprove = permissions.includes('A');
+                              const hasRun = permissions.includes('R');
+                              
+                              if (hasApprove) return <div className="ml-auto w-2 h-2 bg-red-500 rounded-full" title="Approval Authority" />;
+                              if (hasCreate) return <div className="ml-auto w-2 h-2 bg-blue-500 rounded-full" title="Create/Configure Authority" />;
+                              if (hasRun) return <div className="ml-auto w-2 h-2 bg-green-500 rounded-full" title="Execute Authority" />;
+                              return <div className="ml-auto w-2 h-2 bg-gray-400 rounded-full" title="View Only" />;
+                            })()}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
+          </nav>
+        </aside>
+
+        {/* Main Content */}
+        <main className="flex-1 p-6 bg-slate-50 dark:bg-slate-900">
+          {/* Pass RBAC functions to components */}
+          {React.cloneElement(renderActiveComponent() as React.ReactElement, {
+            currentUser,
+            canPerformAction,
+            getUserPermissions
+          })}
+        </main>
+      </div>
+    </div>
+  );
+}
+
+export default App;
                             )}
                             {currentUser?.role === 'QA Engineer (ISO 25010, Manual Validation)' && ['trust-metrics', 'tevv-automation', 'validation-lab'].includes(item.id) && (
                               <div className="ml-auto w-2 h-2 bg-green-500 rounded-full" title="Manual Validation Authority"></div>
