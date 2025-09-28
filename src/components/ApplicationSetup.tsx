@@ -246,11 +246,11 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
             </div>
             <div>
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Application Setup</h2>
-              <p className="text-gray-600 dark:text-gray-400">Capture baseline profile of GenAI application under evaluation</p>
-            </div>
-            <div className="flex items-center space-x-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 rounded-full text-sm font-medium">
+              <div className="flex items-center space-x-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 rounded-full text-sm font-medium">
               <FileText className="w-4 h-4" />
               <span>Input to Use Case Definition</span>
+            </div>
+              <p className="text-gray-600 dark:text-gray-400">Capture baseline profile of GenAI application under evaluation</p>
             </div>
           </div>
         </div>
