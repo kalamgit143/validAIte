@@ -348,17 +348,21 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <button
-                onClick={() => setCurrentView('login')}
-                className="group px-12 py-5 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white rounded-2xl font-bold hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 flex items-center space-x-3 text-xl border-2 border-white/20 backdrop-blur-sm"
-              >
-                <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
-                  <Brain className="w-5 h-5" />
-                </div>
-                <span>Access Platform</span>
-                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-              </button>
             </div>
+          </div>
+        </div>
+
+        {/* AI Governance Image */}
+        <div className="mb-16 text-center">
+          <div className="max-w-xl mx-auto">
+            <img 
+              src="/image.png" 
+              alt="AI Governance - Human and AI collaboration"
+              className="w-full h-80 object-cover rounded-3xl shadow-2xl border-2 border-gray-200 dark:border-gray-700 hover:shadow-3xl hover:scale-105 transition-all duration-500"
+            />
+            <p className="text-lg text-gray-600 dark:text-gray-400 mt-6 italic font-medium">
+              "Bridging human expertise with AI capabilities through structured governance"
+            </p>
           </div>
         </div>
 
@@ -379,20 +383,6 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
                 );
               })}
             </div>
-          </div>
-        </div>
-
-        {/* AI Governance Image */}
-        <div className="mb-16 text-center">
-          <div className="max-w-xl mx-auto">
-            <img 
-              src="/image.png" 
-              alt="AI Governance - Human and AI collaboration"
-              className="w-full h-80 object-cover rounded-3xl shadow-2xl border-2 border-gray-200 dark:border-gray-700 hover:shadow-3xl hover:scale-105 transition-all duration-500"
-            />
-            <p className="text-lg text-gray-600 dark:text-gray-400 mt-6 italic font-medium">
-              "Bridging human expertise with AI capabilities through structured governance"
-            </p>
           </div>
         </div>
 
