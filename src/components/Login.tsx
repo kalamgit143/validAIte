@@ -424,10 +424,6 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
         </footer>
       </div>
     );
-  };
-
-  return null;
-  );
 };
 
 export default Login;
