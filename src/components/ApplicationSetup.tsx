@@ -252,20 +252,7 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
         </div>
         
         {/* Component Flow Navigation */}
-        <div className="hidden lg:flex items-center space-x-3 text-sm">
-          <div className="flex items-center space-x-2 px-3 py-2 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 rounded-lg font-medium">
-            <Database className="w-4 h-4" />
-            <span>Step 1: Application Setup</span>
-          </div>
-          <ArrowRight className="w-4 h-4 text-gray-400" />
-          <span className="text-gray-500">Step 2: Use Case Definition</span>
-          <ArrowRight className="w-4 h-4 text-gray-400" />
-          <span className="text-gray-500">Step 3: Risk Classification</span>
-          <ArrowRight className="w-4 h-4 text-gray-400" />
-          <span className="text-gray-500">Step 4: Governance Controls</span>
-          <ArrowRight className="w-4 h-4 text-gray-400" />
-          <span className="text-gray-500">Step 5: Governance Matrix</span>
-        </div>
+        
       </div>
 
       {/* Purpose & Context */}
