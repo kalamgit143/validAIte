@@ -543,4 +543,4 @@ const GovernanceControls: React.FC<GovernanceControlsProps> = ({
   );
 };
 
-export default RiskClassification;
+export default GovernanceControls;
