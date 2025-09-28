@@ -548,31 +548,6 @@ const GovernanceMatrix: React.FC<GovernanceMatrixProps> = ({
                 <div>✓ PDF report generated</div>
                 <div>✓ JSON data export ready</div>
                 <div>✓ CSV format available</div>
-                <div>✓ Audit trail complete</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 p-4 rounded-lg">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <Layers className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <div>
-                  <div className="font-semibold text-blue-900 dark:text-blue-100">Ready for Trust Metrics Engine</div>
-                  <div className="text-sm text-blue-800 dark:text-blue-200">
-                    Complete governance foundation established for quantitative trust assessment
-                  </div>
-                </div>
-              </div>
-              <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg flex items-center space-x-2">
-                <span>Launch Trust Metrics</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
     </div>
   );
 };

@@ -526,31 +526,6 @@ const UseCaseDefinition: React.FC<UseCaseDefinitionProps> = ({
                 <input
                   type="text"
                   placeholder="Reduce diagnostic errors by 40%, improve patient flow"
-                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500"
-                />
-              </div>
-            </div>
-
-            <div className="p-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Scenario will be added to use case catalog
-              </div>
-              <div className="flex items-center space-x-3">
-                <button 
-                  onClick={() => setShowAddScenarioModal(false)}
-                  className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
-                >
-                  Cancel
-                </button>
-                <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                  Add Scenario
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
     </div>
   );
 };

@@ -736,31 +736,6 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
         </div>
       )}
 
-      {/* Expert Context Panel */}
-      <div className="bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-800 dark:to-slate-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-        <div className="flex items-start space-x-4">
-          <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-violet-600 rounded-xl flex items-center justify-center">
-            <Brain className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">GenAI Evaluation Expert Context</h4>
-            <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
-              Following NIST RMF GOVERN function and EU AI Act Article 16 (Record Keeping), this step establishes 
-              the foundational application inventory required for systematic AI governance.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-white/50 dark:bg-gray-700/50 p-3 rounded-lg">
-                <div className="font-medium text-gray-900 dark:text-white text-sm mb-1">NIST RMF Alignment</div>
-                <div className="text-xs text-gray-600 dark:text-gray-400">GOVERN-1.1: AI system inventory and categorization</div>
-              </div>
-              <div className="bg-white/50 dark:bg-gray-700/50 p-3 rounded-lg">
-                <div className="font-medium text-gray-900 dark:text-white text-sm mb-1">EU AI Act Compliance</div>
-                <div className="text-xs text-gray-600 dark:text-gray-400">Article 16: Record keeping and documentation requirements</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

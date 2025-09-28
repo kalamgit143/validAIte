@@ -497,31 +497,6 @@ const GovernanceControls: React.FC<GovernanceControlsProps> = ({
                 <div>Detective: {controlLibrary.filter(c => c.type === 'detective').length}</div>
                 <div>Corrective: {controlLibrary.filter(c => c.type === 'corrective').length}</div>
               </div>
-            </div>
-            
-            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Evidence Package</h4>
-              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                <div>Assignments: Saved</div>
-                <div>Audit Ready: ✓</div>
-                <div>Export Ready: JSON/CSV</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 text-sm text-violet-800 dark:text-violet-200">
-              <Layers className="w-4 h-4" />
-              <span>Ready for Governance Matrix (Component 5)</span>
-            </div>
-            <button className="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors flex items-center space-x-2">
-              <span>Generate Matrix</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
-
     </div>
   );
 };
