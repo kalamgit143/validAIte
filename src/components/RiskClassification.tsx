@@ -480,6 +480,19 @@ const RiskClassification: React.FC<RiskClassificationProps> = ({
                 <div>Medium Risk: {riskClassifications.filter(r => r.riskLevel === 'medium').length}</div>
                 <div>Low Risk: {riskClassifications.filter(r => r.riskLevel === 'low').length}</div>
               </div>
+            </div>
+            
+            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Evidence Package</h4>
+              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <div>Classification Complete</div>
+                <div>Ready for Controls</div>
+                <div>Export Available</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

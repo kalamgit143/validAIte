@@ -497,6 +497,19 @@ const GovernanceControls: React.FC<GovernanceControlsProps> = ({
                 <div>Detective: {controlLibrary.filter(c => c.type === 'detective').length}</div>
                 <div>Corrective: {controlLibrary.filter(c => c.type === 'corrective').length}</div>
               </div>
+            </div>
+            
+            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Evidence</h4>
+              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <div>Audit Ready: ✓</div>
+                <div>Timestamp: {new Date().toLocaleString()}</div>
+                <div>Ready for Matrix</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
