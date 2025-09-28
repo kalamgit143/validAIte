@@ -1,42 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  Database, 
-  Building, 
-  Globe, 
-  Users, 
-  Shield, 
-  Target, 
-  CheckCircle, 
-  AlertTriangle, 
-  Plus, 
-  Edit, 
-  Eye, 
-  Download, 
-  Save, 
-  RefreshCw, 
-  FileText, 
-  Settings, 
-  Crown, 
-  Gavel, 
-  Code, 
-  Brain, 
-  Lock, 
-  Activity, 
-  BarChart3, 
-  Calendar, 
-  Mail, 
-  ArrowRight, 
-  ArrowDown, 
-  Zap, 
-  Server, 
-  Key, 
-  Link, 
-  Layers,
-  Upload,
-  SkipForward,
-  Info,
-  ExternalLink
-} from 'lucide-react';
+import { Database, Building, Globe, Users, Shield, Target, CheckCircle, AlertTriangle, Plus, CreditCard as Edit, Eye, Download, Save, RefreshCw, FileText, Settings, Crown, Gavel, Code, Brain, Lock, Activity, BarChart3, Calendar, Mail, ArrowRight, ArrowDown, Zap, Server, Key, Link, Layers, Upload, SkipForward, Info, ExternalLink } from 'lucide-react';
 
 interface ApplicationSetupProps {
   currentUser?: any;
