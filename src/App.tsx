@@ -89,7 +89,7 @@ function App() {
 
   // Role-based navigation configuration
   const roleBasedNavigation = {
-    'AI Governance Lead (Risk + Compliance)': {
+    '🔵 AI Governance Lead (Risk + Compliance)': {
       sections: ['Platform', 'Risk Mapping & Governance', 'Trust Metrics Engine', 'Compliance Reporting', 'Organization'],
       workflow: 'Risk Mapping → Trust Thresholds → Compliance Sign-off → Drift Review',
       responsibilities: ['Risk acceptance decisions', 'Compliance sign-off authority', 'Trust threshold approval', 'Governance-level decisions'],
@@ -103,7 +103,7 @@ function App() {
         'Compliance Reporting': ['C', 'E', 'A', 'V']
       }
     },
-    'QA Engineer (ISO 25010, Manual Validation)': {
+    '🟢 QA Engineer (ISO 25010, Manual Validation)': {
       sections: ['Platform', 'TEVV Automation Suite', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
       workflow: 'Manual Trust Validation → TEVV Design → HITL Testing → QA Evidence',
       responsibilities: ['Manual validation ownership', 'Traceability matrix maintenance', 'ISO 25010 quality dimensions', 'Defect triage and feedback'],
@@ -117,7 +117,7 @@ function App() {
         'Compliance Reporting': ['C', 'V'] // upload manual evidence
       }
     },
-    'Automation / TEVV Engineer (EU AI Act, Test Automation)': {
+    '🟣 Automation / TEVV Engineer (EU AI Act, Test Automation)': {
       sections: ['Platform', 'Trust Metrics Engine', 'TEVV Automation Suite', 'Continuous Monitoring'],
       workflow: 'Trust Automation → TEVV Execution → CI/CD Integration → Evidence Automation',
       responsibilities: ['EU TEVV compliance execution', 'Automated evidence collection', 'Cross-module regression runs', 'Pipeline integration'],
@@ -131,7 +131,7 @@ function App() {
         'Compliance Reporting': ['C', 'V'] // export evidence logs
       }
     },
-    'AI SecOps Engineer (Security + DevSecOps)': {
+    '🔴 AI SecOps Engineer (Security + DevSecOps)': {
       sections: ['Platform', 'Risk Mapping & Governance', 'TEVV Automation Suite', 'Continuous Monitoring'],
       workflow: 'Security Risk Input → Adversarial Testing → Security Validation → Incident Response',
       responsibilities: ['Incident response ownership', 'Security testing and red-teaming', 'Pipeline guardrails', 'Security monitoring'],
@@ -145,7 +145,7 @@ function App() {
         'Compliance Reporting': ['C', 'V'] // security evidence
       }
     },
-    'Domain & Ethics Reviewer (Domain + Ethics)': {
+    '🟡 Domain & Ethics Reviewer (Domain + Ethics)': {
       sections: ['Platform', 'Risk Mapping & Governance', 'Trust Metrics Engine', 'Validation Lab (HITL)', 'Continuous Monitoring'],
       workflow: 'Domain Risk Input → Domain Trust Validation → Ethical HITL Review → Domain Evidence',
       responsibilities: ['Ethical threshold definition', 'Domain correctness validation', 'Independent ethics review', 'Fairness oversight'],
