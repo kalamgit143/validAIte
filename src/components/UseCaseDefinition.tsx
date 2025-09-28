@@ -36,785 +36,357 @@ import {
   Layers,
   Search,
   Filter,
-  XCircle
+  XCircle,
+  ArrowRight,
+  ArrowDown,
+  ArrowLeft,
+  List,
+  BookOpen,
+  Briefcase
 } from 'lucide-react';
 
-const UseCaseDefinition: React.FC = () => {
-  const [activeSection, setActiveSection] = useState('definition');
-  const [activeTab, setActiveTab] = useState('existing');
-  const [activeStep, setActiveStep] = useState(1);
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterIndustry, setFilterIndustry] = useState('all');
+interface UseCaseDefinitionProps {
+  currentUser?: any;
+  canPerformAction?: (module: string, action: string) => boolean;
+  getUserPermissions?: (module: string) => string[];
+}
 
-  const existingUseCases = [
-    {
-      id: 'uc_001',
-      name: 'Healthcare Triage Assistant',
-      description: 'AI-powered medical triage system for emergency departments',
-      industry: 'Healthcare',
-      riskLevel: 'High Risk',
-      status: 'approved',
-      createdBy: 'Dr. Sarah Chen',
-      createdAt: '2024-01-10T09:00:00Z',
-      lastUpdated: '2024-01-15T14:00:00Z',
-      stakeholders: ['Patients', 'Healthcare Providers', 'Regulators'],
-      complianceFrameworks: ['EU AI Act', 'HIPAA', 'GDPR', 'Medical Device Regulation'],
-      businessImpact: 'Reduce diagnostic errors by 40%, improve patient flow',
-      tags: ['medical', 'triage', 'emergency', 'high-risk']
-    },
-    {
-      id: 'uc_002',
-      name: 'Financial Lending Copilot',
-      description: 'AI assistant for fair and compliant lending decisions',
-      industry: 'Financial Services',
-      riskLevel: 'High Risk',
-      status: 'under_review',
-      createdBy: 'Mike Johnson',
-      createdAt: '2024-01-12T14:00:00Z',
-      lastUpdated: '2024-01-14T16:30:00Z',
-      stakeholders: ['Loan Applicants', 'Financial Institution', 'Regulators'],
-      complianceFrameworks: ['EU AI Act', 'ECOA', 'FCRA', 'SOX', 'GDPR'],
-      businessImpact: 'Improve lending accuracy while ensuring fairness',
-      tags: ['finance', 'lending', 'fairness', 'high-risk']
-    },
-    {
-      id: 'uc_003',
-      name: 'Enterprise Productivity Copilot',
-      description: 'AI assistant for enterprise productivity and automation',
-      industry: 'Enterprise Software',
-      riskLevel: 'Limited Risk',
-      status: 'approved',
-      createdBy: 'Alex Kim',
-      createdAt: '2024-01-08T11:00:00Z',
-      lastUpdated: '2024-01-13T10:00:00Z',
-      stakeholders: ['Employees', 'Management', 'IT Department'],
-      complianceFrameworks: ['EU AI Act', 'GDPR', 'ISO 27001'],
-      businessImpact: 'Increase productivity by 35%, reduce manual tasks',
-      tags: ['enterprise', 'productivity', 'automation', 'limited-risk']
-    }
-  ];
-
-  const useCaseDefinitions = [
-    {
-      id: 'uc_001',
-      name: 'Healthcare Triage Assistant',
-      description: 'AI-powered medical triage system for emergency departments',
-      status: 'approved',
-      approvedBy: 'CIO & Medical Director',
-      createdAt: '2024-01-10T09:00:00Z',
-      
-      // NIST RMF Required Fields
-      systemContext: {
-        organizationalContext: 'Emergency department workflow optimization',
-        technicalContext: 'Real-time patient assessment and priority classification',
-        businessContext: 'Reduce diagnostic errors and improve patient outcomes',
-        regulatoryContext: 'Medical device regulations and patient safety standards'
-      },
-      
-      intendedUse: {
-        primaryPurpose: 'Assist emergency department staff in patient triage and priority classification',
-        targetUsers: 'Emergency department staff, triage nurses, medical residents',
-        operationalEnvironment: 'Hospital emergency departments, 24/7 operations',
-        decisionSupport: 'Recommendation system with human oversight required',
-        humanOversight: 'Licensed medical professional must validate all triage decisions'
-      },
-      
-      performanceRequirements: {
-        accuracyThreshold: '95% diagnostic accuracy',
-        latencyRequirement: '< 30 seconds response time',
-        availabilityTarget: '99.9% uptime',
-        throughputCapacity: '500 patients/hour peak capacity',
-        reliabilityMetrics: 'Mean time between failures > 720 hours'
-      },
-      
-      // EU TEVV Required Fields
-      riskAssessment: {
-        aiActClassification: 'High Risk - Healthcare AI System',
-        riskLevel: 'High',
-        impactAssessment: 'Direct impact on patient safety and medical decisions',
-        vulnerabilityAnalysis: 'Misdiagnosis, bias in triage, system failures',
-        threatModeling: 'Adversarial inputs, data poisoning, model drift'
-      },
-      
-      dataGovernance: {
-        trainingDataSources: 'De-identified patient records, medical literature, clinical guidelines',
-        dataQuality: 'Medical expert validation, bias testing across demographics',
-        dataPrivacy: 'HIPAA compliant, patient consent protocols',
-        dataRetention: '7 years for audit compliance',
-        dataLineage: 'Full traceability from source to model training'
-      },
-      
-      technicalDocumentation: {
-        modelArchitecture: 'Transformer-based language model with medical knowledge base',
-        trainingProcedure: 'Supervised learning with expert-validated medical cases',
-        evaluationMetrics: 'Medical accuracy, diagnostic confidence, bias metrics',
-        limitationsKnown: 'Limited to emergency triage, requires human validation',
-        performanceBenchmarks: 'Validated against medical board exam standards'
-      },
-      
-      humanOversightMeasures: {
-        humanInTheLoop: 'Licensed medical professional review required',
-        overrideMechanisms: 'One-click override with reason logging',
-        escalationProcedures: 'Automatic escalation for uncertain cases',
-        competencyRequirements: 'Medical license and triage training required',
-        trainingPrograms: 'AI-assisted triage certification program'
-      },
-      
-      transparencyMeasures: {
-        explainabilityFeatures: 'SHAP-based decision explanations',
-        userNotification: 'Clear AI assistance indicators',
-        decisionAuditTrail: 'Complete decision logging and traceability',
-        publicDocumentation: 'Model card and performance metrics published',
-        stakeholderCommunication: 'Regular updates to medical staff and patients'
-      },
-      
-      // Compliance & Governance
-      complianceMapping: {
-        nistRmfControls: ['GOVERN-1.1', 'MAP-1.2', 'MEASURE-2.1', 'MANAGE-1.3'],
-        euAiActRequirements: ['Art-9 Risk Management', 'Art-10 Data Governance', 'Art-13 Transparency'],
-        additionalStandards: ['HIPAA', 'FDA Medical Device', 'ISO 13485']
-      },
-      
-      stakeholderAnalysis: [
-        { 
-          group: 'Patients', 
-          impact: 'Direct beneficiaries of improved triage accuracy and reduced wait times', 
-          concerns: 'Privacy protection, diagnostic accuracy, bias prevention',
-          engagementPlan: 'Patient advisory board, feedback collection, transparency reports'
-        },
-        { 
-          group: 'Healthcare Providers', 
-          impact: 'Enhanced decision support tools and workflow efficiency', 
-          concerns: 'Liability, workflow integration, skill dependency',
-          engagementPlan: 'Training programs, feedback sessions, performance monitoring'
-        },
-        { 
-          group: 'Hospital Administration', 
-          impact: 'Operational efficiency gains and cost reduction', 
-          concerns: 'Implementation costs, compliance requirements, liability',
-          engagementPlan: 'ROI reporting, compliance updates, risk assessments'
-        },
-        { 
-          group: 'Regulators', 
-          impact: 'Patient safety oversight and compliance monitoring', 
-          concerns: 'Medical device compliance, safety standards, audit requirements',
-          engagementPlan: 'Regular compliance reports, audit cooperation, transparency'
-        }
-      ],
-      
-      ethicalConsiderations: [
-        'Ensuring equitable care across all demographic groups',
-        'Maintaining human agency in medical decisions',
-        'Protecting patient privacy and confidentiality',
-        'Preventing automation bias in clinical judgment',
-        'Ensuring accessibility for diverse patient populations'
-      ],
-      
-      potentialMisuse: [
-        'Self-diagnosis by patients without medical supervision',
-        'Replacement of medical professional judgment',
-        'Use outside emergency department context',
-        'Diagnostic decision-making without human oversight',
-        'Commercial exploitation of medical data'
-      ],
-      
-      domainHarms: [
-        'Medical misdiagnosis leading to patient harm',
-        'Delayed treatment due to incorrect triage',
-        'Bias in care allocation across demographics',
-        'Over-reliance reducing clinical skills',
-        'System failures during critical situations'
-      ]
-    }
-  ];
-
-  const useCaseTemplates = [
-    {
-      id: 'template_healthcare',
-      name: 'Healthcare AI Use Case',
-      description: 'NIST RMF + EU TEVV compliant template for medical AI applications',
-      industry: 'Healthcare',
-      riskLevel: 'High Risk',
-      requiredSections: [
-        'Medical Use Case Definition',
-        'Patient Safety Assessment',
-        'Clinical Workflow Integration',
-        'Medical Accuracy Requirements',
-        'HIPAA Compliance Measures',
-        'FDA Medical Device Considerations',
-        'Clinical Validation Requirements',
-        'Medical Ethics Review'
-      ],
-      keyConsiderations: ['Patient Safety', 'Medical Accuracy', 'HIPAA Compliance', 'Clinical Workflow'],
-      riskAreas: ['Misdiagnosis', 'Bias in Care', 'Privacy Breach', 'Regulatory Non-compliance']
-    },
-    {
-      id: 'template_financial',
-      name: 'Financial Services AI Use Case',
-      description: 'Fair lending and regulatory compliance template for financial AI',
-      industry: 'Financial Services',
-      riskLevel: 'High Risk',
-      requiredSections: [
-        'Financial Use Case Definition',
-        'Fair Lending Assessment',
-        'Regulatory Compliance Mapping',
-        'Credit Risk Evaluation',
-        'Consumer Protection Measures',
-        'Financial Bias Testing',
-        'Regulatory Reporting Requirements',
-        'Financial Ethics Review'
-      ],
-      keyConsiderations: ['Fair Lending', 'Regulatory Compliance', 'Risk Assessment', 'Customer Privacy'],
-      riskAreas: ['Discriminatory Lending', 'Regulatory Violations', 'Financial Bias', 'Data Breach']
-    },
-    {
-      id: 'template_government',
-      name: 'Government AI Use Case',
-      description: 'Public sector AI template with citizen rights and transparency focus',
-      industry: 'Government',
-      riskLevel: 'High Risk',
-      requiredSections: [
-        'Government Use Case Definition',
-        'Citizen Rights Assessment',
-        'Public Transparency Requirements',
-        'Democratic Values Alignment',
-        'Public Trust Measures',
-        'Government Ethics Review',
-        'Public Accountability Mechanisms',
-        'Civic Engagement Planning'
-      ],
-      keyConsiderations: ['Citizen Rights', 'Transparency', 'Accountability', 'Public Trust'],
-      riskAreas: ['Discrimination', 'Lack of Transparency', 'Unfair Treatment', 'Privacy Violations']
-    },
-    {
-      id: 'template_enterprise',
-      name: 'Enterprise AI Use Case',
-      description: 'Enterprise productivity AI with employee rights and workplace fairness',
-      industry: 'Enterprise',
-      riskLevel: 'Medium Risk',
-      requiredSections: [
-        'Enterprise Use Case Definition',
-        'Employee Impact Assessment',
-        'Workplace Fairness Evaluation',
-        'Productivity Enhancement Metrics',
-        'Employee Privacy Protection',
-        'Skills Development Planning',
-        'Change Management Strategy',
-        'Enterprise Ethics Review'
-      ],
-      keyConsiderations: ['Employee Rights', 'Workplace Fairness', 'Productivity', 'Privacy'],
-      riskAreas: ['Employee Surveillance', 'Workplace Bias', 'Job Displacement', 'Privacy Invasion']
-    }
-  ];
-
+const UseCaseDefinition: React.FC<UseCaseDefinitionProps> = ({ 
+  currentUser, 
+  canPerformAction, 
+  getUserPermissions 
+}) => {
+  const [activeTab, setActiveTab] = useState('definition');
   const [formData, setFormData] = useState({
-    // Basic Information
-    name: '',
-    description: '',
-    industry: '',
-    riskLevel: '',
-    
-    // System Context
-    organizationalContext: '',
-    technicalContext: '',
-    businessContext: '',
-    regulatoryContext: '',
-    
-    // Intended Use
-    primaryPurpose: '',
-    targetUsers: '',
-    operationalEnvironment: '',
-    humanOversight: '',
-    
-    // Performance Requirements
-    accuracyThreshold: '',
-    latencyRequirement: '',
-    availabilityTarget: '',
-    throughputCapacity: '',
-    
-    // Risk Assessment
-    impactAssessment: '',
-    vulnerabilityAnalysis: '',
-    threatModeling: '',
-    
-    // Data Governance
-    trainingDataSources: '',
-    dataQuality: '',
-    dataPrivacy: '',
-    dataLineage: '',
-    
-    // Human Oversight
-    humanInTheLoop: '',
-    overrideMechanisms: '',
-    competencyRequirements: '',
-    escalationProcedures: '',
-    
-    // Transparency
-    explainabilityFeatures: '',
-    userNotification: '',
-    decisionAuditTrail: '',
-    publicDocumentation: '',
-    
-    // Technical Documentation
-    modelArchitecture: '',
-    trainingProcedure: '',
-    evaluationMetrics: '',
-    knownLimitations: '',
-    
-    // Stakeholder Analysis
-    stakeholderGroups: [],
-    engagementPlan: '',
-    ethicalConsiderations: '',
-    
-    // Risk Analysis
-    potentialMisuse: '',
-    domainHarms: '',
-    
-    // Compliance
-    nistControls: [],
-    euAiActRequirements: [],
-    additionalStandards: [],
-    
-    // Governance
-    riskOwner: '',
-    securityOwner: '',
-    complianceOfficer: '',
-    domainExpert: '',
-    
-    // Monitoring
-    monitoringPlan: '',
-    reviewSchedule: '',
-    incidentResponse: ''
+    businessScenarios: [] as any[],
+    userStories: [] as any[],
+    criticalityRatings: {} as any,
+    workflowSources: [] as string[]
   });
+  const [showAddScenarioModal, setShowAddScenarioModal] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'approved': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
-      case 'under_review': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'draft': return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400';
-      case 'rejected': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400';
+  // Mock input from Application Setup (Component 1)
+  const inputFromApplicationSetup = {
+    applicationProfile: {
+      id: 'app_1705234567',
+      name: 'Healthcare Triage Assistant',
+      type: 'llm_rag',
+      domain: 'Healthcare',
+      environment: 'production'
+    },
+    contextBaseline: {
+      appType: 'llm_rag',
+      domain: 'Healthcare',
+      complianceScope: ['EU AI Act', 'HIPAA', 'GDPR'],
+      businessCriticality: 'high',
+      integrationStatus: 'configured'
     }
   };
 
-  const getRiskLevelColor = (level: string) => {
-    switch (level) {
-      case 'High Risk': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
-      case 'Limited Risk': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
-      case 'Minimal Risk': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'approved': return <CheckCircle className="w-4 h-4" />;
-      case 'under_review': return <Clock className="w-4 h-4" />;
-      case 'draft': return <Edit className="w-4 h-4" />;
-      case 'rejected': return <XCircle className="w-4 h-4" />;
-      default: return <FileText className="w-4 h-4" />;
-    }
-  };
-
-  const filteredUseCases = existingUseCases.filter(useCase => {
-    const matchesSearch = searchQuery === '' || 
-      useCase.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      useCase.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      useCase.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchesIndustry = filterIndustry === 'all' || useCase.industry === filterIndustry;
-    return matchesSearch && matchesIndustry;
-  });
-
-  const steps = [
+  const businessScenarios = [
     {
-      id: 1,
-      title: 'Basic Info',
-      description: 'Use case overview',
-      icon: FileText
+      id: 'scenario_001',
+      name: 'Emergency Patient Triage',
+      description: 'Assess patient symptoms and assign triage priority',
+      source: 'Emergency Department Workflow',
+      criticality: 'high',
+      userStories: [
+        'As a triage nurse, I want to quickly assess patient severity',
+        'As an ED physician, I need accurate priority recommendations',
+        'As a patient, I want fair and unbiased triage assessment'
+      ],
+      businessValue: 'Reduce diagnostic errors, improve patient flow',
+      complianceImpact: ['HIPAA', 'Medical Device Regulation']
     },
     {
-      id: 2,
-      title: 'System Context',
-      description: 'NIST RMF context',
-      icon: Building
-    },
-    {
-      id: 3,
-      title: 'Intended Use',
-      description: 'Purpose & users',
-      icon: Target
-    },
-    {
-      id: 4,
-      title: 'Performance',
-      description: 'Requirements',
-      icon: BarChart3
-    },
-    {
-      id: 5,
-      title: 'Risk Assessment',
-      description: 'EU TEVV risks',
-      icon: AlertTriangle
-    },
-    {
-      id: 6,
-      title: 'Data Governance',
-      description: 'EU TEVV data',
-      icon: Database
-    },
-    {
-      id: 7,
-      title: 'Human Oversight',
-      description: 'EU TEVV oversight',
-      icon: Users
-    },
-    {
-      id: 8,
-      title: 'Transparency',
-      description: 'EU TEVV transparency',
-      icon: Eye
-    },
-    {
-      id: 9,
-      title: 'Technical Docs',
-      description: 'EU TEVV technical',
-      icon: Code
-    },
-    {
-      id: 10,
-      title: 'Stakeholders',
-      description: 'Impact analysis',
-      icon: Users
-    },
-    {
-      id: 11,
-      title: 'Compliance',
-      description: 'Framework mapping',
-      icon: Shield
-    },
-    {
-      id: 12,
-      title: 'Governance',
-      description: 'Approval & monitoring',
-      icon: Crown
+      id: 'scenario_002',
+      name: 'Symptom Documentation',
+      description: 'Document patient symptoms and medical history',
+      source: 'Clinical Documentation Requirements',
+      criticality: 'medium',
+      userStories: [
+        'As a nurse, I want to document symptoms accurately',
+        'As a physician, I need complete medical history',
+        'As a patient, I want my information protected'
+      ],
+      businessValue: 'Improve documentation quality, reduce errors',
+      complianceImpact: ['HIPAA', 'GDPR']
     }
   ];
 
-  const getStepColor = (stepId: number) => {
-    const colors = [
-      'from-blue-600 to-blue-700',
-      'from-purple-600 to-purple-700',
-      'from-green-600 to-green-700',
-      'from-yellow-600 to-yellow-700',
-      'from-red-600 to-red-700',
-      'from-indigo-600 to-indigo-700',
-      'from-pink-600 to-pink-700',
-      'from-teal-600 to-teal-700',
-      'from-orange-600 to-orange-700',
-      'from-cyan-600 to-cyan-700',
-      'from-violet-600 to-violet-700',
-      'from-emerald-600 to-emerald-700'
-    ];
-    return colors[(stepId - 1) % colors.length];
+  // Generated output for next component
+  const generateOutput = () => {
+    return {
+      useCaseCatalog: businessScenarios.map(scenario => ({
+        id: scenario.id,
+        name: scenario.name,
+        description: scenario.description,
+        criticality: scenario.criticality,
+        userStories: scenario.userStories,
+        businessValue: scenario.businessValue,
+        complianceScope: scenario.complianceImpact
+      })),
+      businessValueMapping: {
+        'Emergency Patient Triage': {
+          businessValue: 'Reduce diagnostic errors, improve patient flow',
+          complianceScope: ['HIPAA', 'Medical Device Regulation'],
+          criticality: 'high'
+        },
+        'Symptom Documentation': {
+          businessValue: 'Improve documentation quality, reduce errors',
+          complianceScope: ['HIPAA', 'GDPR'],
+          criticality: 'medium'
+        }
+      },
+      evidence: {
+        useCaseDefinitions: `${businessScenarios.length} use cases defined`,
+        businessValueMapped: 'All use cases mapped to business value',
+        complianceScopeMapped: 'Compliance requirements identified',
+        timestamp: new Date().toISOString()
+      }
+    };
   };
 
-  const renderCurrentStep = () => {
-    switch (activeStep) {
-      case 1:
-        return (
-          <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Basic Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Use Case Name *
-                </label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  placeholder="Healthcare Triage Assistant"
-                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Industry Domain *
-                </label>
-                <select 
-                  value={formData.industry}
-                  onChange={(e) => setFormData({...formData, industry: e.target.value})}
-                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Industry</option>
-                  <option value="Healthcare">Healthcare</option>
-                  <option value="Financial Services">Financial Services</option>
-                  <option value="Government">Government</option>
-                  <option value="Enterprise">Enterprise</option>
-                </select>
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Description *
-              </label>
-              <textarea
-                value={formData.description}
-                onChange={(e) => setFormData({...formData, description: e.target.value})}
-                placeholder="AI-powered medical triage system for emergency departments"
-                className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 h-24 resize-none"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                EU AI Act Risk Level *
-              </label>
-              <select 
-                value={formData.riskLevel}
-                onChange={(e) => setFormData({...formData, riskLevel: e.target.value})}
-                className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Select Risk Level</option>
-                <option value="Unacceptable Risk">Unacceptable Risk (Prohibited)</option>
-                <option value="High Risk">High Risk (Mandatory TEVV)</option>
-                <option value="Limited Risk">Limited Risk (Transparency)</option>
-                <option value="Minimal Risk">Minimal Risk (No Obligations)</option>
-              </select>
-            </div>
-          </div>
-        );
-      
-      case 2:
-        return (
-          <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">NIST RMF System Context</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Organizational Context *
-                </label>
-                <textarea
-                  value={formData.organizationalContext}
-                  onChange={(e) => setFormData({...formData, organizationalContext: e.target.value})}
-                  placeholder="How this AI system fits within organizational structure"
-                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 h-24 resize-none"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Technical Context *
-                </label>
-                <textarea
-                  value={formData.technicalContext}
-                  onChange={(e) => setFormData({...formData, technicalContext: e.target.value})}
-                  placeholder="Technical architecture and system dependencies"
-                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 h-24 resize-none"
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Business Context *
-                </label>
-                <textarea
-                  value={formData.businessContext}
-                  onChange={(e) => setFormData({...formData, businessContext: e.target.value})}
-                  placeholder="Business objectives and value proposition"
-                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 h-24 resize-none"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Regulatory Context *
-                </label>
-                <textarea
-                  value={formData.regulatoryContext}
-                  onChange={(e) => setFormData({...formData, regulatoryContext: e.target.value})}
-                  placeholder="Applicable regulations and compliance requirements"
-                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 h-24 resize-none"
-                />
-              </div>
-            </div>
-          </div>
-        );
-      
-      default:
-        return (
-          <div className="text-center py-12">
-            <div className="text-gray-500 dark:text-gray-400">
-              Step {activeStep} content will be implemented here
-            </div>
-          </div>
-        );
-    }
+  const handleComplete = () => {
+    setIsComplete(true);
+    console.log('Use Case Definition Output:', generateOutput());
   };
 
-  const industries = [
-    'Healthcare',
-    'Financial Services',
-    'Government',
-    'Enterprise Software',
-    'Retail & E-commerce',
-    'Manufacturing',
-    'Education',
-    'Technology'
-  ];
+  const canCreate = canPerformAction ? canPerformAction('Risk Mapping & Governance', 'C') : true;
+  const canEdit = canPerformAction ? canPerformAction('Risk Mapping & Governance', 'E') : true;
 
   return (
     <div className="space-y-8">
-      {/* Header */}
+      {/* Header with Flow Indicator */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Use Case Definition</h2>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">Define specific use cases and interaction scenarios</p>
+          <div className="flex items-center space-x-3 mb-2">
+            <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center text-white font-bold">
+              2
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Use Case Definition</h2>
+            <div className="flex items-center space-x-2 px-3 py-1 bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300 rounded-full text-sm font-medium">
+              <FileText className="w-4 h-4" />
+              <span>Input to Risk Classification</span>
+            </div>
+          </div>
+          <p className="text-gray-600 dark:text-gray-400">Define business scenarios and user stories from workflows</p>
         </div>
-        <button 
-          onClick={() => setShowCreateModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Define New Use Case</span>
-        </button>
+        
+        {/* Flow Navigation */}
+        <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+          <span className="text-blue-600 dark:text-blue-400">Application Setup</span>
+          <ArrowRight className="w-4 h-4" />
+          <span className="font-medium text-green-600 dark:text-green-400">Use Case Definition</span>
+          <ArrowRight className="w-4 h-4" />
+          <span>Risk Classification</span>
+          <ArrowRight className="w-4 h-4" />
+          <span>Governance Controls</span>
+          <ArrowRight className="w-4 h-4" />
+          <span>Governance Matrix</span>
+        </div>
       </div>
 
-      {/* Use Case Tabs */}
+      {/* Input from Previous Component */}
+      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-700">
+        <div className="flex items-center space-x-3 mb-4">
+          <ArrowLeft className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+          <h3 className="font-semibold text-blue-900 dark:text-blue-100">Input from Application Setup</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Application Profile</h4>
+            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+              <div>Name: {inputFromApplicationSetup.applicationProfile.name}</div>
+              <div>Type: {inputFromApplicationSetup.applicationProfile.type}</div>
+              <div>Domain: {inputFromApplicationSetup.applicationProfile.domain}</div>
+            </div>
+          </div>
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Context Baseline</h4>
+            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+              <div>Criticality: {inputFromApplicationSetup.contextBaseline.businessCriticality}</div>
+              <div>Compliance: {inputFromApplicationSetup.contextBaseline.complianceScope.length} frameworks</div>
+              <div>Status: {inputFromApplicationSetup.contextBaseline.integrationStatus}</div>
+            </div>
+          </div>
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Ready for Processing</h4>
+            <div className="text-sm text-green-600 dark:text-green-400 space-y-1">
+              <div>✓ Application registered</div>
+              <div>✓ Integration verified</div>
+              <div>✓ Context established</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Input/Output Flow Visualization */}
+      <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-200 dark:border-green-700">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Inputs */}
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
+            <h3 className="font-semibold text-green-900 dark:text-green-100 mb-3 flex items-center space-x-2">
+              <ArrowDown className="w-4 h-4" />
+              <span>Required Inputs</span>
+            </h3>
+            <ul className="space-y-2 text-sm text-green-800 dark:text-green-200">
+              <li>• Business scenarios from workflows</li>
+              <li>• User stories and intents</li>
+              <li>• Criticality ratings (H/M/L)</li>
+              <li>• Domain expert input</li>
+              <li>• Workflow documentation</li>
+            </ul>
+          </div>
+
+          {/* Processing */}
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm text-center">
+            <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl flex items-center justify-center mx-auto mb-3">
+              <FileText className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="font-semibold text-green-900 dark:text-green-100 mb-2">Use Case Mapping</h3>
+            <p className="text-sm text-green-800 dark:text-green-200">Creating scenario catalog</p>
+          </div>
+
+          {/* Outputs */}
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
+            <h3 className="font-semibold text-green-900 dark:text-green-100 mb-3 flex items-center space-x-2">
+              <ArrowRight className="w-4 h-4" />
+              <span>Generated Outputs</span>
+            </h3>
+            <ul className="space-y-2 text-sm text-green-800 dark:text-green-200">
+              <li>• Use Case Catalog created</li>
+              <li>• Business value mapped</li>
+              <li>• Compliance scope defined</li>
+              <li>• Evidence package ready</li>
+              <li>• Ready for risk analysis</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
         <div className="border-b border-gray-200 dark:border-gray-700">
           <div className="flex space-x-8 px-6">
-            {['existing', 'export'].map(tab => (
+            {['definition', 'scenarios'].map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`py-4 px-1 border-b-2 font-medium text-sm capitalize transition-colors ${
                   activeTab === tab
-                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                    ? 'border-green-500 text-green-600 dark:text-green-400'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
-                {tab === 'existing' ? 'Existing Use Cases' : 'Export Use Cases'}
+                {tab === 'definition' ? 'Use Case Definition' : 'Business Scenarios'}
               </button>
             ))}
           </div>
         </div>
 
         <div className="p-6">
-          {activeTab === 'existing' && (
+          {activeTab === 'definition' && (
             <div className="space-y-6">
-              {/* Filters */}
-              <div className="flex flex-wrap items-center gap-4">
-                <div className="flex-1 min-w-64">
-                  <div className="relative">
-                    <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                    <input
-                      type="text"
-                      placeholder="Search use cases..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
+              {/* Scenario Sources */}
+              <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-700">
+                <h3 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-4">Scenario Sources</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {[
+                    { source: 'Jira/ADO Tickets', icon: Briefcase, count: '24 tickets' },
+                    { source: 'Workflow Documentation', icon: BookOpen, count: '8 documents' },
+                    { source: 'Domain Expert Input', icon: Users, count: '3 experts' }
+                  ].map((source, index) => {
+                    const Icon = source.icon;
+                    return (
+                      <div key={index} className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg text-center">
+                        <Icon className="w-8 h-8 text-yellow-600 dark:text-yellow-400 mx-auto mb-2" />
+                        <div className="font-medium text-gray-900 dark:text-white">{source.source}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">{source.count}</div>
+                      </div>
+                    );
+                  })}
                 </div>
-                
-                <select
-                  value={filterIndustry}
-                  onChange={(e) => setFilterIndustry(e.target.value)}
-                  className="px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="all">All Industries</option>
-                  <option value="Healthcare">Healthcare</option>
-                  <option value="Financial Services">Financial Services</option>
-                  <option value="Enterprise Software">Enterprise Software</option>
-                  <option value="Government">Government</option>
-                </select>
-
-                <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2">
-                  <Filter className="w-4 h-4" />
-                  <span>More Filters</span>
-                </button>
               </div>
 
-              {/* Use Cases Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {filteredUseCases.map((useCase) => (
-                  <div key={useCase.id} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow">
+              {/* Add New Scenario */}
+              {canCreate && (
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Business Scenarios</h3>
+                  <button 
+                    onClick={() => setShowAddScenarioModal(true)}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Add Scenario</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Existing Scenarios */}
+              <div className="space-y-4">
+                {businessScenarios.map((scenario) => (
+                  <div key={scenario.id} className="border border-gray-200 dark:border-gray-600 rounded-lg p-6">
                     <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                          <FileText className="w-5 h-5 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-900 dark:text-white">{useCase.name}</h3>
-                          <div className="flex items-center space-x-2 mt-1">
-                            <div className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(useCase.status)}`}>
-                              {getStatusIcon(useCase.status)}
-                              <span className="capitalize">{useCase.status.replace('_', ' ')}</span>
-                            </div>
-                            <div className={`px-2 py-1 rounded-full text-xs font-medium ${getRiskLevelColor(useCase.riskLevel)}`}>
-                              {useCase.riskLevel}
-                            </div>
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-3 mb-2">
+                          <h4 className="font-semibold text-gray-900 dark:text-white">{scenario.name}</h4>
+                          <div className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            scenario.criticality === 'high' ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400' :
+                            scenario.criticality === 'medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' :
+                            'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                          }`}>
+                            {scenario.criticality.toUpperCase()} IMPACT
                           </div>
                         </div>
+                        
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{scenario.description}</p>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                          <div>
+                            <span className="text-xs text-gray-500 dark:text-gray-500">Source</span>
+                            <div className="font-medium text-gray-900 dark:text-white">{scenario.source}</div>
+                          </div>
+                          <div>
+                            <span className="text-xs text-gray-500 dark:text-gray-500">Business Value</span>
+                            <div className="font-medium text-gray-900 dark:text-white">{scenario.businessValue}</div>
+                          </div>
+                        </div>
+
+                        {/* User Stories */}
+                        <div className="mb-4">
+                          <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-2">User Stories</h5>
+                          <div className="space-y-1">
+                            {scenario.userStories.map((story, index) => (
+                              <div key={index} className="text-sm text-gray-600 dark:text-gray-400 flex items-start space-x-2">
+                                <span className="text-green-500 mt-1">•</span>
+                                <span>{story}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Compliance Impact */}
+                        <div className="flex flex-wrap gap-2">
+                          {scenario.complianceImpact.map((framework, index) => (
+                            <span key={index} className="px-2 py-1 bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300 text-xs rounded">
+                              {framework}
+                            </span>
+                          ))}
+                        </div>
                       </div>
+                      
                       <div className="flex items-center space-x-2">
-                        <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <button className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                           <Eye className="w-4 h-4" />
                         </button>
-                        <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                          <Edit className="w-4 h-4" />
-                        </button>
-                        <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                          <Download className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{useCase.description}</p>
-
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                      <div>
-                        <span className="text-xs text-gray-500 dark:text-gray-500">Industry</span>
-                        <div className="font-medium text-gray-900 dark:text-white">{useCase.industry}</div>
-                      </div>
-                      <div>
-                        <span className="text-xs text-gray-500 dark:text-gray-500">Created By</span>
-                        <div className="font-medium text-gray-900 dark:text-white">{useCase.createdBy}</div>
-                      </div>
-                    </div>
-
-                    <div className="mb-4">
-                      <span className="text-xs text-gray-500 dark:text-gray-500">Business Impact</span>
-                      <div className="text-sm text-gray-900 dark:text-white">{useCase.businessImpact}</div>
-                    </div>
-
-                    <div className="mb-4">
-                      <span className="text-xs text-gray-500 dark:text-gray-500">Stakeholders</span>
-                      <div className="flex flex-wrap gap-1 mt-1">
-                        {useCase.stakeholders.slice(0, 3).map((stakeholder, index) => (
-                          <span key={index} className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 text-xs rounded">
-                            {stakeholder}
-                          </span>
-                        ))}
-                        {useCase.stakeholders.length > 3 && (
-                          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded">
-                            +{useCase.stakeholders.length - 3} more
-                          </span>
+                        {canEdit && (
+                          <button className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                            <Edit className="w-4 h-4" />
+                          </button>
                         )}
                       </div>
-                    </div>
-
-                    <div className="flex flex-wrap gap-1">
-                      {useCase.tags.map((tag, index) => (
-                        <span key={index} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-500 pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
-                      <span>Created: {new Date(useCase.createdAt).toLocaleDateString()}</span>
-                      <span>Updated: {new Date(useCase.lastUpdated).toLocaleDateString()}</span>
                     </div>
                   </div>
                 ))}
@@ -822,125 +394,220 @@ const UseCaseDefinition: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'export' && (
+          {activeTab === 'scenarios' && (
             <div className="space-y-6">
               <div className="text-center py-12">
-                <Download className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Export Use Cases</h3>
+                <List className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Scenario Management</h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  Export use case definitions for compliance documentation and audit purposes
+                  Import scenarios from Jira, ADO, or workflow documentation
                 </p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
                   <button className="px-6 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex flex-col items-center space-y-2">
-                    <FileText className="w-6 h-6" />
-                    <span className="font-medium">PDF Report</span>
-                    <span className="text-xs opacity-80">Comprehensive documentation</span>
+                    <Briefcase className="w-6 h-6" />
+                    <span className="font-medium">Import from Jira</span>
+                    <span className="text-xs opacity-80">User stories & epics</span>
                   </button>
                   
                   <button className="px-6 py-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex flex-col items-center space-y-2">
-                    <Database className="w-6 h-6" />
-                    <span className="font-medium">Excel Export</span>
-                    <span className="text-xs opacity-80">Structured data format</span>
+                    <BookOpen className="w-6 h-6" />
+                    <span className="font-medium">Upload Workflows</span>
+                    <span className="text-xs opacity-80">Process documentation</span>
                   </button>
                   
                   <button className="px-6 py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex flex-col items-center space-y-2">
-                    <Code className="w-6 h-6" />
-                    <span className="font-medium">JSON Export</span>
-                    <span className="text-xs opacity-80">API integration format</span>
+                    <Users className="w-6 h-6" />
+                    <span className="font-medium">Expert Workshop</span>
+                    <span className="text-xs opacity-80">Collaborative definition</span>
                   </button>
                 </div>
               </div>
             </div>
           )}
         </div>
+
+        {/* Action Buttons */}
+        <div className="p-6 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              {!canCreate && "View-only mode - Contact administrator for editing access"}
+            </div>
+            
+            <div className="flex items-center space-x-3">
+              {canCreate && (
+                <>
+                  <button className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2">
+                    <Save className="w-4 h-4" />
+                    <span>Save Draft</span>
+                  </button>
+                  <button 
+                    onClick={handleComplete}
+                    disabled={businessScenarios.length === 0}
+                    className="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg flex items-center space-x-2"
+                  >
+                    <span>Complete & Continue</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Create Use Case Modal */}
-      {showCreateModal && (
+      {/* Output Preview */}
+      {isComplete && (
+        <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-6 rounded-xl border border-emerald-200 dark:border-emerald-700">
+          <div className="flex items-center space-x-3 mb-4">
+            <CheckCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+            <h3 className="text-lg font-semibold text-emerald-900 dark:text-emerald-100">Use Case Definition Complete</h3>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Use Case Catalog</h4>
+              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <div>Scenarios: {businessScenarios.length}</div>
+                <div>User Stories: {businessScenarios.reduce((sum, s) => sum + s.userStories.length, 0)}</div>
+                <div>High Priority: {businessScenarios.filter(s => s.criticality === 'high').length}</div>
+              </div>
+            </div>
+            
+            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Business Value Mapping</h4>
+              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <div>Value Mapped: 100%</div>
+                <div>Compliance Scope: Defined</div>
+                <div>Criticality: Assessed</div>
+              </div>
+            </div>
+            
+            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Evidence Package</h4>
+              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <div>Definitions: Saved</div>
+                <div>Metadata: Complete</div>
+                <div>Audit Trail: Generated</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2 text-sm text-emerald-800 dark:text-emerald-200">
+              <Layers className="w-4 h-4" />
+              <span>Ready for Risk Classification (Component 3)</span>
+            </div>
+            <button className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors flex items-center space-x-2">
+              <span>Proceed to Risk Analysis</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Add Scenario Modal */}
+      {showAddScenarioModal && canCreate && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Define New Use Case</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Add Business Scenario</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                Create comprehensive use case definition with NIST RMF and EU TEVV compliance
+                Define a new business scenario for {inputFromApplicationSetup.applicationProfile.name}
               </p>
             </div>
             
-            {/* Progress Steps */}
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                {steps.map((step, index) => {
-                  const Icon = step.icon;
-                  const isActive = activeStep === step.id;
-                  const isCompleted = activeStep > step.id;
-                  
-                  return (
-                    <div key={step.id} className="flex items-center">
-                      <button
-                        onClick={() => setActiveStep(step.id)}
-                        className={`flex flex-col items-center space-y-2 p-3 rounded-xl transition-all ${
-                          isActive 
-                            ? `bg-gradient-to-r ${getStepColor(step.id)} text-white shadow-lg transform scale-105`
-                            : isCompleted
-                            ? 'bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
-                        }`}
-                      >
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                          isActive ? 'bg-white/20' : ''
-                        }`}>
-                          {isCompleted ? <CheckCircle className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
-                        </div>
-                        <div className="text-center">
-                          <div className="font-semibold text-xs">{step.title}</div>
-                        </div>
-                      </button>
-                      {index < steps.length - 1 && (
-                        <div className={`w-12 h-1 mx-2 rounded-full ${
-                          activeStep > step.id ? 'bg-green-500' : 'bg-gray-200 dark:bg-gray-700'
-                        }`} />
-                      )}
-                    </div>
-                  );
-                })}
+            <div className="p-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Scenario Name *
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Emergency Patient Assessment"
+                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Criticality Rating *
+                  </label>
+                  <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500">
+                    <option value="">Select Criticality</option>
+                    <option value="high">High - Mission Critical</option>
+                    <option value="medium">Medium - Business Important</option>
+                    <option value="low">Low - Operational Support</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            
-            {/* Step Content */}
-            <div className="p-6 min-h-96">
-              {renderCurrentStep()}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Scenario Description *
+                </label>
+                <textarea
+                  placeholder="Describe the business scenario and expected AI behavior..."
+                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-24 resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  User Stories / Intents
+                </label>
+                <textarea
+                  placeholder="As a [user], I want to [action] so that [benefit]..."
+                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-20 resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Expected Business Value
+                </label>
+                <input
+                  type="text"
+                  placeholder="Reduce diagnostic errors by 40%, improve patient flow"
+                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500"
+                />
+              </div>
             </div>
 
-            {/* Navigation */}
             <div className="p-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
-              <button
-                onClick={() => setActiveStep(Math.max(1, activeStep - 1))}
-                disabled={activeStep === 1}
-                className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Previous
-              </button>
-              
               <div className="text-sm text-gray-600 dark:text-gray-400">
-                Step {activeStep} of {steps.length}
+                Scenario will be added to use case catalog
               </div>
-              
-              {activeStep < steps.length ? (
-                <button
-                  onClick={() => setActiveStep(Math.min(steps.length, activeStep + 1))}
-                  className={`px-6 py-3 bg-gradient-to-r ${getStepColor(activeStep)} text-white rounded-lg hover:opacity-90 transition-all shadow-lg`}
-                >
-                  Next Step
-                </button>
-              ) : (
+              <div className="flex items-center space-x-3">
                 <button 
-                  onClick={() => setShowCreateModal(false)}
-                  className="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:opacity-90 transition-all shadow-lg"
+                  onClick={() => setShowAddScenarioModal(false)}
+                  className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
                 >
-                  Submit for Approval
+                  Cancel
                 </button>
-              )}
+                <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                  Add Scenario
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Role-Based Access Info */}
+      {currentUser && (
+        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
+          <div className="flex items-center space-x-3">
+            <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <div>
+              <div className="font-medium text-blue-900 dark:text-blue-100">
+                {currentUser.role} Access Level
+              </div>
+              <div className="text-sm text-blue-800 dark:text-blue-200">
+                Permissions: {getUserPermissions ? getUserPermissions('Risk Mapping & Governance').join('•') : 'Loading...'}
+                {!canCreate && " (View-only access)"}
+              </div>
             </div>
           </div>
         </div>

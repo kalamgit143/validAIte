@@ -26,654 +26,549 @@ import {
   Database,
   Zap,
   Crown,
-  Gavel
+  Gavel,
+  ArrowRight,
+  ArrowDown,
+  ArrowLeft,
+  Layers,
+  Save,
+  Link2,
+  Filter
 } from 'lucide-react';
 
-const GovernanceControls: React.FC = () => {
+interface GovernanceControlsProps {
+  currentUser?: any;
+  canPerformAction?: (module: string, action: string) => boolean;
+  getUserPermissions?: (module: string) => string[];
+}
+
+const GovernanceControls: React.FC<GovernanceControlsProps> = ({ 
+  currentUser, 
+  canPerformAction, 
+  getUserPermissions 
+}) => {
   const [activeTab, setActiveTab] = useState('controls');
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [selectedFramework, setSelectedFramework] = useState('nist_rmf');
+  const [isComplete, setIsComplete] = useState(false);
 
-  const governanceControls = [
+  // Mock input from Risk Classification (Component 3)
+  const inputFromRiskClassification = {
+    riskRegister: [
+      {
+        useCaseId: 'scenario_001',
+        useCaseName: 'Emergency Patient Triage',
+        risks: [
+          {
+            id: 'scenario_001_hallucination',
+            category: 'hallucination',
+            severity: 'high',
+            likelihood: 'medium',
+            impact: 'catastrophic',
+            description: 'False medical information could lead to misdiagnosis'
+          },
+          {
+            id: 'scenario_001_bias',
+            category: 'bias',
+            severity: 'high',
+            likelihood: 'medium',
+            impact: 'major',
+            description: 'Biased triage decisions affecting patient care equity'
+          }
+        ],
+        overallRiskScore: 8.2,
+        riskLevel: 'high'
+      }
+    ],
+    riskSeverityMatrix: {
+      high: 1,
+      medium: 1,
+      low: 0
+    }
+  };
+
+  const controlLibrary = [
     {
       id: 'ctrl_001',
-      name: 'AI Governance Structure',
-      description: 'Establish organizational governance and oversight for AI systems',
-      framework: 'NIST RMF',
-      controlId: 'GOVERN-1.1',
-      category: 'governance',
-      status: 'implemented',
-      effectiveness: 94,
-      owner: 'CIO',
-      implementedAt: '2024-01-10T10:00:00Z',
-      lastReview: '2024-01-15T14:00:00Z',
-      nextReview: '2024-04-15T14:00:00Z',
-      evidence: [
-        'AI Ethics Committee Charter',
-        'AI Governance Policy v2.1',
-        'Stakeholder Assignment Matrix',
-        'Quarterly Review Reports'
-      ],
-      applications: ['All Applications'],
-      riskMitigation: ['Governance Risk', 'Accountability Risk'],
-      automationLevel: 'Partially Automated',
-      complianceMapping: ['NIST-GOVERN-1.1', 'EU-AIA-Art16', 'ISO42001-5.1']
+      name: 'Canonical KB Tagging',
+      description: 'Ensure knowledge base content is properly tagged and validated',
+      type: 'preventive',
+      category: 'grounding',
+      applicableRisks: ['hallucination', 'grounding_gap', 'retrieval_error'],
+      implementation: 'automated',
+      effectiveness: 92
     },
     {
       id: 'ctrl_002',
-      name: 'Bias Detection & Mitigation',
-      description: 'Systematic bias detection and mitigation across AI systems',
-      framework: 'EU AI Act',
-      controlId: 'MEASURE-2.3',
-      category: 'fairness',
-      status: 'implemented',
-      effectiveness: 89,
-      owner: 'AI Ethics Committee',
-      implementedAt: '2024-01-08T16:00:00Z',
-      lastReview: '2024-01-14T11:00:00Z',
-      nextReview: '2024-02-14T11:00:00Z',
-      evidence: [
-        'Bias Testing Framework',
-        'Fairness Metrics Dashboard',
-        'Demographic Analysis Reports',
-        'Mitigation Action Plans'
-      ],
-      applications: ['Healthcare Triage Assistant', 'Financial Lending Copilot'],
-      riskMitigation: ['Bias Risk', 'Fairness Risk', 'Discrimination Risk'],
-      automationLevel: 'Fully Automated',
-      complianceMapping: ['EU-AIA-Art10', 'NIST-MEASURE-2.3', 'ECOA-Reg-B']
+      name: 'Grounding Threshold Control',
+      description: 'Set minimum confidence thresholds for knowledge retrieval',
+      type: 'preventive',
+      category: 'quality',
+      applicableRisks: ['hallucination', 'grounding_gap'],
+      implementation: 'automated',
+      effectiveness: 88
     },
     {
       id: 'ctrl_003',
-      name: 'Human Oversight Mechanisms',
-      description: 'Ensure meaningful human control and oversight of AI decisions',
-      framework: 'EU AI Act',
-      controlId: 'MANAGE-1.2',
-      category: 'oversight',
-      status: 'in_progress',
-      effectiveness: 76,
-      owner: 'QA Lead',
-      implementedAt: '2024-01-12T09:00:00Z',
-      lastReview: '2024-01-13T15:00:00Z',
-      nextReview: '2024-02-13T15:00:00Z',
-      evidence: [
-        'Human-in-the-Loop Procedures',
-        'Override Mechanism Documentation',
-        'Escalation Protocols',
-        'Training Materials'
-      ],
-      applications: ['Healthcare Triage Assistant', 'Financial Lending Copilot', 'Government Citizen Services'],
-      riskMitigation: ['Automation Risk', 'Human Agency Risk'],
-      automationLevel: 'Manual Process',
-      complianceMapping: ['EU-AIA-Art14', 'NIST-MANAGE-1.2', 'IEEE-2857']
+      name: 'Freshness Monitoring',
+      description: 'Monitor and update knowledge base for currency',
+      type: 'detective',
+      category: 'data_quality',
+      applicableRisks: ['drift', 'grounding_gap'],
+      implementation: 'automated',
+      effectiveness: 85
     },
     {
       id: 'ctrl_004',
-      name: 'Data Quality Assurance',
-      description: 'Ensure training and operational data quality and integrity',
-      framework: 'NIST RMF',
-      controlId: 'MAP-1.3',
-      category: 'data_quality',
-      status: 'implemented',
-      effectiveness: 92,
-      owner: 'Data Engineering Team',
-      implementedAt: '2024-01-05T12:00:00Z',
-      lastReview: '2024-01-12T10:00:00Z',
-      nextReview: '2024-03-12T10:00:00Z',
-      evidence: [
-        'Data Quality Monitoring Dashboard',
-        'Data Validation Pipelines',
-        'Quality Metrics Reports',
-        'Data Lineage Documentation'
+      name: 'PII Masking',
+      description: 'Automatically detect and mask personally identifiable information',
+      type: 'preventive',
+      category: 'privacy',
+      applicableRisks: ['privacy'],
+      implementation: 'automated',
+      effectiveness: 96
+    },
+    {
+      id: 'ctrl_005',
+      name: 'HITL Fallback',
+      description: 'Human-in-the-loop escalation for uncertain cases',
+      type: 'corrective',
+      category: 'oversight',
+      applicableRisks: ['hallucination', 'bias', 'misrouting'],
+      implementation: 'manual',
+      effectiveness: 94
+    },
+    {
+      id: 'ctrl_006',
+      name: 'Red-Team Testing',
+      description: 'Continuous adversarial testing and security validation',
+      type: 'detective',
+      category: 'security',
+      applicableRisks: ['security', 'bias'],
+      implementation: 'automated',
+      effectiveness: 89
+    }
+  ];
+
+  const riskControlMappings = [
+    {
+      riskId: 'scenario_001_hallucination',
+      riskName: 'Medical Hallucination Risk',
+      assignedControls: [
+        { controlId: 'ctrl_001', controlName: 'Canonical KB Tagging', effectiveness: 92 },
+        { controlId: 'ctrl_002', controlName: 'Grounding Threshold Control', effectiveness: 88 },
+        { controlId: 'ctrl_005', controlName: 'HITL Fallback', effectiveness: 94 }
       ],
-      applications: ['All Applications'],
-      riskMitigation: ['Data Quality Risk', 'Model Performance Risk'],
-      automationLevel: 'Fully Automated',
-      complianceMapping: ['NIST-MAP-1.3', 'GDPR-Art5', 'ISO27001-A.12']
+      overallMitigation: 91,
+      residualRisk: 'medium'
+    },
+    {
+      riskId: 'scenario_001_bias',
+      riskName: 'Triage Bias Risk',
+      assignedControls: [
+        { controlId: 'ctrl_005', controlName: 'HITL Fallback', effectiveness: 94 },
+        { controlId: 'ctrl_006', controlName: 'Red-Team Testing', effectiveness: 89 }
+      ],
+      overallMitigation: 87,
+      residualRisk: 'low'
     }
   ];
 
-  const controlCategories = [
-    {
-      id: 'governance',
-      name: 'Governance & Oversight',
-      description: 'Organizational governance structures and oversight mechanisms',
-      icon: Crown,
-      color: 'blue',
-      count: 1
-    },
-    {
-      id: 'fairness',
-      name: 'Fairness & Bias',
-      description: 'Bias detection, fairness assessment, and mitigation controls',
-      icon: Scale,
-      color: 'purple',
-      count: 1
-    },
-    {
-      id: 'oversight',
-      name: 'Human Oversight',
-      description: 'Human-in-the-loop processes and meaningful human control',
-      icon: Users,
-      color: 'green',
-      count: 1
-    },
-    {
-      id: 'data_quality',
-      name: 'Data Quality',
-      description: 'Data governance, quality assurance, and integrity controls',
-      icon: Database,
-      color: 'yellow',
-      count: 1
-    },
-    {
-      id: 'security',
-      name: 'Security & Privacy',
-      description: 'Cybersecurity controls and privacy protection measures',
-      icon: Lock,
-      color: 'red',
-      count: 0
-    },
-    {
-      id: 'transparency',
-      name: 'Transparency',
-      description: 'Explainability, interpretability, and transparency controls',
-      icon: Eye,
-      color: 'indigo',
-      count: 0
-    }
-  ];
+  // Generated output for next component
+  const generateOutput = () => {
+    return {
+      controlFramework: riskControlMappings.map(mapping => ({
+        riskId: mapping.riskId,
+        riskName: mapping.riskName,
+        controls: mapping.assignedControls,
+        mitigationLevel: mapping.overallMitigation,
+        residualRisk: mapping.residualRisk
+      })),
+      controlTypes: {
+        preventive: controlLibrary.filter(c => c.type === 'preventive').length,
+        detective: controlLibrary.filter(c => c.type === 'detective').length,
+        corrective: controlLibrary.filter(c => c.type === 'corrective').length
+      },
+      evidence: {
+        controlAssignments: `${riskControlMappings.length} risk-control mappings`,
+        avgMitigation: Math.round(riskControlMappings.reduce((sum, m) => sum + m.overallMitigation, 0) / riskControlMappings.length),
+        auditReady: true,
+        timestamp: new Date().toISOString()
+      }
+    };
+  };
 
-  const frameworks = [
-    { id: 'nist_rmf', name: 'NIST AI RMF', description: 'NIST AI Risk Management Framework' },
-    { id: 'eu_ai_act', name: 'EU AI Act', description: 'European Union AI Act Requirements' },
-    { id: 'iso_42001', name: 'ISO/IEC 42001', description: 'AI Management System Standard' },
-    { id: 'custom', name: 'Custom Framework', description: 'Organization-specific controls' }
-  ];
+  const handleComplete = () => {
+    setIsComplete(true);
+    console.log('Governance Controls Output:', generateOutput());
+  };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'implemented': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
-      case 'in_progress': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'planned': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
-      case 'not_implemented': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
+  const canCreate = canPerformAction ? canPerformAction('Risk Mapping & Governance', 'C') : true;
+  const canEdit = canPerformAction ? canPerformAction('Risk Mapping & Governance', 'E') : true;
+
+  const getControlTypeColor = (type: string) => {
+    switch (type) {
+      case 'preventive': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
+      case 'detective': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
+      case 'corrective': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
       default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400';
     }
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'implemented': return <CheckCircle className="w-4 h-4" />;
-      case 'in_progress': return <Clock className="w-4 h-4" />;
-      case 'planned': return <Clock className="w-4 h-4" />;
-      case 'not_implemented': return <XCircle className="w-4 h-4" />;
-      default: return <AlertTriangle className="w-4 h-4" />;
-    }
-  };
-
-  const getCategoryColor = (category: string) => {
-    const cat = controlCategories.find(c => c.id === category);
-    switch (cat?.color) {
-      case 'blue': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'purple': return 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400';
-      case 'green': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
-      case 'yellow': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
-      case 'red': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
-      case 'indigo': return 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/20 dark:text-indigo-400';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400';
-    }
+  const getEffectivenessColor = (effectiveness: number) => {
+    if (effectiveness >= 90) return 'text-green-600 dark:text-green-400';
+    if (effectiveness >= 80) return 'text-blue-600 dark:text-blue-400';
+    if (effectiveness >= 70) return 'text-yellow-600 dark:text-yellow-400';
+    return 'text-red-600 dark:text-red-400';
   };
 
   return (
     <div className="space-y-8">
-      {/* Header */}
+      {/* Header with Flow Indicator */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Governance Controls</h2>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">Establish controls and mitigation strategies</p>
-        </div>
-        <div className="flex items-center space-x-3">
-          <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2">
-            <Download className="w-4 h-4" />
-            <span>Export Controls</span>
-          </button>
-          <button 
-            onClick={() => setShowCreateModal(true)}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Create Control</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Control Categories Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {controlCategories.map((category) => {
-          const Icon = category.icon;
-          return (
-            <div key={category.id} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:shadow-lg transition-all">
-              <div className="flex items-center justify-between mb-4">
-                <div className={`w-12 h-12 bg-${category.color}-100 dark:bg-${category.color}-900/20 rounded-lg flex items-center justify-center`}>
-                  <Icon className={`w-6 h-6 text-${category.color}-600 dark:text-${category.color}-400`} />
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{category.count}</div>
-                  <div className="text-xs text-gray-600 dark:text-gray-400">Controls</div>
-                </div>
-              </div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{category.name}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{category.description}</p>
+          <div className="flex items-center space-x-3 mb-2">
+            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
+              4
             </div>
-          );
-        })}
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Governance Controls</h2>
+            <div className="flex items-center space-x-2 px-3 py-1 bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300 rounded-full text-sm font-medium">
+              <Shield className="w-4 h-4" />
+              <span>Input to Governance Matrix</span>
+            </div>
+          </div>
+          <p className="text-gray-600 dark:text-gray-400">Assign controls to mitigate identified risks</p>
+        </div>
+        
+        {/* Flow Navigation */}
+        <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+          <span className="text-blue-600 dark:text-blue-400">Application Setup</span>
+          <ArrowRight className="w-4 h-4" />
+          <span className="text-green-600 dark:text-green-400">Use Case Definition</span>
+          <ArrowRight className="w-4 h-4" />
+          <span className="text-red-600 dark:text-red-400">Risk Classification</span>
+          <ArrowRight className="w-4 h-4" />
+          <span className="font-medium text-purple-600 dark:text-purple-400">Governance Controls</span>
+          <ArrowRight className="w-4 h-4" />
+          <span>Governance Matrix</span>
+        </div>
       </div>
 
-      {/* Navigation Tabs */}
+      {/* Input from Previous Component */}
+      <div className="bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 p-6 rounded-xl border border-red-200 dark:border-red-700">
+        <div className="flex items-center space-x-3 mb-4">
+          <ArrowLeft className="w-5 h-5 text-red-600 dark:text-red-400" />
+          <h3 className="font-semibold text-red-900 dark:text-red-100">Input from Risk Classification</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Risk Register</h4>
+            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+              <div>Use Cases: {inputFromRiskClassification.riskRegister.length}</div>
+              <div>Total Risks: {inputFromRiskClassification.riskRegister.reduce((sum, r) => sum + r.risks.length, 0)}</div>
+              <div>High Severity: {inputFromRiskClassification.riskSeverityMatrix.high}</div>
+            </div>
+          </div>
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Risk Severity Matrix</h4>
+            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+              <div>High: {inputFromRiskClassification.riskSeverityMatrix.high}</div>
+              <div>Medium: {inputFromRiskClassification.riskSeverityMatrix.medium}</div>
+              <div>Low: {inputFromRiskClassification.riskSeverityMatrix.low}</div>
+            </div>
+          </div>
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Ready for Control Mapping</h4>
+            <div className="text-sm text-green-600 dark:text-green-400 space-y-1">
+              <div>✓ Risks identified</div>
+              <div>✓ Severity assessed</div>
+              <div>✓ Ready for mitigation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Input/Output Flow Visualization */}
+      <div className="bg-gradient-to-r from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 p-6 rounded-xl border border-purple-200 dark:border-purple-700">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Inputs */}
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
+            <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-3 flex items-center space-x-2">
+              <ArrowDown className="w-4 h-4" />
+              <span>Required Inputs</span>
+            </h3>
+            <ul className="space-y-2 text-sm text-purple-800 dark:text-purple-200">
+              <li>• Risks (from classification)</li>
+              <li>• Control library catalog</li>
+              <li>• Human mapping decisions</li>
+              <li>• Mitigation strategies</li>
+              <li>• Implementation preferences</li>
+            </ul>
+          </div>
+
+          {/* Processing */}
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm text-center">
+            <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-violet-600 rounded-xl flex items-center justify-center mx-auto mb-3">
+              <Shield className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">Control Mapping</h3>
+            <p className="text-sm text-purple-800 dark:text-purple-200">Assigning controls to risks</p>
+          </div>
+
+          {/* Outputs */}
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
+            <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-3 flex items-center space-x-2">
+              <ArrowRight className="w-4 h-4" />
+              <span>Generated Outputs</span>
+            </h3>
+            <ul className="space-y-2 text-sm text-purple-800 dark:text-purple-200">
+              <li>• Control Framework (Risk → Control)</li>
+              <li>• Control types categorized</li>
+              <li>• Mitigation effectiveness scores</li>
+              <li>• Evidence: Control assignments</li>
+              <li>• Ready for matrix generation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
         <div className="border-b border-gray-200 dark:border-gray-700">
           <div className="flex space-x-8 px-6">
-            {[
-              { id: 'controls', label: 'Active Controls', icon: Shield },
-              { id: 'frameworks', label: 'Frameworks', icon: FileText }
-            ].map(tab => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors flex items-center space-x-2 ${
-                    activeTab === tab.id
-                      ? 'border-green-500 text-green-600 dark:text-green-400'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
+            {['controls', 'mappings'].map(tab => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`py-4 px-1 border-b-2 font-medium text-sm capitalize transition-colors ${
+                  activeTab === tab
+                    ? 'border-purple-500 text-purple-600 dark:text-purple-400'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                {tab === 'controls' ? 'Control Library' : 'Risk-Control Mappings'}
+              </button>
+            ))}
           </div>
         </div>
 
         <div className="p-6">
           {activeTab === 'controls' ? (
             <div className="space-y-6">
-              {governanceControls.map((control) => (
-                <div key={control.id} className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-700 rounded-xl p-6">
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-3">
-                        <h3 className="text-xl font-bold text-green-900 dark:text-green-100">{control.name}</h3>
-                        <div className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(control.status)}`}>
-                          {getStatusIcon(control.status)}
-                          <span className="capitalize">{control.status.replace('_', ' ')}</span>
+              {/* Control Categories */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                  { type: 'preventive', count: controlLibrary.filter(c => c.type === 'preventive').length, color: 'green' },
+                  { type: 'detective', count: controlLibrary.filter(c => c.type === 'detective').length, color: 'blue' },
+                  { type: 'corrective', count: controlLibrary.filter(c => c.type === 'corrective').length, color: 'yellow' }
+                ].map((category) => (
+                  <div key={category.type} className="text-center p-6 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                    <div className={`text-3xl font-bold text-${category.color}-600 dark:text-${category.color}-400 mb-2`}>
+                      {category.count}
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 capitalize">{category.type} Controls</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Control Library */}
+              <div className="space-y-4">
+                {controlLibrary.map((control) => (
+                  <div key={control.id} className="border border-gray-200 dark:border-gray-600 rounded-lg p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-3 mb-2">
+                          <h4 className="font-semibold text-gray-900 dark:text-white">{control.name}</h4>
+                          <div className={`px-2 py-1 rounded-full text-xs font-medium ${getControlTypeColor(control.type)}`}>
+                            {control.type}
+                          </div>
+                          <div className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded">
+                            {control.implementation}
+                          </div>
                         </div>
-                        <div className="px-3 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 text-sm rounded font-mono">
-                          {control.controlId}
+                        
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{control.description}</p>
+                        
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="text-sm text-gray-600 dark:text-gray-400">Effectiveness</span>
+                          <span className={`font-bold ${getEffectivenessColor(control.effectiveness)}`}>
+                            {control.effectiveness}%
+                          </span>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {control.applicableRisks.map((risk, index) => (
+                            <span key={index} className="px-2 py-1 bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300 text-xs rounded">
+                              {risk.replace('_', ' ')}
+                            </span>
+                          ))}
                         </div>
                       </div>
                       
-                      <p className="text-green-800 dark:text-green-200 mb-4">{control.description}</p>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                        <div>
-                          <span className="text-sm text-green-600 dark:text-green-400 font-medium">Framework</span>
-                          <div className="text-green-900 dark:text-green-100">{control.framework}</div>
+                      <div className="flex items-center space-x-2">
+                        {canCreate && (
+                          <button className="px-3 py-1 text-sm bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300 rounded hover:bg-purple-200 dark:hover:bg-purple-900/40 flex items-center space-x-1">
+                            <Link2 className="w-3 h-3" />
+                            <span>Assign</span>
+                          </button>
+                        )}
+                        <button className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                          <Eye className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {/* Risk-Control Mappings */}
+              {riskControlMappings.map((mapping) => (
+                <div key={mapping.riskId} className="bg-gradient-to-r from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 border border-purple-200 dark:border-purple-700 rounded-xl p-6">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-3">
+                        <h3 className="text-xl font-bold text-purple-900 dark:text-purple-100">{mapping.riskName}</h3>
+                        <div className={`px-3 py-1 rounded-full text-sm font-medium ${
+                          mapping.residualRisk === 'high' ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400' :
+                          mapping.residualRisk === 'medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' :
+                          'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                        }`}>
+                          {mapping.residualRisk.toUpperCase()} RESIDUAL RISK
                         </div>
-                        <div>
-                          <span className="text-sm text-green-600 dark:text-green-400 font-medium">Owner</span>
-                          <div className="text-green-900 dark:text-green-100">{control.owner}</div>
-                        </div>
-                        <div>
-                          <span className="text-sm text-green-600 dark:text-green-400 font-medium">Effectiveness</span>
-                          <div className="text-green-900 dark:text-green-100">{control.effectiveness}%</div>
-                        </div>
-                        <div>
-                          <span className="text-sm text-green-600 dark:text-green-400 font-medium">Next Review</span>
-                          <div className="text-green-900 dark:text-green-100">{new Date(control.nextReview).toLocaleDateString()}</div>
+                        <div className="px-3 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 text-sm rounded font-mono">
+                          {mapping.riskId}
                         </div>
                       </div>
                     </div>
                     
-                    <div className="flex items-center space-x-2">
-                      <button className="p-2 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/40 rounded-lg transition-colors">
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button className="p-2 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/40 rounded-lg transition-colors">
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button className="p-2 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/40 rounded-lg transition-colors">
-                        <Settings className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Control Details */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Left Column */}
-                    <div className="space-y-4">
-                      {/* Evidence */}
-                      <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-                        <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
-                          <FileText className="w-4 h-4 text-blue-600" />
-                          <span>Evidence & Documentation</span>
-                        </h4>
-                        <div className="space-y-2">
-                          {control.evidence.map((evidence, index) => (
-                            <div key={index} className="flex items-center space-x-2">
-                              <CheckCircle className="w-4 h-4 text-green-500" />
-                              <span className="text-sm text-gray-700 dark:text-gray-300">{evidence}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Applications */}
-                      <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-                        <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
-                          <Zap className="w-4 h-4 text-purple-600" />
-                          <span>Applicable Applications</span>
-                        </h4>
-                        <div className="flex flex-wrap gap-2">
-                          {control.applications.map((app, index) => (
-                            <span key={index} className="px-2 py-1 bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300 text-xs rounded">
-                              {app}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Right Column */}
-                    <div className="space-y-4">
-                      {/* Risk Mitigation */}
-                      <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-                        <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
-                          <Target className="w-4 h-4 text-red-600" />
-                          <span>Risk Mitigation</span>
-                        </h4>
-                        <div className="space-y-2">
-                          {control.riskMitigation.map((risk, index) => (
-                            <div key={index} className="flex items-center space-x-2">
-                              <Shield className="w-4 h-4 text-red-500" />
-                              <span className="text-sm text-gray-700 dark:text-gray-300">{risk}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Compliance Mapping */}
-                      <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-                        <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
-                          <Globe className="w-4 h-4 text-indigo-600" />
-                          <span>Compliance Mapping</span>
-                        </h4>
-                        <div className="flex flex-wrap gap-1">
-                          {control.complianceMapping.map((mapping, index) => (
-                            <span key={index} className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/20 text-indigo-800 dark:text-indigo-300 text-xs rounded font-mono">
-                              {mapping}
-                            </span>
-                          ))}
-                        </div>
+                    <div className="text-right">
+                      <div className="text-sm text-purple-600 dark:text-purple-400">Overall Mitigation</div>
+                      <div className={`text-2xl font-bold ${getEffectivenessColor(mapping.overallMitigation)}`}>
+                        {mapping.overallMitigation}%
                       </div>
                     </div>
                   </div>
 
-                  {/* Effectiveness Bar */}
-                  <div className="mt-4">
-                    <div className="flex items-center justify-between text-sm text-green-600 dark:text-green-400 mb-2">
-                      <span>Control Effectiveness</span>
-                      <span>{control.effectiveness}%</span>
-                    </div>
-                    <div className="w-full bg-green-200 dark:bg-green-800 rounded-full h-3">
-                      <div 
-                        className="bg-green-600 h-3 rounded-full transition-all duration-300"
-                        style={{ width: `${control.effectiveness}%` }}
-                      />
+                  {/* Assigned Controls */}
+                  <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center space-x-2">
+                      <Shield className="w-4 h-4 text-purple-600" />
+                      <span>Assigned Controls</span>
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {mapping.assignedControls.map((control) => (
+                        <div key={control.controlId} className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+                          <div className="font-medium text-gray-900 dark:text-white text-sm mb-1">
+                            {control.controlName}
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-gray-600 dark:text-gray-400">Effectiveness</span>
+                            <span className={`text-sm font-bold ${getEffectivenessColor(control.effectiveness)}`}>
+                              {control.effectiveness}%
+                            </span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-          ) : (
-            <div className="space-y-6">
-              {/* Framework Selection */}
-              <div className="flex items-center space-x-4 mb-6">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Framework:</label>
-                <select
-                  value={selectedFramework}
-                  onChange={(e) => setSelectedFramework(e.target.value)}
-                  className="px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500"
-                >
-                  {frameworks.map(framework => (
-                    <option key={framework.id} value={framework.id}>{framework.name}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Framework Details */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {frameworks.map((framework) => (
-                  <div key={framework.id} className="bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:shadow-lg transition-all">
-                    <div className="flex items-center space-x-3 mb-4">
-                      <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900 dark:text-white">{framework.name}</h3>
-                      </div>
-                    </div>
-                    
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{framework.description}</p>
-                    
-                    <button className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                      View Controls
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
           )}
+        </div>
+
+        {/* Action Buttons */}
+        <div className="p-6 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              {!canCreate && "View-only mode - Contact administrator for control assignment access"}
+            </div>
+            
+            <div className="flex items-center space-x-3">
+              {canCreate && (
+                <>
+                  <button className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2">
+                    <Save className="w-4 h-4" />
+                    <span>Save Mappings</span>
+                  </button>
+                  <button 
+                    onClick={handleComplete}
+                    disabled={riskControlMappings.length === 0}
+                    className="px-6 py-3 bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-lg hover:from-purple-700 hover:to-violet-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg flex items-center space-x-2"
+                  >
+                    <span>Complete & Continue</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Create Control Modal */}
-      {showCreateModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Create Governance Control</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                Define a new governance control for AI risk mitigation
-              </p>
+      {/* Output Preview */}
+      {isComplete && (
+        <div className="bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 p-6 rounded-xl border border-violet-200 dark:border-violet-700">
+          <div className="flex items-center space-x-3 mb-4">
+            <CheckCircle className="w-6 h-6 text-violet-600 dark:text-violet-400" />
+            <h3 className="text-lg font-semibold text-violet-900 dark:text-violet-100">Governance Controls Complete</h3>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Control Framework</h4>
+              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <div>Risk-Control Mappings: {riskControlMappings.length}</div>
+                <div>Avg Mitigation: {Math.round(riskControlMappings.reduce((sum, m) => sum + m.overallMitigation, 0) / riskControlMappings.length)}%</div>
+                <div>Controls Assigned: {riskControlMappings.reduce((sum, m) => sum + m.assignedControls.length, 0)}</div>
+              </div>
             </div>
             
-            <div className="p-6 space-y-6">
-              {/* Basic Information */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white">Control Information</h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Control Name *
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="AI Governance Structure"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Control Category *
-                    </label>
-                    <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500">
-                      <option value="">Select Category</option>
-                      {controlCategories.map(category => (
-                        <option key={category.id} value={category.id}>{category.name}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Control Description *
-                  </label>
-                  <textarea
-                    placeholder="Describe the control objective and implementation approach..."
-                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-24 resize-none"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Framework *
-                    </label>
-                    <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500">
-                      <option>NIST AI RMF</option>
-                      <option>EU AI Act</option>
-                      <option>ISO/IEC 42001</option>
-                      <option>Custom Framework</option>
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Control Owner *
-                    </label>
-                    <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500">
-                      <option>CIO</option>
-                      <option>CISO</option>
-                      <option>Compliance Officer</option>
-                      <option>QA Lead</option>
-                      <option>AI Ethics Committee</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* Implementation Details */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white">Implementation Details</h4>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Implementation Status *
-                    </label>
-                    <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500">
-                      <option>Not Implemented</option>
-                      <option>Planned</option>
-                      <option>In Progress</option>
-                      <option>Implemented</option>
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Automation Level
-                    </label>
-                    <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500">
-                      <option>Manual Process</option>
-                      <option>Partially Automated</option>
-                      <option>Fully Automated</option>
-                      <option>Hybrid Approach</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    Applicable Applications
-                  </label>
-                  <div className="space-y-2">
-                    {['All Applications', 'Healthcare Triage Assistant', 'Financial Lending Copilot', 'SAP Enterprise Copilot', 'Government Citizen Services', 'Retail Brand Safety Assistant'].map(app => (
-                      <label key={app} className="flex items-center space-x-2">
-                        <input type="checkbox" defaultChecked={app === 'All Applications'} className="rounded border-gray-300" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">{app}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    Risk Categories Addressed
-                  </label>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {['Data Privacy', 'Bias & Fairness', 'Security', 'Transparency', 'Accountability', 'Societal Impact'].map(risk => (
-                      <label key={risk} className="flex items-center space-x-2">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">{risk}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Monitoring & Measurement */}
-              <div className="space-y-4">
-                <h4 className="font-medium text-gray-900 dark:text-white">Monitoring & Measurement</h4>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Key Performance Indicators (KPIs)
-                  </label>
-                  <textarea
-                    placeholder="Define measurable KPIs for control effectiveness..."
-                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 h-20 resize-none"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Review Frequency
-                    </label>
-                    <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500">
-                      <option>Continuous</option>
-                      <option>Daily</option>
-                      <option>Weekly</option>
-                      <option>Monthly</option>
-                      <option>Quarterly</option>
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Effectiveness Threshold (%)
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      max="100"
-                      defaultValue="80"
-                      className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500"
-                    />
-                  </div>
-                </div>
+            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Control Types</h4>
+              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <div>Preventive: {controlLibrary.filter(c => c.type === 'preventive').length}</div>
+                <div>Detective: {controlLibrary.filter(c => c.type === 'detective').length}</div>
+                <div>Corrective: {controlLibrary.filter(c => c.type === 'corrective').length}</div>
               </div>
             </div>
-
-            <div className="p-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Control will be integrated into governance framework
+            
+            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Evidence Package</h4>
+              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <div>Assignments: Saved</div>
+                <div>Audit Ready: ✓</div>
+                <div>Export Ready: JSON/CSV</div>
               </div>
-              <div className="flex items-center space-x-3">
-                <button 
-                  onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
-                >
-                  Cancel
-                </button>
-                <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                  Create Control
-                </button>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2 text-sm text-violet-800 dark:text-violet-200">
+              <Layers className="w-4 h-4" />
+              <span>Ready for Governance Matrix (Component 5)</span>
+            </div>
+            <button className="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors flex items-center space-x-2">
+              <span>Generate Matrix</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Role-Based Access Info */}
+      {currentUser && (
+        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
+          <div className="flex items-center space-x-3">
+            <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <div>
+              <div className="font-medium text-blue-900 dark:text-blue-100">
+                {currentUser.role} Access Level
+              </div>
+              <div className="text-sm text-blue-800 dark:text-blue-200">
+                Permissions: {getUserPermissions ? getUserPermissions('Risk Mapping & Governance').join('•') : 'Loading...'}
+                {!canCreate && " (View-only access)"}
               </div>
             </div>
           </div>
@@ -683,4 +578,4 @@ const GovernanceControls: React.FC = () => {
   );
 };
 
-export default GovernanceControls;
+export default RiskClassification;
