@@ -254,12 +254,15 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
                 >
                   Forgot password?
                 </button>
-                
+              </div>
+
+              <div className="mt-4">
                 <button
+                  type="button"
                   onClick={() => window.location.href = 'mailto:accounts@validaite.com?subject=Enterprise%20Account%20Request&body=Hello,%0A%0AI%20would%20like%20to%20discuss%20enterprise%20access%20to%20the%20validAIte%20platform.%0A%0ACompany%20Name:%20%0AIndustry:%20%0AExpected%20AI%20Applications:%20%0ACompliance%20Requirements:%20%0AContact%20Person:%20%0APhone:%20%0A%0AThank%20you!'}
-                  className="group px-8 py-4 bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 rounded-2xl font-semibold hover:bg-white/20 transition-all duration-300 flex items-center space-x-3"
+                  className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200 flex items-center justify-center space-x-2"
                 >
-                  <Mail className="w-5 h-5" />
+                  <Mail className="w-4 h-4" />
                   <span>Contact Account Manager</span>
                 </button>
               </div>
