@@ -632,37 +632,3 @@ function App() {
 }
 
 export default App;
-                            )}
-                            {currentUser?.role === 'QA Engineer (ISO 25010, Manual Validation)' && ['trust-metrics', 'tevv-automation', 'validation-lab'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-green-500 rounded-full" title="Manual Validation Authority"></div>
-                            )}
-                            {currentUser?.role === 'Automation / TEVV Engineer (EU AI Act, Test Automation)' && ['trust-metrics', 'tevv-automation', 'continuous-monitoring'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-purple-500 rounded-full" title="TEVV Automation Authority"></div>
-                            )}
-                            {currentUser?.role === 'AI SecOps Engineer (Security + DevSecOps)' && ['risk-classification', 'tevv-automation', 'trust-metrics', 'validation-lab', 'continuous-monitoring'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-red-600 rounded-full" title="Incident Response Authority"></div>
-                            )}
-                            {currentUser?.role === 'Domain & Ethics Reviewer (Domain + Ethics)' && ['risk-classification', 'trust-metrics', 'tevv-automation', 'validation-lab', 'continuous-monitoring'].includes(item.id) && (
-                              <div className="ml-auto w-2 h-2 bg-amber-500 rounded-full" title="Domain Ethics Authority"></div>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </>
-                )}
-              </div>
-            ))}
-          </nav>
-        </aside>
-
-        {/* Main Content */}
-        <main className="flex-1 p-6 bg-slate-50 dark:bg-slate-900">
-          {renderActiveComponent()}
-        </main>
-      </div>
-    </div>
-  );
-}
-
-export default App;
