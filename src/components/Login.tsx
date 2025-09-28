@@ -354,13 +354,13 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
 
         {/* AI Governance Image */}
         <div className="mb-16 text-center">
-          <div className="max-w-xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <img 
               src="/image.png" 
-              alt="AI Governance - Human and AI collaboration"
-              className="w-full h-80 object-cover rounded-3xl shadow-2xl border-2 border-gray-200 dark:border-gray-700 hover:shadow-3xl hover:scale-105 transition-all duration-500"
+              alt="validAIte robot testing LLM powered GenAI app robot"
+              className="w-full h-96 object-cover rounded-3xl shadow-2xl border-2 border-gray-200 dark:border-gray-700 hover:shadow-3xl hover:scale-105 transition-all duration-500"
             />
-            <p className="text-lg text-gray-600 dark:text-gray-400 mt-6 italic font-medium">
+            <p className="text-xl text-gray-600 dark:text-gray-400 mt-6 italic font-medium whitespace-nowrap">
               "Bridging human expertise with AI capabilities through structured governance"
             </p>
           </div>
