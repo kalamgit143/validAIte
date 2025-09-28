@@ -327,7 +327,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
               onClick={onShowSignup}
               className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg"
             >
-              Start Free Trial
+              Sign Up
             </button>
           </div>
         </div>
@@ -390,7 +390,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
                   <div className="relative z-10">
                     <div className={`w-16 h-16 bg-gradient-to-r from-${feature.color}-500 to-${feature.color}-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
                       <Icon className="w-7 h-7 text-white" />
-                  </div>
+                    </div>
                     <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{feature.title}</h4>
                     <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed text-sm">{feature.description}</p>
                     <div className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 text-blue-800 dark:text-blue-300 rounded-xl text-sm font-semibold shadow-sm">
@@ -423,7 +423,8 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
           </div>
         </footer>
       </div>
-    );
+    </div>
+  );
 };
 
 export default Login;
