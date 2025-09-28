@@ -551,23 +551,6 @@ const UseCaseDefinition: React.FC<UseCaseDefinitionProps> = ({
         </div>
       )}
 
-      {/* Role-Based Access Info */}
-      {currentUser && (
-        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
-          <div className="flex items-center space-x-3">
-            <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <div>
-              <div className="font-medium text-blue-900 dark:text-blue-100">
-                {currentUser.role} Access Level
-              </div>
-              <div className="text-sm text-blue-800 dark:text-blue-200">
-                Permissions: {getUserPermissions ? getUserPermissions('Risk Mapping & Governance').join('•') : 'Loading...'}
-                {!canCreate && " (View-only access)"}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
