@@ -548,6 +548,11 @@ const GovernanceMatrix: React.FC<GovernanceMatrixProps> = ({
                 <div>✓ PDF report generated</div>
                 <div>✓ JSON data export ready</div>
                 <div>✓ CSV format available</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
