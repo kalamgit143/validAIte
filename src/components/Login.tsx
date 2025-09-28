@@ -64,17 +64,17 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
   const features = [
     {
       icon: Target,
-      title: "Trust Metrics Engine",
-      description: "Quantify AI trustworthiness through accuracy, fairness, robustness, and transparency metrics",
-      color: "emerald",
-      stats: "94% avg trust score"
+     title: "Risk Assessment",
+     description: "NIST RMF-compliant risk classification and EU AI Act compliance automation",
+     color: "red",
+     stats: "87% compliance rate"
     },
     {
       icon: Shield,
-      title: "Risk Assessment",
-      description: "NIST RMF-compliant risk classification and EU AI Act compliance automation",
-      color: "red",
-      stats: "87% compliance rate"
+     title: "Trust Metrics Engine",
+     description: "Quantify AI trustworthiness through accuracy, fairness, robustness, and transparency metrics",
+     color: "emerald",
+     stats: "94% avg trust score"
     },
     {
       icon: Activity,
