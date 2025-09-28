@@ -261,11 +261,11 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
                   onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
                   className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  <option value="AI Governance Lead (Risk + Compliance)">🔴 AI Governance Lead (Risk + Compliance)</option>
-                  <option value="QA Engineer (ISO 25010, Manual Validation)">🟢 QA Engineer (ISO 25010, Manual Validation)</option>
-                  <option value="Automation / TEVV Engineer (EU AI Act, Test Automation)">🟣 Automation / TEVV Engineer (EU AI Act, Test Automation)</option>
-                  <option value="AI SecOps Engineer (Security + DevSecOps)">🔴 AI SecOps Engineer (Security + DevSecOps)</option>
-                  <option value="Domain & Ethics Reviewer (Domain + Ethics)">🟡 Domain & Ethics Reviewer (Domain + Ethics)</option>
+                  <option value="🔵 AI Governance Lead (Risk + Compliance)">🔵 AI Governance Lead (Risk + Compliance)</option>
+                  <option value="🟢 QA Engineer (ISO 25010, Manual Validation)">🟢 QA Engineer (ISO 25010, Manual Validation)</option>
+                  <option value="🟣 Automation / TEVV Engineer (EU AI Act, Test Automation)">🟣 Automation / TEVV Engineer (EU AI Act, Test Automation)</option>
+                  <option value="🔴 AI SecOps Engineer (Security + DevSecOps)">🔴 AI SecOps Engineer (Security + DevSecOps)</option>
+                  <option value="🟡 Domain & Ethics Reviewer (Domain + Ethics)">🟡 Domain & Ethics Reviewer (Domain + Ethics)</option>
                 </select>
               </div>
             </div>

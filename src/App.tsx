@@ -601,10 +601,21 @@ function App() {
                               const hasApprove = permissions.includes('A');
                               const hasRun = permissions.includes('R');
                               
-                              if (hasApprove) return <div className="ml-auto w-2 h-2 bg-red-500 rounded-full" title="Approval Authority" />;
-                              if (hasCreate) return <div className="ml-auto w-2 h-2 bg-blue-500 rounded-full" title="Create/Configure Authority" />;
-                              if (hasRun) return <div className="ml-auto w-2 h-2 bg-green-500 rounded-full" title="Execute Authority" />;
-                              return <div className="ml-auto w-2 h-2 bg-gray-400 rounded-full" title="View Only" />;
+                              // Role-specific color bubbles
+                              const roleColors = {
+                                '🔵 AI Governance Lead (Risk + Compliance)': 'bg-blue-500',
+                                '🟢 QA Engineer (ISO 25010, Manual Validation)': 'bg-green-500', 
+                                '🟣 Automation / TEVV Engineer (EU AI Act, Test Automation)': 'bg-purple-500',
+                                '🔴 AI SecOps Engineer (Security + DevSecOps)': 'bg-red-500',
+                                '🟡 Domain & Ethics Reviewer (Domain + Ethics)': 'bg-yellow-500'
+                              };
+                              
+                              const userRoleColor = roleColors[currentUser?.role as keyof typeof roleColors] || 'bg-gray-400';
+                              
+                              if (hasApprove) return <div className={`ml-auto w-2 h-2 ${userRoleColor} rounded-full ring-2 ring-white`} title="Approval Authority" />;
+                              if (hasCreate) return <div className={`ml-auto w-2 h-2 ${userRoleColor} rounded-full`} title="Create/Configure Authority" />;
+                              if (hasRun) return <div className={`ml-auto w-2 h-2 ${userRoleColor} rounded-full opacity-75`} title="Execute Authority" />;
+                              return <div className="ml-auto w-2 h-2 bg-gray-300 rounded-full" title="View Only" />;
                             })()}
                           </button>
                         );
