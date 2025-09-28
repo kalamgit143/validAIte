@@ -578,22 +578,6 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
           </div>
         </footer>
       </div>
-        <div className="flex items-center justify-center space-x-8 text-gray-600 dark:text-gray-400">
-          <div className="flex items-center space-x-2">
-            <Shield className="w-4 h-4 text-green-500" />
-            <span className="text-sm font-medium">SOC 2 Certified</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Globe className="w-4 h-4 text-blue-500" />
-            <span className="text-sm font-medium">GDPR Compliant</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Award className="w-4 h-4 text-purple-500" />
-            <span className="text-sm font-medium">ISO 27001</span>
-          </div>
-          <span className="text-sm">&copy; 2024 validAIte</span>
-        </div>
-      </footer>
     </div>
   );
 };
