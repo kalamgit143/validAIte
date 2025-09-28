@@ -266,9 +266,6 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
             <Info className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
-              Step 1 Purpose: Baseline Profile Capture
-            </h3>
             <p className="text-blue-800 dark:text-blue-200 mb-4">
               Define <strong>what app is under review</strong>, <strong>where it runs</strong>, and <strong>what context it belongs to</strong>. 
               Live integration is optional at this stage and becomes mandatory in Stage 2 (Trust Metrics).
