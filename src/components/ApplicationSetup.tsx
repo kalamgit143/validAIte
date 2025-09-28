@@ -240,19 +240,17 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
       {/* Header with Step Indicator */}
       <div className="flex items-center justify-between">
         <div>
-          <div className="flex items-center space-x-4 mb-3">
-            <div className="flex items-center space-x-3 mb-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
-                1
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Application Setup</h2>
-              <div className="flex items-center space-x-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 rounded-full text-sm font-medium">
-                <FileText className="w-4 h-4" />
-                <span>Input to Use Case Definition</span>
-              </div>
+          <div className="flex items-center space-x-3 mb-2">
+            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
+              1
             </div>
-            <p className="text-gray-600 dark:text-gray-400">Capture baseline profile of GenAI application under evaluation</p>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Application Setup</h2>
+            <div className="flex items-center space-x-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 rounded-full text-sm font-medium">
+              <FileText className="w-4 h-4" />
+              <span>Input to Use Case Definition</span>
+            </div>
           </div>
+          <p className="text-gray-600 dark:text-gray-400">Capture baseline profile of GenAI application under evaluation</p>
         </div>
       </div>
 
