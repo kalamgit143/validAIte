@@ -358,7 +358,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
             <img 
               src="/image.png" 
               alt="validAIte robot testing LLM powered GenAI app robot"
-              className="w-full h-96 object-cover rounded-3xl shadow-2xl border-2 border-gray-200 dark:border-gray-700 hover:shadow-3xl hover:scale-105 transition-all duration-500"
+              className="w-full h-[500px] object-cover rounded-3xl shadow-2xl border-2 border-gray-200 dark:border-gray-700 hover:shadow-3xl hover:scale-105 transition-all duration-500"
             />
             <p className="text-xl text-gray-600 dark:text-gray-400 mt-6 italic font-medium whitespace-nowrap">
               "Bridging human expertise with AI capabilities through structured governance"
@@ -389,11 +389,11 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
                   
                   <div className="relative z-10">
                     <div className={`w-16 h-16 bg-gradient-to-r from-${feature.color}-500 to-${feature.color}-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
-                    <Icon className={`w-7 h-7 text-${feature.color}-600 dark:text-${feature.color}-400`} />
+                      <Icon className="w-7 h-7 text-white" />
                   </div>
-                    <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-${feature.color}-600 transition-colors">{feature.title}</h4>
+                    <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{feature.title}</h4>
                     <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed text-sm">{feature.description}</p>
-                    <div className={`inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-${feature.color}-100 to-${feature.color}-200 dark:from-${feature.color}-900/20 dark:to-${feature.color}-800/20 text-${feature.color}-800 dark:text-${feature.color}-300 rounded-xl text-sm font-semibold shadow-sm`}>
+                    <div className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 text-blue-800 dark:text-blue-300 rounded-xl text-sm font-semibold shadow-sm">
                       <Sparkles className="w-4 h-4" />
                       <span>{feature.stats}</span>
                     </div>
@@ -423,6 +423,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
           </div>
         </footer>
       </div>
+    );
+  };
+
+  return null;
   );
 };
 
