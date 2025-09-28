@@ -136,7 +136,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
               <img 
                 src="/image.png" 
                 alt="AI Governance - Human and AI collaboration in modern workspace"
-                className="w-full max-w-md mx-auto rounded-xl shadow-2xl opacity-95 hover:opacity-100 transition-all duration-300 hover:scale-[1.02]"
+                className="w-full max-w-xs mx-auto rounded-lg shadow-xl opacity-95 hover:opacity-100 transition-all duration-300 hover:scale-[1.02]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 to-transparent rounded-xl"></div>
             </div>
@@ -363,7 +363,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
             <img 
               src="/image.png" 
               alt="AI Governance"
-              className="w-full max-w-xs mx-auto rounded-lg shadow-xl opacity-90"
+              className="w-full max-w-48 mx-auto rounded-lg shadow-xl opacity-90"
             />
           </div>
         </div>
