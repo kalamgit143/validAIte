@@ -118,11 +118,15 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
           <p className="text-blue-200 text-sm">
             Trusted by 500+ organizations worldwide
           </p>
-          <div className="flex items-center justify-center space-x-6 mt-4 opacity-60">
-            <div className="w-8 h-8 bg-white/20 rounded"></div>
-            <div className="w-8 h-8 bg-white/20 rounded"></div>
-            <div className="w-8 h-8 bg-white/20 rounded"></div>
-            <div className="w-8 h-8 bg-white/20 rounded"></div>
+          <div className="mt-6">
+            <img 
+              src="/image.png" 
+              alt="AI Governance - Human and AI collaboration in modern workspace"
+              className="w-full max-w-sm mx-auto rounded-xl shadow-2xl opacity-90 hover:opacity-100 transition-opacity duration-300"
+            />
+            <p className="text-blue-100 text-xs mt-3 italic">
+              "Bridging human expertise with AI capabilities for trustworthy governance"
+            </p>
           </div>
         </div>
       </div>
