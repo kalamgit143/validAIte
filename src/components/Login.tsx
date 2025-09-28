@@ -589,7 +589,6 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
           </div>
         </footer>
       </div>
-    </div>
   );
 };
 
