@@ -131,17 +131,6 @@ const UseCaseDefinition: React.FC<UseCaseDefinitionProps> = ({
         </div>
         
         {/* Flow Navigation */}
-        <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-          <span className="text-blue-600 dark:text-blue-400">Application Setup</span>
-          <ArrowRight className="w-4 h-4" />
-          <span className="font-medium text-green-600 dark:text-green-400">Use Case Definition</span>
-          <ArrowRight className="w-4 h-4" />
-          <span>Risk Classification</span>
-          <ArrowRight className="w-4 h-4" />
-          <span>Governance Controls</span>
-          <ArrowRight className="w-4 h-4" />
-          <span>Governance Matrix</span>
-        </div>
       </div>
 
       {/* Input from Previous Component */}
