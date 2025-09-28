@@ -338,18 +338,14 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
             
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
               <button
-                onClick={onShowSignup}
-                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all shadow-xl flex items-center space-x-2 text-lg"
-              >
-                <Rocket className="w-5 h-5" />
-                <span>Start Free Trial</span>
-              </button>
-              <button
                 onClick={() => setCurrentView('login')}
-                className="px-8 py-4 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:border-gray-400 dark:hover:border-gray-500 hover:bg-white dark:hover:bg-gray-800 transition-all flex items-center space-x-2 text-lg"
+                className="group px-12 py-5 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white rounded-2xl font-bold hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 flex items-center space-x-3 text-xl border-2 border-white/20 backdrop-blur-sm"
               >
-                <span>Sign In</span>
-                <ArrowRight className="w-5 h-5" />
+                <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
+                  <Brain className="w-5 h-5" />
+                </div>
+                <span>Access Platform</span>
+                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </div>
@@ -377,13 +373,13 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
 
         {/* AI Governance Image */}
         <div className="mb-16 text-center">
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-xl mx-auto">
             <img 
               src="/image.png" 
               alt="AI Governance - Human and AI collaboration"
-              className="w-full rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700"
+              className="w-full h-80 object-cover rounded-3xl shadow-2xl border-2 border-gray-200 dark:border-gray-700 hover:shadow-3xl hover:scale-105 transition-all duration-500"
             />
-            <p className="text-lg text-gray-600 dark:text-gray-400 mt-6 italic">
+            <p className="text-lg text-gray-600 dark:text-gray-400 mt-6 italic font-medium">
               "Bridging human expertise with AI capabilities through structured governance"
             </p>
           </div>
@@ -392,9 +388,13 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
         {/* Platform Features */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Complete AI Governance Suite</h3>
+            <div className="inline-flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full mb-6">
+              <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              <span className="text-blue-800 dark:text-blue-200 font-semibold">Complete AI Governance Suite</span>
+            </div>
+            <h3 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Six Integrated Trust Modules</h3>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Six integrated modules covering every aspect of AI trustworthiness and compliance
+              From risk assessment to continuous monitoring - everything you need for trustworthy AI
             </p>
           </div>
           
@@ -402,15 +402,20 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <div key={index} className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
-                  <div className={`w-14 h-14 bg-${feature.color}-100 dark:bg-${feature.color}-900/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                <div key={index} className="group relative bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden">
+                  {/* Gradient overlay */}
+                  <div className={`absolute inset-0 bg-gradient-to-br from-${feature.color}-50/50 to-transparent dark:from-${feature.color}-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+                  
+                  <div className="relative z-10">
+                    <div className={`w-16 h-16 bg-gradient-to-r from-${feature.color}-500 to-${feature.color}-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
                     <Icon className={`w-7 h-7 text-${feature.color}-600 dark:text-${feature.color}-400`} />
                   </div>
-                  <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{feature.title}</h4>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">{feature.description}</p>
-                  <div className={`inline-flex items-center space-x-2 px-3 py-1 bg-${feature.color}-100 dark:bg-${feature.color}-900/20 text-${feature.color}-800 dark:text-${feature.color}-300 rounded-full text-sm font-medium`}>
-                    <Sparkles className="w-3 h-3" />
-                    <span>{feature.stats}</span>
+                    <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-${feature.color}-600 transition-colors">{feature.title}</h4>
+                    <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed text-sm">{feature.description}</p>
+                    <div className={`inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-${feature.color}-100 to-${feature.color}-200 dark:from-${feature.color}-900/20 dark:to-${feature.color}-800/20 text-${feature.color}-800 dark:text-${feature.color}-300 rounded-xl text-sm font-semibold shadow-sm`}>
+                      <Sparkles className="w-4 h-4" />
+                      <span>{feature.stats}</span>
+                    </div>
                   </div>
                 </div>
               );
@@ -421,23 +426,29 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
         {/* Industry Use Cases */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Proven Results Across Industries</h3>
+            <div className="inline-flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 rounded-full mb-6">
+              <Award className="w-5 h-5 text-green-600 dark:text-green-400" />
+              <span className="text-green-800 dark:text-green-200 font-semibold">Proven Results</span>
+            </div>
+            <h3 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Real Impact Across Industries</h3>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Real organizations achieving measurable trust and compliance outcomes
+              See how leading organizations achieve measurable trust and compliance outcomes
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {useCases.map((useCase, index) => (
-              <div key={index} className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+              <div key={index} className="group relative bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
                 <div className={`h-2 bg-gradient-to-r ${useCase.gradient}`}></div>
-                <div className="p-8">
+                <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-3">
-                      <span className="text-3xl">{useCase.icon}</span>
+                      <div className="w-12 h-12 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-xl flex items-center justify-center text-2xl shadow-sm">
+                        {useCase.icon}
+                      </div>
                       <div>
-                        <h4 className="text-xl font-bold text-gray-900 dark:text-white">{useCase.industry}</h4>
-                        <p className="text-gray-600 dark:text-gray-400">{useCase.title}</p>
+                        <h4 className="text-lg font-bold text-gray-900 dark:text-white">{useCase.industry}</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{useCase.title}</p>
                       </div>
                     </div>
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
@@ -448,14 +459,14 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
                     </span>
                   </div>
                   
-                  <p className="text-gray-600 dark:text-gray-400 mb-6">{useCase.description}</p>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">{useCase.description}</p>
                   
                   <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-xl">
+                    <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-xl">
                       <div className="text-2xl font-bold text-green-600 dark:text-green-400">{useCase.impact}</div>
                       <div className="text-sm text-green-700 dark:text-green-300">Impact</div>
                     </div>
-                    <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                    <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
                       <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{useCase.savings}</div>
                       <div className="text-sm text-blue-700 dark:text-blue-300">Value</div>
                     </div>
@@ -514,40 +525,57 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
 
         {/* CTA Section */}
         <div className="text-center">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-12">
-            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Ready to Build Trustworthy AI?</h3>
-            <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+          <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-3xl shadow-2xl p-12 overflow-hidden">
+            {/* Animated background elements */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/90 via-purple-600/90 to-indigo-600/90"></div>
+            <div className="absolute top-0 left-0 w-full h-full">
+              <div className="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full animate-pulse"></div>
+              <div className="absolute top-20 right-20 w-16 h-16 bg-white/5 rounded-full animate-pulse delay-1000"></div>
+              <div className="absolute bottom-10 left-1/3 w-12 h-12 bg-white/10 rounded-full animate-pulse delay-500"></div>
+            </div>
+            
+            <div className="relative z-10">
+              <h3 className="text-4xl font-bold text-white mb-4">Ready to Build Trustworthy AI?</h3>
+              <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
               Join leading organizations in establishing comprehensive AI governance and compliance
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-              <button
-                onClick={onShowSignup}
-                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all shadow-xl flex items-center space-x-2 text-lg"
-              >
-                <Rocket className="w-5 h-5" />
-                <span>Start 14-Day Free Trial</span>
-              </button>
               <button
                 onClick={() => setCurrentView('login')}
-                className="px-8 py-4 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:border-gray-400 dark:hover:border-gray-500 hover:bg-white dark:hover:bg-gray-800 transition-all flex items-center space-x-2 text-lg"
+                className="group px-12 py-5 bg-white text-blue-600 rounded-2xl font-bold hover:bg-blue-50 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 flex items-center space-x-3 text-xl"
               >
-                <span>Sign In</span>
-                <ArrowRight className="w-5 h-5" />
+                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
+                  <Shield className="w-5 h-5 text-blue-600" />
+                </div>
+                <span>Access Platform</span>
+                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
             
-            <p className="text-sm text-gray-500 dark:text-gray-500 mt-6">
-              No credit card required • Full access to all features • Cancel anytime
+            <p className="text-sm text-blue-100 mt-6">
+              Enterprise AI governance • Trusted by 500+ organizations • SOC 2 certified
             </p>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Footer */}
       <footer className="container mx-auto px-6 py-8 border-t border-gray-200 dark:border-gray-700 mt-16">
-        <div className="text-center text-gray-600 dark:text-gray-400">
-          <p>&copy; 2024 validAIte. All rights reserved. • SOC 2 Certified • GDPR Compliant</p>
+        <div className="flex items-center justify-center space-x-8 text-gray-600 dark:text-gray-400">
+          <div className="flex items-center space-x-2">
+            <Shield className="w-4 h-4 text-green-500" />
+            <span className="text-sm font-medium">SOC 2 Certified</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Globe className="w-4 h-4 text-blue-500" />
+            <span className="text-sm font-medium">GDPR Compliant</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Award className="w-4 h-4 text-purple-500" />
+            <span className="text-sm font-medium">ISO 27001</span>
+          </div>
+          <span className="text-sm">&copy; 2024 validAIte</span>
         </div>
       </footer>
     </div>
