@@ -385,10 +385,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
               return (
                 <div key={index} className="group relative bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden">
                   {/* Gradient overlay */}
-                  <div className={`absolute inset-0 bg-gradient-to-br from-${feature.color}-50/50 to-transparent dark:from-${feature.color}-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-900/5 to-transparent dark:from-gray-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   
                   <div className="relative z-10">
-                    <div className={`w-16 h-16 bg-gradient-to-r from-${feature.color}-500 to-${feature.color}-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
+                    <div className="w-16 h-16 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
                       <Icon className="w-7 h-7 text-white" />
                     </div>
                     <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{feature.title}</h4>
