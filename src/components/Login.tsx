@@ -366,26 +366,6 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
           </div>
         </div>
 
-        {/* Stats Bar */}
-        <div className="mb-16">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-              {stats.map((stat, index) => {
-                const Icon = stat.icon;
-                return (
-                  <div key={index} className="text-center">
-                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-3">
-                      <Icon className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{stat.value}</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
         {/* Platform Features */}
         <div className="mb-16">
           <div className="text-center mb-12">
