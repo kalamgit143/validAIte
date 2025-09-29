@@ -161,17 +161,47 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
   ];
 
   if (currentView === 'login') {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
+    // Login banner will be shown on homepage
+  }
+
+  // Homepage View
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-blue-900/20 dark:to-indigo-900/20">
+      {/* Header */}
+      <header className="container mx-auto px-6 py-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <Brain className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">validAIte</h1>
+              <p className="text-blue-600 dark:text-blue-400 text-sm font-medium">GenAI Trust & Governance Platform</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => setCurrentView('login')}
+              className="px-6 py-2.5 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium transition-colors"
+            >
+              Sign In
+            </button>
+            <button
+              onClick={onShowSignup}
+              className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg"
+            >
+              Sign Up
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Login Banner */}
+      {currentView === 'login' && (
+        <div className="container mx-auto px-6 py-8">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 max-w-md mx-auto">
             <div className="text-center mb-6">
-              <div className="flex items-center justify-center space-x-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                  <Brain className="w-6 h-6 text-white" />
-                </div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">validAIte</h1>
-              </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Sign In</h3>
               <p className="text-gray-600 dark:text-gray-400">Access your AI governance dashboard</p>
             </div>
@@ -256,17 +286,6 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
                 </button>
               </div>
 
-              <div className="mt-4">
-                <button
-                  type="button"
-                  onClick={() => window.location.href = 'mailto:accounts@validaite.com?subject=Enterprise%20Account%20Request&body=Hello,%0A%0AI%20would%20like%20to%20discuss%20enterprise%20access%20to%20the%20validAIte%20platform.%0A%0ACompany%20Name:%20%0AIndustry:%20%0AExpected%20AI%20Applications:%20%0ACompliance%20Requirements:%20%0AContact%20Person:%20%0APhone:%20%0A%0AThank%20you!'}
-                  className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200 flex items-center justify-center space-x-2"
-                >
-                  <Mail className="w-4 h-4" />
-                  <span>Contact Account Manager</span>
-                </button>
-              </div>
-
               <button
                 type="submit"
                 disabled={isLoading}
@@ -296,42 +315,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
             </div>
           </div>
         </div>
-      </div>
-    );
-  }
-
-  // Homepage View
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-blue-900/20 dark:to-indigo-900/20">
-      {/* Header */}
-      <header className="container mx-auto px-6 py-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-              <Brain className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">validAIte</h1>
-              <p className="text-blue-600 dark:text-blue-400 text-sm font-medium">GenAI Trust & Governance Platform</p>
-            </div>
-          </div>
-          
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => setCurrentView('login')}
-              className="px-6 py-2.5 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium transition-colors"
-            >
-              Sign In
-            </button>
-            <button
-              onClick={onShowSignup}
-              className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg"
-            >
-              Sign Up
-            </button>
-          </div>
-        </div>
-      </header>
+      )}
 
       <div className="container mx-auto px-6 py-8">
         {/* Hero Section */}
