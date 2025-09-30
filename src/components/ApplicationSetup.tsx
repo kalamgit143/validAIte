@@ -64,12 +64,7 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
     // Compliance & Governance
     applicableFrameworks: [] as string[],
     stakeholderImpact: '',
-    riskMitigation: '',
-    
-    // API Configuration
-    apiEndpoint: '',
-    authMethod: '',
-    apiKey: ''
+    riskMitigation: ''
   });
 
   const [isComplete, setIsComplete] = useState(false);
@@ -91,34 +86,72 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
   };
 
   const handleComplete = () => {
-    // Validate required fields
+    // Check all mandatory fields are filled
     const requiredFields = [
       'applicationName',
+      'applicationDescription',
       'businessCriticality',
+      'dataClassification',
       'euAiActRiskClass',
       'intendedPurpose',
+      'targetUsers',
+      'humanOversightLevel',
       'modelProvider',
       'modelType'
     ];
 
-    const missingFields = requiredFields.filter(field => !formData[field as keyof typeof formData]);
+    const missingFields = requiredFields.filter(field => {
+      const value = formData[field as keyof typeof formData];
+      return !value || (Array.isArray(value) && value.length === 0);
+    });
     
     if (missingFields.length > 0) {
-      alert(`Please fill in all required fields: ${missingFields.join(', ')}`);
+      alert(`Please fill in all required fields: ${missingFields.map(f => f.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())).join(', ')}`);
+      return;
+    }
+
+    // Check if at least one compliance framework is selected
+    if (formData.applicableFrameworks.length === 0) {
+      alert('Please select at least one applicable compliance framework');
       return;
     }
 
     setIsComplete(true);
     
-    // Navigate to Use Case Definition
-    if (onNavigateToUseCase) {
-      setTimeout(() => {
+    // Navigate to Use Case Definition after a brief delay
+    setTimeout(() => {
+      if (onNavigateToUseCase) {
         onNavigateToUseCase();
-      }, 1000);
-    }
+      }
+    }, 1500);
   };
 
   const canCreate = canPerformAction ? canPerformAction('Risk Mapping & Governance', 'C') : true;
+
+  // Check if all mandatory fields are filled
+  const isMandatoryFieldsFilled = () => {
+    const requiredFields = [
+      'applicationName',
+      'applicationDescription', 
+      'businessCriticality',
+      'dataClassification',
+      'euAiActRiskClass',
+      'intendedPurpose',
+      'targetUsers',
+      'humanOversightLevel',
+      'modelProvider',
+      'modelType'
+    ];
+
+    const allFieldsFilled = requiredFields.every(field => {
+      const value = formData[field as keyof typeof formData];
+      return value && value.toString().trim() !== '';
+    });
+
+    const hasFrameworks = formData.applicableFrameworks.length > 0;
+
+    return allFieldsFilled && hasFrameworks;
+  };
 
   return (
     <div className="space-y-8">
@@ -610,59 +643,6 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="p-6 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between">
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              {!canCreate && "View-only mode - Contact administrator for setup access"}
-            </div>
-            
-            <div className="flex items-center space-x-3">
-              {canCreate && (
-                <>
-                  <button className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2">
-                    <Save className="w-4 h-4" />
-                    <span>Save Draft</span>
-                  </button>
-                  <button className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2">
-                    <Eye className="w-4 h-4" />
-                    <span>Test Connection</span>
-                  </button>
-                  <button 
-                    onClick={handleComplete}
-                    className="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg hover:from-blue-700 hover:to-cyan-700 transition-all shadow-lg flex items-center space-x-2"
-                  >
-                    <span>Complete Setup</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Completion Status */}
-      {isComplete && (
-        <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-6 rounded-xl border border-emerald-200 dark:border-emerald-700">
-          <div className="flex items-center space-x-3 mb-4">
-            <CheckCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-            <h3 className="text-lg font-semibold text-emerald-900 dark:text-emerald-100">Application Setup Complete</h3>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Application Profile</h4>
-              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                <div>Name: {formData.applicationName}</div>
-                <div>Provider: {formData.modelProvider}</div>
-                <div>Type: {formData.modelType}</div>
-              </div>
-            </div>
-            
-            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Risk Classification</h4>
-              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                 <div>Business: {formData.businessCriticality}</div>
                 <div>EU AI Act: {formData.euAiActRiskClass}</div>
                 <div>Frameworks: {formData.applicableFrameworks.length}</div>
