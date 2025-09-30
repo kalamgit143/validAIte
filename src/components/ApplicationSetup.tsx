@@ -286,10 +286,10 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
                   className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select User Base Size</option>
-                  <option value="small">Small (< 100 users)</option>
+                  <option value="small">Small (&lt; 100 users)</option>
                   <option value="medium">Medium (100-1,000 users)</option>
                   <option value="large">Large (1,000-10,000 users)</option>
-                  <option value="enterprise">Enterprise (> 10,000 users)</option>
+                  <option value="enterprise">Enterprise (&gt; 10,000 users)</option>
                 </select>
               </div>
               
