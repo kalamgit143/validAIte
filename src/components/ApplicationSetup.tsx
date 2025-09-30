@@ -611,34 +611,31 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
         </div>
 
         {/* Action Bar */}
-        <div className="border-t border-gray-200 dark:border-gray-700 p-6">
+        <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 rounded-b-xl">
           <div className="flex items-center justify-between">
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              Complete all required fields to proceed to Use Case Definition
+            </div>
+            
             <div className="flex items-center space-x-4">
               <button
                 type="button"
-                className="flex items-center space-x-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
-              >
-                <Eye className="w-4 h-4" />
-                <span>Preview Configuration</span>
-              </button>
-              
-              <button
-                type="button"
-                className="flex items-center space-x-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors flex items-center space-x-2"
               >
                 <Save className="w-4 h-4" />
                 <span>Save Draft</span>
               </button>
+              
+              <button
+                onClick={handleComplete}
+                disabled={!canCreate}
+                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center space-x-2"
+              >
+                <CheckCircle className="w-4 h-4" />
+                <span>Complete Setup</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
-            
-            <button
-              onClick={handleComplete}
-              disabled={!canCreate}
-              className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <span>Complete Setup</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
           </div>
         </div>
       </div>
