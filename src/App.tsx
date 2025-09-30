@@ -87,6 +87,16 @@ function App() {
   const [showSignup, setShowSignup] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
+  // Listen for navigation events from components
+  React.useEffect(() => {
+    const handleNavigateToUseCase = (event: any) => {
+      setActiveTab('use-case-definition');
+    };
+
+    window.addEventListener('navigateToUseCase', handleNavigateToUseCase);
+    return () => window.removeEventListener('navigateToUseCase', handleNavigateToUseCase);
+  }, []);
+
   // Role-based navigation configuration
   const roleBasedNavigation = {
     '🔵 AI Governance Lead (Risk + Compliance)': {

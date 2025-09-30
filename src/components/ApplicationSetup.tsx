@@ -543,7 +543,7 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
               
               {canCreate && (
                 <button
-                  onClick={handleSkipIntegration}
+                  disabled={!formData.applicationName || !formData.applicationType || !formData.domain || !formData.environment || !formData.businessCriticality || !formData.dataClassification || !formData.euAiActRiskClass || !formData.intendedPurpose || !formData.modelProvider}
                   className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors flex items-center space-x-2"
                 >
                   <SkipForward className="w-4 h-4" />
