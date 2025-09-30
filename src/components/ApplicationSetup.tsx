@@ -622,14 +622,53 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
             </div>
           </div>
         </div>
-              </div>
-        </div>
-        
+
         {/* Action Buttons */}
-        <div className="p-6 border-t border-gray-200 dark:border-gray-700">
+        <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700 rounded-b-xl border-t border-gray-200 dark:border-gray-600">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+                <Eye className="w-4 h-4" />
+                <span>Preview configuration before proceeding</span>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-3">
+              <button
+                type="button"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors flex items-center space-x-2"
+              >
+                <Save className="w-4 h-4" />
+                <span>Save Draft</span>
+              </button>
+              
+              {canCreate && (
+                <button
+                  onClick={handleComplete}
+                  disabled={isComplete}
+                  className={`px-6 py-2 rounded-lg font-medium transition-all flex items-center space-x-2 ${
+                    isComplete
+                      ? 'bg-green-600 text-white cursor-not-allowed'
+                      : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl'
+                  }`}
+                >
+                  {isComplete ? (
+                    <>
+                      <CheckCircle className="w-4 h-4" />
+                      <span>Setup Complete</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Complete Setup</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
