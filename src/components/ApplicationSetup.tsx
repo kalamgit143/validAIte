@@ -85,6 +85,28 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
     }));
   };
 
+  const isMandatoryFieldsFilled = () => {
+    const requiredFields = [
+      'applicationName',
+      'applicationDescription',
+      'businessCriticality',
+      'dataClassification',
+      'euAiActRiskClass',
+      'intendedPurpose',
+      'targetUsers',
+      'humanOversightLevel',
+      'modelProvider',
+      'modelType'
+    ];
+
+    const missingFields = requiredFields.filter(field => {
+      const value = formData[field as keyof typeof formData];
+      return !value || (Array.isArray(value) && value.length === 0);
+    });
+    
+    return missingFields.length === 0 && formData.applicableFrameworks.length > 0;
+  };
+
   const handleComplete = () => {
     // Check all mandatory fields are filled
     const requiredFields = [
@@ -127,31 +149,6 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
   };
 
   const canCreate = canPerformAction ? canPerformAction('Risk Mapping & Governance', 'C') : true;
-
-  // Check if all mandatory fields are filled
-  const isMandatoryFieldsFilled = () => {
-    const requiredFields = [
-      'applicationName',
-      'applicationDescription', 
-      'businessCriticality',
-      'dataClassification',
-      'euAiActRiskClass',
-      'intendedPurpose',
-      'targetUsers',
-      'humanOversightLevel',
-      'modelProvider',
-      'modelType'
-    ];
-
-    const allFieldsFilled = requiredFields.every(field => {
-      const value = formData[field as keyof typeof formData];
-      return value && value.toString().trim() !== '';
-    });
-
-    const hasFrameworks = formData.applicableFrameworks.length > 0;
-
-    return allFieldsFilled && hasFrameworks;
-  };
 
   return (
     <div className="space-y-8">
@@ -643,6 +640,52 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
           </div>
         </div>
 
+        {/* Action Buttons */}
+        <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-600 rounded-b-xl">
+          <div className="flex justify-between items-center">
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              Complete all required fields to proceed to Use Case Definition
+            </div>
+            
+            <div className="flex space-x-3">
+              <button className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors flex items-center space-x-2">
+                <Eye className="w-4 h-4" />
+                <span>Preview</span>
+              </button>
+              
+              <button className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors flex items-center space-x-2">
+                <Save className="w-4 h-4" />
+                <span>Save Draft</span>
+              </button>
+              
+              {canCreate && (
+                <button 
+                  onClick={handleComplete}
+                  disabled={!isMandatoryFieldsFilled()}
+                  className="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg hover:from-blue-700 hover:to-cyan-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg flex items-center space-x-2"
+                >
+                  <span>Complete Setup</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Completion Status */}
+      {isComplete && (
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-200 dark:border-green-700">
+          <div className="flex items-center space-x-3 mb-4">
+            <CheckCircle className="w-8 h-8 text-green-600" />
+            <h3 className="text-xl font-semibold text-green-900 dark:text-green-100">Application Setup Complete!</h3>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Configuration Summary</h4>
+              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <div>Application: {formData.applicationName}</div>
                 <div>Business: {formData.businessCriticality}</div>
                 <div>EU AI Act: {formData.euAiActRiskClass}</div>
                 <div>Frameworks: {formData.applicableFrameworks.length}</div>
