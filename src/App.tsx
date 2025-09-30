@@ -87,15 +87,10 @@ function App() {
   const [showSignup, setShowSignup] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
-  // Listen for navigation events from components
-  React.useEffect(() => {
-    const handleNavigateToUseCase = (event: any) => {
-      setActiveTab('use-case-definition');
-    };
-
-    window.addEventListener('navigateToUseCase', handleNavigateToUseCase);
-    return () => window.removeEventListener('navigateToUseCase', handleNavigateToUseCase);
-  }, []);
+  // Navigation handler for components
+  const handleNavigateToUseCase = () => {
+    setActiveTab('use-case-definition');
+  };
 
   // Role-based navigation configuration
   const roleBasedNavigation = {
@@ -335,7 +330,7 @@ function App() {
       
       // Risk Mapping & Governance
       case 'application-setup':
-        return <ApplicationSetup />;
+        return <ApplicationSetup onNavigateToUseCase={handleNavigateToUseCase} currentUser={currentUser} canPerformAction={canPerformAction} getUserPermissions={getUserPermissions} />;
       case 'use-case-definition':
         return <UseCaseDefinition />;
       case 'risk-classification':

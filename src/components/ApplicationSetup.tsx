@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { Database, Building, Globe, Users, Shield, Target, CheckCircle, AlertTriangle, Plus, CreditCard as Edit, Eye, Download, Save, RefreshCw, FileText, Settings, Crown, Gavel, Code, Brain, Lock, Activity, BarChart3, Calendar, Mail, ArrowRight, ArrowDown, Zap, Server, Key, Link, Layers, Upload, SkipForward, Info, ExternalLink } from 'lucide-react';
+import { Database, Building, Globe, Users, Shield, Target, CheckCircle, AlertTriangle, Plus, Edit, Eye, Download, Save, RefreshCw, FileText, Settings, Crown, Gavel, Code, Brain, Lock, Activity, BarChart3, Calendar, Mail, ArrowRight, ArrowDown, Zap, Server, Key, Link, Layers, Upload, SkipForward, Info, ExternalLink } from 'lucide-react';
 
 interface ApplicationSetupProps {
   currentUser?: any;
   canPerformAction?: (module: string, action: string) => boolean;
   getUserPermissions?: (module: string) => string[];
+  onNavigateToUseCase?: () => void;
 }
 
 const ApplicationSetup: React.FC<ApplicationSetupProps> = ({ 
   currentUser, 
   canPerformAction, 
-  getUserPermissions 
+  getUserPermissions,
+  onNavigateToUseCase 
 }) => {
   const [formData, setFormData] = useState({
     // Mandatory Fields
@@ -43,7 +45,6 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
     authMethod: '',
     apiKey: '',
     kbSources: [] as string[],
-    kbFiles: [] as File[],
     dbConnection: '',
     
     // Tracking
@@ -102,11 +103,11 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
 
   // Domain categories for risk context
   const domains = [
-    { id: 'insurance', name: 'Insurance', riskProfile: 'High regulatory oversight, actuarial accuracy critical' },
-    { id: 'banking', name: 'Banking', riskProfile: 'Financial regulations, fair lending requirements' },
-    { id: 'retail', name: 'Retail', riskProfile: 'Consumer protection, brand safety' },
     { id: 'healthcare', name: 'Healthcare', riskProfile: 'Patient safety, HIPAA compliance, medical accuracy' },
+    { id: 'financial', name: 'Financial Services', riskProfile: 'Financial regulations, fair lending requirements' },
     { id: 'government', name: 'Government', riskProfile: 'Public accountability, transparency, fairness' },
+    { id: 'insurance', name: 'Insurance', riskProfile: 'High regulatory oversight, actuarial accuracy critical' },
+    { id: 'retail', name: 'Retail', riskProfile: 'Consumer protection, brand safety' },
     { id: 'manufacturing', name: 'Manufacturing', riskProfile: 'Safety standards, quality control' },
     { id: 'technology', name: 'Technology', riskProfile: 'Innovation balance, IP protection' },
     { id: 'education', name: 'Education', riskProfile: 'Student privacy, educational equity' },
@@ -172,6 +173,32 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
     { id: 'enterprise', name: 'Enterprise (> 100K users)', description: 'Very large user base', riskLevel: 'Critical' }
   ];
 
+  // Geographic Scope
+  const geographicScopes = [
+    { id: 'local', name: 'Local', description: 'Single location/city', riskLevel: 'Low' },
+    { id: 'regional', name: 'Regional', description: 'State/province level', riskLevel: 'Medium' },
+    { id: 'national', name: 'National', description: 'Country-wide deployment', riskLevel: 'High' },
+    { id: 'international', name: 'International', description: 'Multi-country deployment', riskLevel: 'Critical' }
+  ];
+
+  // Human Oversight Levels (EU AI Act Article 14)
+  const humanOversightLevels = [
+    { id: 'human_in_loop', name: 'Human-in-the-Loop', description: 'Human validates each AI decision', riskLevel: 'Low' },
+    { id: 'human_on_loop', name: 'Human-on-the-Loop', description: 'Human monitors AI decisions', riskLevel: 'Medium' },
+    { id: 'human_out_loop', name: 'Human-out-of-the-Loop', description: 'Minimal human oversight', riskLevel: 'High' },
+    { id: 'meaningful_control', name: 'Meaningful Human Control', description: 'Human retains decision authority', riskLevel: 'Low' }
+  ];
+
+  // Deployment Context
+  const deploymentContexts = [
+    { id: 'cloud_public', name: 'Public Cloud', description: 'AWS, Azure, GCP', riskLevel: 'Medium' },
+    { id: 'cloud_private', name: 'Private Cloud', description: 'Dedicated cloud infrastructure', riskLevel: 'Low' },
+    { id: 'on_premise', name: 'On-Premise', description: 'Internal data centers', riskLevel: 'Low' },
+    { id: 'hybrid', name: 'Hybrid', description: 'Mix of cloud and on-premise', riskLevel: 'Medium' },
+    { id: 'edge', name: 'Edge Computing', description: 'Distributed edge deployment', riskLevel: 'High' },
+    { id: 'mobile', name: 'Mobile/Device', description: 'Mobile app or device deployment', riskLevel: 'High' }
+  ];
+
   // Model Providers
   const modelProviders = [
     'OpenAI', 'Anthropic', 'Google', 'Microsoft Azure OpenAI', 'AWS Bedrock', 
@@ -184,14 +211,21 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
     'Fine-tuned Model', 'RAG System', 'Agent Framework', 'Custom Model'
   ];
 
+  // Data Flow Patterns
+  const dataFlowPatterns = [
+    'Batch Processing', 'Real-time Streaming', 'Request-Response', 
+    'Event-Driven', 'Pub/Sub Messaging', 'Hybrid Flow'
+  ];
+
+  // Integration Patterns
+  const integrationPatterns = [
+    'API Gateway', 'Direct Integration', 'Message Queue', 
+    'Webhook', 'Embedded SDK', 'Microservices'
+  ];
+
   // Authentication methods for integration
   const authMethods = [
-    'API Key',
-    'Bearer Token', 
-    'OAuth 2.0',
-    'mTLS Certificate',
-    'SAML',
-    'Custom Authentication'
+    'API Key', 'Bearer Token', 'OAuth 2.0', 'mTLS Certificate', 'SAML', 'Custom Authentication'
   ];
 
   // Knowledge Base source types
@@ -208,70 +242,53 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
   const validateMandatoryFields = () => {
     const errors: string[] = [];
     
-    if (!formData.applicationName.trim()) {
-      errors.push('Application Name is required');
-    }
-    if (!formData.applicationType) {
-      errors.push('Application Type must be selected');
-    }
-    if (!formData.domain) {
-      errors.push('Domain must be selected');
-    }
-    if (!formData.environment) {
-      errors.push('Environment must be selected');
-    }
-    if (!formData.businessCriticality) {
-      errors.push('Business Criticality must be selected');
-    }
-    if (!formData.dataClassification) {
-      errors.push('Data Classification must be selected');
-    }
-    if (!formData.euAiActRiskClass) {
-      errors.push('EU AI Act Risk Classification must be selected');
-    }
-    if (!formData.intendedPurpose.trim()) {
-      errors.push('Intended Purpose is required');
-    }
-    if (!formData.modelProvider) {
-      errors.push('Model Provider must be selected');
-    }
+    // Basic Application Info
+    if (!formData.applicationName.trim()) errors.push('Application Name is required');
+    if (!formData.applicationType) errors.push('Application Type must be selected');
+    if (!formData.domain) errors.push('Domain must be selected');
+    if (!formData.environment) errors.push('Environment must be selected');
+    
+    // NIST RMF Required
+    if (!formData.businessCriticality) errors.push('Business Criticality must be selected');
+    if (!formData.dataClassification) errors.push('Data Classification must be selected');
+    if (!formData.userBase) errors.push('User Base Size must be selected');
+    if (!formData.geographicScope) errors.push('Geographic Scope must be selected');
+    
+    // EU TEVV Required
+    if (!formData.euAiActRiskClass) errors.push('EU AI Act Risk Classification must be selected');
+    if (!formData.intendedPurpose.trim()) errors.push('Intended Purpose is required');
+    if (!formData.targetUsers.trim()) errors.push('Target Users must be specified');
+    if (!formData.deploymentContext) errors.push('Deployment Context must be selected');
+    if (!formData.humanOversight) errors.push('Human Oversight Level must be selected');
+    
+    // Technical Architecture
+    if (!formData.modelProvider) errors.push('Model Provider must be selected');
+    if (!formData.modelType) errors.push('Model Type must be selected');
+    if (!formData.dataFlow) errors.push('Data Flow Pattern must be selected');
+    if (!formData.integrationPattern) errors.push('Integration Pattern must be selected');
 
     setValidationErrors(errors);
     return errors.length === 0;
-  };
-
-  const handleSkipIntegration = () => {
-    if (validateMandatoryFields()) {
-      setFormData(prev => ({ ...prev, skipIntegration: true }));
-      handleComplete();
-    }
   };
 
   const handleComplete = () => {
     if (validateMandatoryFields()) {
       setIsComplete(true);
       
-      // Generate audit log entry
-      const auditEntry = {
-        action: 'Application Setup completed',
-        user: currentUser?.name || 'System User',
-        timestamp: new Date().toISOString(),
-        applicationProfile: generateApplicationProfile()
-      };
+      // Generate application profile
+      const applicationProfile = generateApplicationProfile();
       
       console.log('Application Setup Output:', {
-        applicationProfile: generateApplicationProfile(),
-        auditLog: auditEntry,
+        applicationProfile,
+        auditLog: generateAuditEntry(),
         evidenceStub: generateEvidenceStub()
       });
       
-      // Navigate to Use Case Definition after a short delay
+      // Navigate to Use Case Definition after showing completion
       setTimeout(() => {
-        // This would typically be handled by a router or parent component
-        // For now, we'll trigger a custom event that the parent can listen to
-        window.dispatchEvent(new CustomEvent('navigateToUseCase', {
-          detail: { applicationProfile: generateApplicationProfile() }
-        }));
+        if (onNavigateToUseCase) {
+          onNavigateToUseCase();
+        }
       }, 2000);
     }
   };
@@ -311,6 +328,15 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
     };
   };
 
+  const generateAuditEntry = () => {
+    return {
+      action: 'Application Setup completed',
+      user: currentUser?.name || 'System User',
+      timestamp: new Date().toISOString(),
+      applicationProfile: generateApplicationProfile()
+    };
+  };
+
   const generateEvidenceStub = () => {
     return {
       evidenceType: 'application_setup_log',
@@ -329,11 +355,13 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
   };
 
   const canCreate = canPerformAction ? canPerformAction('Risk Mapping & Governance', 'C') : true;
-  const canEdit = canPerformAction ? canPerformAction('Risk Mapping & Governance', 'E') : true;
 
   const selectedDomain = domains.find(d => d.id === formData.domain);
   const selectedEnvironment = environments.find(e => e.id === formData.environment);
   const selectedAppType = applicationTypes.find(t => t.id === formData.applicationType);
+  const selectedBusinessCriticality = businessCriticalityLevels.find(b => b.id === formData.businessCriticality);
+  const selectedDataClassification = dataClassifications.find(d => d.id === formData.dataClassification);
+  const selectedEuRiskClass = euAiActRiskClasses.find(e => e.id === formData.euAiActRiskClass);
 
   return (
     <div className="space-y-8">
@@ -402,15 +430,15 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
 
       {/* Main Form */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-        {/* Mandatory Section */}
+        {/* Basic Application Information */}
         <div className="bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-3 mb-6">
             <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">!</span>
             </div>
-            <h3 className="text-xl font-bold text-red-900 dark:text-red-100">Mandatory Information</h3>
+            <h3 className="text-xl font-bold text-red-900 dark:text-red-100">Basic Application Information</h3>
             <span className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 text-sm rounded-full font-medium">
-              Required to Proceed
+              Required
             </span>
           </div>
 
@@ -519,11 +547,304 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
           </div>
         </div>
 
+        {/* NIST RMF Required Fields */}
+        <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+              <Shield className="w-4 h-4 text-white" />
+            </div>
+            <h3 className="text-xl font-bold text-blue-900 dark:text-blue-100">NIST RMF Context</h3>
+            <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-sm rounded-full font-medium">
+              Risk Management Framework
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Business Criticality */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Business Criticality *
+              </label>
+              <select
+                value={formData.businessCriticality}
+                onChange={(e) => setFormData(prev => ({ ...prev, businessCriticality: e.target.value }))}
+                disabled={!canCreate}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+              >
+                <option value="">Select Business Criticality</option>
+                {businessCriticalityLevels.map(level => (
+                  <option key={level.id} value={level.id}>{level.name}</option>
+                ))}
+              </select>
+              {selectedBusinessCriticality && (
+                <div className="mt-2 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                  <p className="text-sm text-orange-800 dark:text-orange-200">{selectedBusinessCriticality.description}</p>
+                  <p className="text-xs text-orange-600 dark:text-orange-400 mt-1">
+                    Risk Multiplier: {selectedBusinessCriticality.riskMultiplier}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Data Classification */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Data Classification *
+              </label>
+              <select
+                value={formData.dataClassification}
+                onChange={(e) => setFormData(prev => ({ ...prev, dataClassification: e.target.value }))}
+                disabled={!canCreate}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+              >
+                <option value="">Select Data Classification</option>
+                {dataClassifications.map(classification => (
+                  <option key={classification.id} value={classification.id}>{classification.name}</option>
+                ))}
+              </select>
+              {selectedDataClassification && (
+                <div className="mt-2 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                  <p className="text-sm text-green-800 dark:text-green-200">{selectedDataClassification.description}</p>
+                  <p className="text-xs text-green-600 dark:text-green-400 mt-1">
+                    Risk Level: {selectedDataClassification.riskLevel}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* User Base */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                User Base Size *
+              </label>
+              <select
+                value={formData.userBase}
+                onChange={(e) => setFormData(prev => ({ ...prev, userBase: e.target.value }))}
+                disabled={!canCreate}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+              >
+                <option value="">Select User Base Size</option>
+                {userBaseSizes.map(size => (
+                  <option key={size.id} value={size.id}>{size.name}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Geographic Scope */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Geographic Scope *
+              </label>
+              <select
+                value={formData.geographicScope}
+                onChange={(e) => setFormData(prev => ({ ...prev, geographicScope: e.target.value }))}
+                disabled={!canCreate}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+              >
+                <option value="">Select Geographic Scope</option>
+                {geographicScopes.map(scope => (
+                  <option key={scope.id} value={scope.id}>{scope.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* EU TEVV Required Fields */}
+        <div className="bg-gradient-to-r from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
+              <Target className="w-4 h-4 text-white" />
+            </div>
+            <h3 className="text-xl font-bold text-purple-900 dark:text-purple-100">EU AI Act TEVV Requirements</h3>
+            <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 text-sm rounded-full font-medium">
+              Testing, Evaluation, Validation, Verification
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* EU AI Act Risk Class */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                EU AI Act Risk Classification *
+              </label>
+              <select
+                value={formData.euAiActRiskClass}
+                onChange={(e) => setFormData(prev => ({ ...prev, euAiActRiskClass: e.target.value }))}
+                disabled={!canCreate}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 disabled:opacity-50"
+              >
+                <option value="">Select Risk Classification</option>
+                {euAiActRiskClasses.map(riskClass => (
+                  <option key={riskClass.id} value={riskClass.id}>{riskClass.name}</option>
+                ))}
+              </select>
+              {selectedEuRiskClass && (
+                <div className="mt-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <p className="text-sm text-gray-800 dark:text-gray-200">{selectedEuRiskClass.description}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Human Oversight */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Human Oversight Level *
+              </label>
+              <select
+                value={formData.humanOversight}
+                onChange={(e) => setFormData(prev => ({ ...prev, humanOversight: e.target.value }))}
+                disabled={!canCreate}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 disabled:opacity-50"
+              >
+                <option value="">Select Human Oversight Level</option>
+                {humanOversightLevels.map(level => (
+                  <option key={level.id} value={level.id}>{level.name}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Intended Purpose */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Intended Purpose *
+              </label>
+              <textarea
+                value={formData.intendedPurpose}
+                onChange={(e) => setFormData(prev => ({ ...prev, intendedPurpose: e.target.value }))}
+                placeholder="Describe the intended purpose and use of the AI system..."
+                disabled={!canCreate}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 disabled:opacity-50 h-20 resize-none"
+              />
+            </div>
+
+            {/* Target Users */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Target Users *
+              </label>
+              <input
+                type="text"
+                value={formData.targetUsers}
+                onChange={(e) => setFormData(prev => ({ ...prev, targetUsers: e.target.value }))}
+                placeholder="e.g., Healthcare professionals, Financial analysts, General public"
+                disabled={!canCreate}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 disabled:opacity-50"
+              />
+            </div>
+
+            {/* Deployment Context */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Deployment Context *
+              </label>
+              <select
+                value={formData.deploymentContext}
+                onChange={(e) => setFormData(prev => ({ ...prev, deploymentContext: e.target.value }))}
+                disabled={!canCreate}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 disabled:opacity-50"
+              >
+                <option value="">Select Deployment Context</option>
+                {deploymentContexts.map(context => (
+                  <option key={context.id} value={context.id}>{context.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Technical Architecture */}
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+              <Brain className="w-4 h-4 text-white" />
+            </div>
+            <h3 className="text-xl font-bold text-green-900 dark:text-green-100">Technical Architecture</h3>
+            <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-sm rounded-full font-medium">
+              Required
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Model Provider */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Model Provider *
+              </label>
+              <select
+                value={formData.modelProvider}
+                onChange={(e) => setFormData(prev => ({ ...prev, modelProvider: e.target.value }))}
+                disabled={!canCreate}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+              >
+                <option value="">Select Model Provider</option>
+                {modelProviders.map(provider => (
+                  <option key={provider} value={provider}>{provider}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Model Type */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Model Type *
+              </label>
+              <select
+                value={formData.modelType}
+                onChange={(e) => setFormData(prev => ({ ...prev, modelType: e.target.value }))}
+                disabled={!canCreate}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+              >
+                <option value="">Select Model Type</option>
+                {modelTypes.map(type => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Data Flow */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Data Flow Pattern *
+              </label>
+              <select
+                value={formData.dataFlow}
+                onChange={(e) => setFormData(prev => ({ ...prev, dataFlow: e.target.value }))}
+                disabled={!canCreate}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+              >
+                <option value="">Select Data Flow Pattern</option>
+                {dataFlowPatterns.map(pattern => (
+                  <option key={pattern} value={pattern}>{pattern}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Integration Pattern */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Integration Pattern *
+              </label>
+              <select
+                value={formData.integrationPattern}
+                onChange={(e) => setFormData(prev => ({ ...prev, integrationPattern: e.target.value }))}
+                disabled={!canCreate}
+                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+              >
+                <option value="">Select Integration Pattern</option>
+                {integrationPatterns.map(pattern => (
+                  <option key={pattern} value={pattern}>{pattern}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
         {/* Optional Integration Section */}
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center">
                 <Settings className="w-4 h-4 text-white" />
               </div>
               <div>
@@ -532,29 +853,17 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
               </div>
             </div>
             
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={() => setShowIntegrationDetails(!showIntegrationDetails)}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2"
-              >
-                <Settings className="w-4 h-4" />
-                <span>{showIntegrationDetails ? 'Hide' : 'Show'} Integration</span>
-              </button>
-              
-              {canCreate && (
-                <button
-                  disabled={!formData.applicationName || !formData.applicationType || !formData.domain || !formData.environment || !formData.businessCriticality || !formData.dataClassification || !formData.euAiActRiskClass || !formData.intendedPurpose || !formData.modelProvider}
-                  className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors flex items-center space-x-2"
-                >
-                  <SkipForward className="w-4 h-4" />
-                  <span>Skip for Now</span>
-                </button>
-              )}
-            </div>
+            <button
+              onClick={() => setShowIntegrationDetails(!showIntegrationDetails)}
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2"
+            >
+              <Settings className="w-4 h-4" />
+              <span>{showIntegrationDetails ? 'Hide' : 'Show'} Integration</span>
+            </button>
           </div>
 
           {showIntegrationDetails && (
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-200 dark:border-green-700">
+            <div className="bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-900/20 dark:to-slate-900/20 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
               <div className="space-y-6">
                 {/* API Configuration */}
                 <div>
@@ -574,7 +883,7 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
                         onChange={(e) => setFormData(prev => ({ ...prev, apiEndpoint: e.target.value }))}
                         placeholder="https://api.company.com/ai/chat"
                         disabled={!canCreate}
-                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-500 disabled:opacity-50"
                       />
                     </div>
                     
@@ -586,7 +895,7 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
                         value={formData.authMethod}
                         onChange={(e) => setFormData(prev => ({ ...prev, authMethod: e.target.value }))}
                         disabled={!canCreate}
-                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-500 disabled:opacity-50"
                       >
                         <option value="">Select Auth Method</option>
                         {authMethods.map(method => (
@@ -609,7 +918,7 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
                           onChange={(e) => setFormData(prev => ({ ...prev, apiKey: e.target.value }))}
                           placeholder="sk-proj-... or bearer token"
                           disabled={!canCreate}
-                          className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+                          className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-500 disabled:opacity-50"
                         />
                       </div>
                     </div>
@@ -666,7 +975,7 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
                       </p>
                       <button 
                         disabled={!canCreate}
-                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Choose Files
                       </button>
@@ -687,7 +996,7 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
                     onChange={(e) => setFormData(prev => ({ ...prev, dbConnection: e.target.value }))}
                     placeholder="postgresql://user:pass@host:port/db or mongodb://..."
                     disabled={!canCreate}
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-500 disabled:opacity-50"
                   />
                   <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
                     Connection string for knowledge base or vector database
@@ -703,7 +1012,7 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-600 dark:text-gray-400">
               {!canCreate ? "View-only mode - Contact administrator for setup access" : 
-               "Complete mandatory fields to proceed to Use Case Definition"}
+               "Complete all required fields to proceed to Use Case Definition"}
             </div>
             
             <div className="flex items-center space-x-3">
@@ -711,7 +1020,6 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
                 <>
                   <button 
                     onClick={() => {
-                      // Save draft functionality
                       console.log('Draft saved:', formData);
                     }}
                     className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2"
@@ -729,7 +1037,7 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
                   
                   <button 
                     onClick={handleComplete}
-                    disabled={!formData.applicationName || !formData.applicationType || !formData.domain || !formData.environment}
+                    disabled={!validateMandatoryFields()}
                     className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg flex items-center space-x-2"
                   >
                     <span>Complete Setup</span>
@@ -751,74 +1059,64 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            {/* Application Profile Object */}
             <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
               <h4 className="font-medium text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
                 <Database className="w-4 h-4 text-emerald-600" />
-                <span>Application Profile Object</span>
+                <span>Application Profile</span>
               </h4>
               <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                <div>App ID: app_{Date.now()}</div>
                 <div>Name: {formData.applicationName}</div>
                 <div>Type: {formData.applicationType}</div>
                 <div>Domain: {formData.domain}</div>
                 <div>Environment: {formData.environment}</div>
-                <div>Integration: {formData.skipIntegration ? 'Skipped' : 'Configured'}</div>
+                <div>Risk Class: {formData.euAiActRiskClass}</div>
               </div>
             </div>
             
-            {/* Audit Log Entry */}
             <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
               <h4 className="font-medium text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
                 <FileText className="w-4 h-4 text-emerald-600" />
-                <span>Audit Log Entry</span>
+                <span>Compliance Context</span>
               </h4>
               <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                <div>Action: Application Setup completed</div>
-                <div>User: {currentUser?.name || 'System User'}</div>
-                <div>Timestamp: {new Date().toLocaleString()}</div>
-                <div>Status: Profile Created</div>
+                <div>NIST RMF: Ready</div>
+                <div>EU TEVV: Configured</div>
+                <div>Business Criticality: {formData.businessCriticality}</div>
+                <div>Data Classification: {formData.dataClassification}</div>
               </div>
             </div>
             
-            {/* Evidence Stub */}
             <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
               <h4 className="font-medium text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
                 <Shield className="w-4 h-4 text-emerald-600" />
-                <span>Evidence Stub</span>
+                <span>Evidence Package</span>
               </h4>
               <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                <div>Format: JSON Export</div>
-                <div>Compliance: NIST RMF, EU AI Act</div>
+                <div>Profile Created: ✓</div>
+                <div>Audit Log: Generated</div>
+                <div>Export Ready: JSON/CSV</div>
                 <div>Traceability: Ready</div>
-                <div>Audit Ready: ✓</div>
               </div>
             </div>
           </div>
 
-          {/* Next Step Indicator */}
           <div className="bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 p-4 rounded-lg">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <ArrowRight className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 <div>
                   <div className="font-semibold text-blue-900 dark:text-blue-100">
-                    Ready for Step 2: Use Case Definition
+                    Navigating to Use Case Definition...
                   </div>
                   <div className="text-sm text-blue-800 dark:text-blue-200">
                     Application profile will be used as context for business scenario mapping
                   </div>
                 </div>
               </div>
-              <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg flex items-center space-x-2">
-                <span>Proceed to Use Cases</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
             </div>
           </div>
         </div>
       )}
-
     </div>
   );
 };
