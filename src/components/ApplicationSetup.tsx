@@ -152,50 +152,6 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
         </div>
       </div>
 
-      {/* Input/Output Flow Visualization */}
-      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-700">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Inputs */}
-          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-            <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-3 flex items-center space-x-2">
-              <ArrowDown className="w-4 h-4" />
-              <span>Required Inputs</span>
-            </h3>
-            <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
-              <li>• Application metadata & API config</li>
-              <li>• NIST RMF classification data</li>
-              <li>• EU AI Act risk assessment</li>
-              <li>• Technical architecture details</li>
-              <li>• Compliance framework mapping</li>
-            </ul>
-          </div>
-
-          {/* Processing */}
-          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm text-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center mx-auto mb-3">
-              <Database className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Application Profiling</h3>
-            <p className="text-sm text-blue-800 dark:text-blue-200">Creating baseline context</p>
-          </div>
-
-          {/* Outputs */}
-          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-            <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-3 flex items-center space-x-2">
-              <ArrowRight className="w-4 h-4" />
-              <span>Generated Outputs</span>
-            </h3>
-            <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
-              <li>• Application Profile created</li>
-              <li>• Context Baseline established</li>
-              <li>• Integration verified</li>
-              <li>• Ready for use case mapping</li>
-              <li>• Evidence: Setup documentation</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
       {/* Main Form */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
         <div className="p-6 space-y-8">
