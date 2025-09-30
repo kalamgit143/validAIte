@@ -65,7 +65,7 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
     applicableFrameworks: [] as string[],
     stakeholderImpact: '',
     riskMitigation: '',
-    
+
     // API Configuration
     apiEndpoint: '',
     authMethod: '',
@@ -91,34 +91,72 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
   };
 
   const handleComplete = () => {
-    // Validate required fields
+    // Check all mandatory fields are filled
     const requiredFields = [
       'applicationName',
+      'applicationDescription',
       'businessCriticality',
+      'dataClassification',
       'euAiActRiskClass',
       'intendedPurpose',
+      'targetUsers',
+      'humanOversightLevel',
       'modelProvider',
       'modelType'
     ];
 
-    const missingFields = requiredFields.filter(field => !formData[field as keyof typeof formData]);
+    const missingFields = requiredFields.filter(field => {
+      const value = formData[field as keyof typeof formData];
+      return !value || (Array.isArray(value) && value.length === 0);
+    });
     
     if (missingFields.length > 0) {
-      alert(`Please fill in all required fields: ${missingFields.join(', ')}`);
+      alert(`Please fill in all required fields: ${missingFields.map(f => f.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())).join(', ')}`);
+      return;
+    }
+
+    // Check if at least one compliance framework is selected
+    if (formData.applicableFrameworks.length === 0) {
+      alert('Please select at least one applicable compliance framework');
       return;
     }
 
     setIsComplete(true);
     
-    // Navigate to Use Case Definition
-    if (onNavigateToUseCase) {
-      setTimeout(() => {
+    // Navigate to Use Case Definition after a brief delay
+    setTimeout(() => {
+      if (onNavigateToUseCase) {
         onNavigateToUseCase();
-      }, 1000);
-    }
+      }
+    }, 1500);
   };
 
   const canCreate = canPerformAction ? canPerformAction('Risk Mapping & Governance', 'C') : true;
+
+  // Check if all mandatory fields are filled
+  const isMandatoryFieldsFilled = () => {
+    const requiredFields = [
+      'applicationName',
+      'applicationDescription', 
+      'businessCriticality',
+      'dataClassification',
+      'euAiActRiskClass',
+      'intendedPurpose',
+      'targetUsers',
+      'humanOversightLevel',
+      'modelProvider',
+      'modelType'
+    ];
+
+    const allFieldsFilled = requiredFields.every(field => {
+      const value = formData[field as keyof typeof formData];
+      return value && value.toString().trim() !== '';
+    });
+
+    const hasFrameworks = formData.applicableFrameworks.length > 0;
+
+    return allFieldsFilled && hasFrameworks;
+  };
 
   return (
     <div className="space-y-8">
@@ -611,16 +649,25 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
         </div>
 
         {/* Action Bar */}
-        <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 rounded-b-xl">
+        <div className="border-t border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center justify-between">
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              Complete all required fields to proceed to Use Case Definition
+            <div className="flex items-center space-x-4">
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                {isMandatoryFieldsFilled() ? (
+                  <span className="text-green-600 dark:text-green-400 flex items-center space-x-1">
+                    <CheckCircle className="w-4 h-4" />
+                    <span>All required fields completed</span>
+                  </span>
+                ) : (
+                  <span>Complete all required fields to proceed</span>
+                )}
+              </div>
             </div>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
               <button
                 type="button"
-                className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors flex items-center space-x-2"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center space-x-2"
               >
                 <Save className="w-4 h-4" />
                 <span>Save Draft</span>
@@ -628,10 +675,9 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
               
               <button
                 onClick={handleComplete}
-                disabled={!canCreate}
+                disabled={!isMandatoryFieldsFilled() || !canCreate}
                 className="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center space-x-2"
               >
-                <CheckCircle className="w-4 h-4" />
                 <span>Complete Setup</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
