@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Target, Users, CheckCircle, XCircle, Clock, AlertTriangle, Eye, CreditCard as Edit, Download, Plus, Filter, Search, BarChart3, Activity, Shield, FileText, Crown, Gavel, Code, Building, Globe, Lock, Brain, Heart, Scale, Database, Settings, Calendar, Mail, Phone, ExternalLink, ArrowRight, ArrowDown, ArrowLeft, Layers, Save, Grid2x2 as Grid, List, Table } from 'lucide-react';
+import { Target, Users, CheckCircle, XCircle, Clock, AlertTriangle, Eye, Edit, Download, Plus, Filter, Search, BarChart3, Activity, Shield, FileText, Crown, Gavel, Code, Building, Globe, Lock, Brain, Heart, Scale, Database, Settings, Calendar, Mail, Phone, ExternalLink, ArrowRight, ArrowDown, ArrowLeft, Layers, Save, Grid2x2 as Grid, List, Table } from 'lucide-react';
 
 interface GovernanceMatrixProps {
   currentUser?: any;
@@ -15,164 +15,152 @@ const GovernanceMatrix: React.FC<GovernanceMatrixProps> = ({
   const [activeView, setActiveView] = useState('matrix');
   const [selectedApplication, setSelectedApplication] = useState('healthcare_triage');
   const [isComplete, setIsComplete] = useState(false);
+  const [editingCell, setEditingCell] = useState<{ rowId: string, field: string } | null>(null);
 
-  // Mock input from Governance Controls (Component 4)
-  const inputFromGovernanceControls = {
-    controlFramework: [
-      {
-        riskId: 'scenario_001_hallucination',
-        riskName: 'Medical Hallucination Risk',
-        controls: [
-          { controlId: 'ctrl_001', controlName: 'Canonical KB Tagging', effectiveness: 92 },
-          { controlId: 'ctrl_002', controlName: 'Grounding Threshold Control', effectiveness: 88 },
-          { controlId: 'ctrl_005', controlName: 'HITL Fallback', effectiveness: 94 }
-        ],
-        mitigationLevel: 91,
-        residualRisk: 'medium'
-      }
-    ],
-    controlTypes: {
-      preventive: 3,
-      detective: 2,
-      corrective: 1
-    }
+  // Mock Application Profile from Step 1
+  const applicationProfile = {
+    name: 'Healthcare Triage Assistant',
+    type: 'LLM+RAG',
+    domain: 'Healthcare',
+    environment: 'Production',
+    businessCriticality: 'Mission Critical',
+    euAiActClass: 'High Risk',
+    oversightLevel: 'Human-in-the-Loop'
   };
 
-  // Complete Governance Matrix
-  const governanceMatrix = {
-    applicationId: 'healthcare_triage',
-    applicationName: 'Healthcare Triage Assistant',
-    
-    // Complete traceability chain
-    traceabilityChain: [
-      {
-        useCase: {
-          id: 'scenario_001',
-          name: 'Emergency Patient Triage',
-          source: 'Emergency Department Workflow',
-          context: 'High-criticality patient assessment'
-        },
-        risks: [
-          {
-            id: 'scenario_001_hallucination',
-            category: 'Medical Hallucination',
-            severity: 'high',
-            likelihood: 'medium',
-            impact: 'catastrophic'
-          }
-        ],
-        controls: [
-          {
-            id: 'ctrl_001',
-            name: 'Canonical KB Tagging',
-            type: 'preventive',
-            effectiveness: 92
-          },
-          {
-            id: 'ctrl_005',
-            name: 'HITL Fallback',
-            type: 'corrective',
-            effectiveness: 94
-          }
-        ],
-        complianceMapping: {
-          'NIST RMF': ['GOVERN-1.1', 'MEASURE-2.3', 'MANAGE-1.2'],
-          'EU AI Act': ['Art-9 Risk Management', 'Art-14 Human Oversight'],
-          'HIPAA': ['164.312 Access Control', '164.308 Security']
-        },
-        evidenceNeeded: [
-          'Medical KB validation reports',
-          'Human oversight procedures',
-          'Triage accuracy metrics',
-          'Bias testing results'
-        ]
-      }
+  // Mock input from previous steps
+  const inputFromPreviousSteps = {
+    useCases: [
+      { id: 'UC1', title: 'Emergency Patient Triage', criticality: 'High' },
+      { id: 'UC2', title: 'Symptom Documentation', criticality: 'Medium' },
+      { id: 'UC3', title: 'Treatment Recommendation', criticality: 'High' }
     ],
-    
-    // Governance stakeholders
-    stakeholders: {
-      riskOwner: { name: 'Sarah Chen', role: 'CIO', status: 'assigned', contact: 'sarah.chen@acme.com' },
-      securityOwner: { name: 'Alex Kim', role: 'CISO', status: 'assigned', contact: 'alex.kim@acme.com' },
-      complianceOfficer: { name: 'Emily Davis', role: 'Compliance Officer', status: 'assigned', contact: 'emily.davis@acme.com' },
-      qaLead: { name: 'Jordan Smith', role: 'QA Lead', status: 'assigned', contact: 'jordan.smith@acme.com' },
-      ethicsReviewer: { name: 'Dr. Sarah Chen', role: 'Medical Ethics Board', status: 'assigned', contact: 'ethics@acme.com' },
-      domainExpert: { name: 'Dr. Michael Torres', role: 'Emergency Medicine', status: 'assigned', contact: 'medical@acme.com' }
-    },
-    
-    // Approval workflow
-    approvalWorkflow: [
-      { step: 1, role: 'QA Lead', task: 'Risk assessment completion', status: 'completed', completedAt: '2024-01-10T10:00:00Z' },
-      { step: 2, role: 'CISO', task: 'Security review & threat model', status: 'completed', completedAt: '2024-01-12T14:00:00Z' },
-      { step: 3, role: 'Compliance Officer', task: 'Regulatory mapping validation', status: 'completed', completedAt: '2024-01-13T16:00:00Z' },
-      { step: 4, role: 'Ethics Reviewer', task: 'Medical ethics assessment', status: 'completed', completedAt: '2024-01-14T11:00:00Z' },
-      { step: 5, role: 'Domain Expert', task: 'Medical accuracy validation', status: 'completed', completedAt: '2024-01-14T15:00:00Z' },
-      { step: 6, role: 'CIO', task: 'Strategic approval & deployment', status: 'approved', completedAt: '2024-01-15T09:00:00Z' }
+    risks: [
+      { id: 'RR001', useCaseId: 'UC1', useCaseName: 'Emergency Patient Triage', riskName: 'Hallucination', severity: 'High', likelihood: 'Frequent' },
+      { id: 'RR002', useCaseId: 'UC1', useCaseName: 'Emergency Patient Triage', riskName: 'Grounding Gap', severity: 'Medium', likelihood: 'Occasional' },
+      { id: 'RR003', useCaseId: 'UC2', useCaseName: 'Symptom Documentation', riskName: 'Privacy Leakage', severity: 'High', likelihood: 'Rare' },
+      { id: 'RR004', useCaseId: 'UC3', useCaseName: 'Treatment Recommendation', riskName: 'Bias/Fairness', severity: 'Medium', likelihood: 'Occasional' }
     ],
-    
-    governanceStatus: 'approved',
-    deploymentAuthorized: true,
-    lastUpdated: '2024-01-15T09:00:00Z'
+    controls: [
+      { id: 'CF001', riskId: 'RR001', controlName: 'Canonical KB Tagging', controlType: 'Preventive', owner: 'Governance Lead', effectiveness: 'High' },
+      { id: 'CF002', riskId: 'RR001', controlName: 'HITL Fallback', controlType: 'Corrective', owner: 'Domain Reviewer', effectiveness: 'High' },
+      { id: 'CF003', riskId: 'RR002', controlName: 'Grounding Threshold', controlType: 'Preventive', owner: 'QA Engineer', effectiveness: 'Medium' },
+      { id: 'CF004', riskId: 'RR003', controlName: 'PII Masking', controlType: 'Preventive', owner: 'SecOps Engineer', effectiveness: 'High' },
+      { id: 'CF005', riskId: 'RR004', controlName: 'Red-Team Testing', controlType: 'Detective', owner: 'SecOps Engineer', effectiveness: 'Medium' }
+    ]
   };
 
-  // Generated final output
-  const generateOutput = () => {
-    return {
-      masterTraceabilityArtifact: {
-        useCases: governanceMatrix.traceabilityChain.map(chain => chain.useCase),
-        risks: governanceMatrix.traceabilityChain.flatMap(chain => chain.risks),
-        controls: governanceMatrix.traceabilityChain.flatMap(chain => chain.controls),
-        complianceMapping: governanceMatrix.traceabilityChain.reduce((acc, chain) => ({
-          ...acc,
-          ...chain.complianceMapping
-        }), {}),
-        evidenceRequirements: governanceMatrix.traceabilityChain.flatMap(chain => chain.evidenceNeeded)
-      },
-      governanceReport: {
-        applicationId: governanceMatrix.applicationId,
-        applicationName: governanceMatrix.applicationName,
-        governanceStatus: governanceMatrix.governanceStatus,
-        deploymentAuthorized: governanceMatrix.deploymentAuthorized,
-        stakeholderAssignments: governanceMatrix.stakeholders,
-        approvalWorkflow: governanceMatrix.approvalWorkflow,
-        exportFormats: ['PDF', 'JSON', 'CSV'],
-        auditReady: true,
-        timestamp: new Date().toISOString()
-      }
-    };
+  // Auto-generated Governance Matrix
+  const [governanceMatrix, setGovernanceMatrix] = useState(() => {
+    return inputFromPreviousSteps.risks.map(risk => {
+      const useCase = inputFromPreviousSteps.useCases.find(uc => uc.id === risk.useCaseId);
+      const riskControls = inputFromPreviousSteps.controls.filter(c => c.riskId === risk.id);
+      
+      return {
+        id: `GM${risk.id}`,
+        useCase: useCase?.title || '',
+        useCaseId: risk.useCaseId,
+        risk: risk.riskName,
+        riskId: risk.id,
+        severity: risk.severity,
+        likelihood: risk.likelihood,
+        controls: riskControls.map(c => c.controlName).join(', '),
+        controlDetails: riskControls,
+        complianceMapping: ['EU AI Act', 'NIST RMF'], // Default mappings
+        evidenceRequired: 'Grounding score logs, KB references, HITL validation notes',
+        lastUpdated: new Date().toISOString(),
+        updatedBy: currentUser?.name || 'System'
+      };
+    });
+  });
+
+  const complianceFrameworks = [
+    'NIST RMF',
+    'EU AI Act', 
+    'ISO/IEC 25010',
+    'ISO/IEC 27001',
+    'OWASP LLM Top-10',
+    'GDPR',
+    'HIPAA',
+    'SOX',
+    'CCPA'
+  ];
+
+  const evidenceTypes = [
+    'Grounding score logs',
+    'KB references',
+    'HITL validation notes',
+    'Monitoring alerts',
+    'Test execution logs',
+    'Bias testing results',
+    'Security scan reports',
+    'User feedback transcripts',
+    'Performance metrics',
+    'Audit trail logs'
+  ];
+
+  const handleCellEdit = (rowId: string, field: string, value: string | string[]) => {
+    setGovernanceMatrix(prev => prev.map(row => 
+      row.id === rowId ? { ...row, [field]: value, lastUpdated: new Date().toISOString(), updatedBy: currentUser?.name || 'User' } : row
+    ));
+    setEditingCell(null);
   };
 
   const handleComplete = () => {
     setIsComplete(true);
-    console.log('Governance Matrix Output:', generateOutput());
   };
 
   const canCreate = canPerformAction ? canPerformAction('Risk Mapping & Governance', 'C') : true;
-  const canApprove = canPerformAction ? canPerformAction('Risk Mapping & Governance', 'A') : false;
+  const canEdit = canPerformAction ? canPerformAction('Risk Mapping & Governance', 'E') : true;
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'completed':
-      case 'approved':
-      case 'assigned': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
-      case 'in_progress': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
-      case 'pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
-      case 'rejected':
-      case 'failed': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
+  const getSeverityColor = (severity: string) => {
+    switch (severity.toLowerCase()) {
+      case 'high': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
+      case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
+      case 'low': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
       default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400';
     }
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'completed':
-      case 'approved':
-      case 'assigned': return <CheckCircle className="w-4 h-4" />;
-      case 'in_progress': return <Clock className="w-4 h-4" />;
-      case 'pending': return <Clock className="w-4 h-4" />;
-      case 'rejected':
-      case 'failed': return <XCircle className="w-4 h-4" />;
-      default: return <AlertTriangle className="w-4 h-4" />;
+  const getLikelihoodColor = (likelihood: string) => {
+    switch (likelihood.toLowerCase()) {
+      case 'frequent': return 'bg-red-500 text-white';
+      case 'occasional': return 'bg-yellow-500 text-gray-900';
+      case 'rare': return 'bg-green-500 text-white';
+      default: return 'bg-gray-500 text-white';
     }
+  };
+
+  const exportMatrix = (format: 'json' | 'csv' | 'pdf') => {
+    const exportData = governanceMatrix.map(row => ({
+      use_case: row.useCase,
+      risk: row.risk,
+      severity: row.severity,
+      likelihood: row.likelihood,
+      controls: row.controls,
+      compliance_mapping: row.complianceMapping.join(', '),
+      evidence_required: row.evidenceRequired
+    }));
+
+    if (format === 'json') {
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'governance-matrix.json';
+      a.click();
+    } else if (format === 'csv') {
+      const headers = Object.keys(exportData[0]).join(',');
+      const rows = exportData.map(row => Object.values(row).map(val => `"${val}"`).join(','));
+      const csv = [headers, ...rows].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'governance-matrix.csv';
+      a.click();
+    }
+    // PDF export would be handled by a PDF library
   };
 
   return (
@@ -192,84 +180,84 @@ const GovernanceMatrix: React.FC<GovernanceMatrixProps> = ({
           </div>
           <p className="text-gray-600 dark:text-gray-400">Generate unified traceability matrix for Stage 2 (Trust Metrics)</p>
         </div>
-        
-        {/* Flow Navigation */}
       </div>
 
-      {/* Input from Previous Component */}
+      {/* Application Profile Banner */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-700">
+        <div className="flex items-center space-x-3 mb-4">
+          <Database className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+          <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100">Application Profile</h3>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 text-sm">
+          <div>
+            <span className="text-blue-600 dark:text-blue-400 font-medium">Application:</span>
+            <div className="text-blue-900 dark:text-blue-100 font-semibold">{applicationProfile.name}</div>
+          </div>
+          <div>
+            <span className="text-blue-600 dark:text-blue-400 font-medium">Type:</span>
+            <div className="text-blue-900 dark:text-blue-100">{applicationProfile.type}</div>
+          </div>
+          <div>
+            <span className="text-blue-600 dark:text-blue-400 font-medium">Domain:</span>
+            <div className="text-blue-900 dark:text-blue-100">{applicationProfile.domain}</div>
+          </div>
+          <div>
+            <span className="text-blue-600 dark:text-blue-400 font-medium">Environment:</span>
+            <div className="text-blue-900 dark:text-blue-100">{applicationProfile.environment}</div>
+          </div>
+          <div>
+            <span className="text-blue-600 dark:text-blue-400 font-medium">Criticality:</span>
+            <div className="text-blue-900 dark:text-blue-100">{applicationProfile.businessCriticality}</div>
+          </div>
+          <div>
+            <span className="text-blue-600 dark:text-blue-400 font-medium">EU AI Act:</span>
+            <div className="text-blue-900 dark:text-blue-100">{applicationProfile.euAiActClass}</div>
+          </div>
+          <div>
+            <span className="text-blue-600 dark:text-blue-400 font-medium">Oversight:</span>
+            <div className="text-blue-900 dark:text-blue-100">{applicationProfile.oversightLevel}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Input from Previous Steps */}
       <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-6 rounded-xl border border-purple-200 dark:border-purple-700">
         <div className="flex items-center space-x-3 mb-4">
           <ArrowLeft className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-          <h3 className="font-semibold text-purple-900 dark:text-purple-100">Input from Governance Controls</h3>
+          <h3 className="font-semibold text-purple-900 dark:text-purple-100">Input from Previous Steps</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
-            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Control Framework</h4>
+            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Use Cases (Step 2)</h4>
             <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-              <div>Risk-Control Mappings: {inputFromGovernanceControls.controlFramework.length}</div>
-              <div>Avg Mitigation: {inputFromGovernanceControls.controlFramework[0]?.mitigationLevel}%</div>
-              <div>Controls Ready: ✓</div>
+              <div>Total: {inputFromPreviousSteps.useCases.length}</div>
+              <div>High Criticality: {inputFromPreviousSteps.useCases.filter(uc => uc.criticality === 'High').length}</div>
+              <div>Ready: ✓</div>
             </div>
           </div>
           <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
-            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Control Types</h4>
+            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Risks (Step 3)</h4>
             <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-              <div>Preventive: {inputFromGovernanceControls.controlTypes.preventive}</div>
-              <div>Detective: {inputFromGovernanceControls.controlTypes.detective}</div>
-              <div>Corrective: {inputFromGovernanceControls.controlTypes.corrective}</div>
+              <div>Total: {inputFromPreviousSteps.risks.length}</div>
+              <div>High Severity: {inputFromPreviousSteps.risks.filter(r => r.severity === 'High').length}</div>
+              <div>Ready: ✓</div>
             </div>
           </div>
           <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
-            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Ready for Matrix</h4>
+            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Controls (Step 4)</h4>
+            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+              <div>Total: {inputFromPreviousSteps.controls.length}</div>
+              <div>High Effectiveness: {inputFromPreviousSteps.controls.filter(c => c.effectiveness === 'High').length}</div>
+              <div>Ready: ✓</div>
+            </div>
+          </div>
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Matrix Generation</h4>
             <div className="text-sm text-green-600 dark:text-green-400 space-y-1">
-              <div>✓ Controls assigned</div>
-              <div>✓ Mitigation calculated</div>
-              <div>✓ Ready for traceability</div>
+              <div>✓ Auto-generated</div>
+              <div>✓ Traceability complete</div>
+              <div>✓ Ready for review</div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Input/Output Flow Visualization */}
-      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 p-6 rounded-xl border border-indigo-200 dark:border-indigo-700">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Inputs */}
-          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-            <h3 className="font-semibold text-indigo-900 dark:text-indigo-100 mb-3 flex items-center space-x-2">
-              <ArrowDown className="w-4 h-4" />
-              <span>Required Inputs</span>
-            </h3>
-            <ul className="space-y-2 text-sm text-indigo-800 dark:text-indigo-200">
-              <li>• Use cases (Step 2)</li>
-              <li>• Risks (Step 3)</li>
-              <li>• Controls (Step 4)</li>
-              <li>• Compliance frameworks</li>
-              <li>• Stakeholder assignments</li>
-            </ul>
-          </div>
-
-          {/* Processing */}
-          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm text-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-3">
-              <Target className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="font-semibold text-indigo-900 dark:text-indigo-100 mb-2">Matrix Generation</h3>
-            <p className="text-sm text-indigo-800 dark:text-indigo-200">Creating unified traceability</p>
-          </div>
-
-          {/* Outputs */}
-          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-            <h3 className="font-semibold text-indigo-900 dark:text-indigo-100 mb-3 flex items-center space-x-2">
-              <ArrowRight className="w-4 h-4" />
-              <span>Generated Outputs</span>
-            </h3>
-            <ul className="space-y-2 text-sm text-indigo-800 dark:text-indigo-200">
-              <li>• Master traceability artifact</li>
-              <li>• Governance report (PDF/JSON/CSV)</li>
-              <li>• Evidence requirements mapped</li>
-              <li>• Compliance framework aligned</li>
-              <li>• Ready for Trust Metrics Engine</li>
-            </ul>
           </div>
         </div>
       </div>
@@ -279,8 +267,8 @@ const GovernanceMatrix: React.FC<GovernanceMatrixProps> = ({
         <div className="border-b border-gray-200 dark:border-gray-700">
           <div className="flex space-x-8 px-6">
             {[
-              { id: 'matrix', label: 'Traceability Matrix', icon: Grid },
-              { id: 'stakeholders', label: 'Stakeholder Matrix', icon: Users }
+              { id: 'matrix', label: 'Governance Matrix', icon: Grid },
+              { id: 'compliance', label: 'Compliance Picker', icon: Shield }
             ].map(tab => {
               const Icon = tab.icon;
               return (
@@ -304,7 +292,37 @@ const GovernanceMatrix: React.FC<GovernanceMatrixProps> = ({
         <div className="p-6">
           {activeView === 'matrix' ? (
             <div className="space-y-6">
-              {/* Complete Traceability Matrix */}
+              {/* Export Options */}
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Auto-Generated Governance Matrix
+                </h3>
+                <div className="flex items-center space-x-3">
+                  <button 
+                    onClick={() => exportMatrix('json')}
+                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Export JSON</span>
+                  </button>
+                  <button 
+                    onClick={() => exportMatrix('csv')}
+                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Export CSV</span>
+                  </button>
+                  <button 
+                    onClick={() => exportMatrix('pdf')}
+                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Export PDF</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Governance Matrix Table */}
               <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 border border-indigo-200 dark:border-indigo-700 rounded-xl p-6">
                 <div className="flex items-center space-x-3 mb-6">
                   <Target className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
@@ -318,75 +336,111 @@ const GovernanceMatrix: React.FC<GovernanceMatrixProps> = ({
                     <thead className="bg-white/50 dark:bg-gray-800/50">
                       <tr>
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Use Case</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Source/Context</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Risk</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Control</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Compliance</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Evidence</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Control(s) Assigned</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Compliance Mapping</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Evidence Required</th>
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                      {governanceMatrix.traceabilityChain.map((chain, index) => (
-                        <tr key={index} className="bg-white/30 dark:bg-gray-800/30">
+                      {governanceMatrix.map((row, index) => (
+                        <tr key={row.id} className="bg-white/30 dark:bg-gray-800/30 hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors">
                           <td className="px-4 py-4">
-                            <div className="font-medium text-gray-900 dark:text-white text-sm">{chain.useCase.name}</div>
-                            <div className="text-xs text-gray-600 dark:text-gray-400">{chain.useCase.id}</div>
+                            <div className="font-medium text-gray-900 dark:text-white text-sm">{row.useCase}</div>
+                            <div className="text-xs text-gray-600 dark:text-gray-400">{row.useCaseId}</div>
                           </td>
                           <td className="px-4 py-4">
-                            <div className="text-sm text-gray-900 dark:text-white">{chain.useCase.source}</div>
-                            <div className="text-xs text-gray-600 dark:text-gray-400">{chain.useCase.context}</div>
-                          </td>
-                          <td className="px-4 py-4">
-                            <div className="space-y-1">
-                              {chain.risks.map((risk, riskIndex) => (
-                                <div key={riskIndex} className="text-sm">
-                                  <div className="font-medium text-gray-900 dark:text-white">{risk.category}</div>
-                                  <div className={`inline-block px-2 py-1 rounded text-xs ${
-                                    risk.severity === 'high' ? 'bg-red-100 text-red-800' :
-                                    risk.severity === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                                    'bg-green-100 text-green-800'
-                                  }`}>
-                                    {risk.severity}
-                                  </div>
-                                </div>
-                              ))}
+                            <div className="font-medium text-gray-900 dark:text-white text-sm">{row.risk}</div>
+                            <div className="flex items-center space-x-2 mt-1">
+                              <div className={`px-2 py-1 rounded text-xs font-medium ${getSeverityColor(row.severity)}`}>
+                                {row.severity}
+                              </div>
+                              <div className={`px-2 py-1 rounded text-xs font-medium ${getLikelihoodColor(row.likelihood)}`}>
+                                {row.likelihood}
+                              </div>
                             </div>
                           </td>
                           <td className="px-4 py-4">
-                            <div className="space-y-1">
-                              {chain.controls.map((control, controlIndex) => (
-                                <div key={controlIndex} className="text-sm">
-                                  <div className="font-medium text-gray-900 dark:text-white">{control.name}</div>
-                                  <div className="text-xs text-gray-600 dark:text-gray-400">
-                                    {control.type} • {control.effectiveness}%
-                                  </div>
-                                </div>
-                              ))}
+                            <div className="text-sm text-gray-900 dark:text-white">{row.controls}</div>
+                            <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                              {row.controlDetails.length} control(s) • 
+                              {row.controlDetails.filter(c => c.effectiveness === 'High').length} high effectiveness
                             </div>
                           </td>
                           <td className="px-4 py-4">
-                            <div className="space-y-1">
-                              {Object.entries(chain.complianceMapping).map(([framework, controls]) => (
-                                <div key={framework} className="text-sm">
-                                  <div className="font-medium text-gray-900 dark:text-white">{framework}</div>
-                                  <div className="text-xs text-gray-600 dark:text-gray-400">
-                                    {Array.isArray(controls) ? controls.join(', ') : controls}
-                                  </div>
+                            {editingCell?.rowId === row.id && editingCell?.field === 'complianceMapping' ? (
+                              <div className="space-y-2">
+                                {complianceFrameworks.map(framework => (
+                                  <label key={framework} className="flex items-center space-x-2">
+                                    <input
+                                      type="checkbox"
+                                      checked={row.complianceMapping.includes(framework)}
+                                      onChange={(e) => {
+                                        const newMapping = e.target.checked
+                                          ? [...row.complianceMapping, framework]
+                                          : row.complianceMapping.filter(f => f !== framework);
+                                        handleCellEdit(row.id, 'complianceMapping', newMapping);
+                                      }}
+                                      className="rounded border-gray-300"
+                                    />
+                                    <span className="text-xs text-gray-700 dark:text-gray-300">{framework}</span>
+                                  </label>
+                                ))}
+                              </div>
+                            ) : (
+                              <div 
+                                onClick={() => canEdit && setEditingCell({ rowId: row.id, field: 'complianceMapping' })}
+                                className={`cursor-pointer ${canEdit ? 'hover:bg-gray-100 dark:hover:bg-gray-700' : ''} p-2 rounded`}
+                              >
+                                <div className="flex flex-wrap gap-1">
+                                  {row.complianceMapping.map((framework, idx) => (
+                                    <span key={idx} className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 text-xs rounded">
+                                      {framework}
+                                    </span>
+                                  ))}
                                 </div>
-                              ))}
-                            </div>
+                                {canEdit && (
+                                  <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">Click to edit</div>
+                                )}
+                              </div>
+                            )}
                           </td>
                           <td className="px-4 py-4">
-                            <div className="space-y-1">
-                              {chain.evidenceNeeded.slice(0, 2).map((evidence, evidenceIndex) => (
-                                <div key={evidenceIndex} className="text-xs text-gray-600 dark:text-gray-400">
-                                  • {evidence}
-                                </div>
-                              ))}
-                              {chain.evidenceNeeded.length > 2 && (
+                            {editingCell?.rowId === row.id && editingCell?.field === 'evidenceRequired' ? (
+                              <div className="space-y-2">
+                                <textarea
+                                  value={row.evidenceRequired}
+                                  onChange={(e) => handleCellEdit(row.id, 'evidenceRequired', e.target.value)}
+                                  onBlur={() => setEditingCell(null)}
+                                  className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-sm h-20 resize-none"
+                                  autoFocus
+                                />
                                 <div className="text-xs text-gray-500 dark:text-gray-500">
-                                  +{chain.evidenceNeeded.length - 2} more
+                                  Suggested: {evidenceTypes.slice(0, 3).join(', ')}
                                 </div>
+                              </div>
+                            ) : (
+                              <div 
+                                onClick={() => canEdit && setEditingCell({ rowId: row.id, field: 'evidenceRequired' })}
+                                className={`cursor-pointer ${canEdit ? 'hover:bg-gray-100 dark:hover:bg-gray-700' : ''} p-2 rounded`}
+                              >
+                                <div className="text-sm text-gray-900 dark:text-white">{row.evidenceRequired}</div>
+                                {canEdit && (
+                                  <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">Click to edit</div>
+                                )}
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-4 py-4 text-center">
+                            <div className="flex items-center justify-center space-x-2">
+                              <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                                <Eye className="w-4 h-4" />
+                              </button>
+                              {canEdit && (
+                                <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                                  <Edit className="w-4 h-4" />
+                                </button>
                               )}
                             </div>
                           </td>
@@ -397,86 +451,59 @@ const GovernanceMatrix: React.FC<GovernanceMatrixProps> = ({
                 </div>
               </div>
 
-              {/* Governance Coverage Summary */}
+              {/* Matrix Summary */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="text-center p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl">
-                  <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">100%</div>
-                  <div className="text-sm text-green-700 dark:text-green-300">Use Case Coverage</div>
+                  <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">{inputFromPreviousSteps.useCases.length}</div>
+                  <div className="text-sm text-green-700 dark:text-green-300">Use Cases Mapped</div>
                 </div>
                 
-                <div className="text-center p-6 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl">
-                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">91%</div>
-                  <div className="text-sm text-blue-700 dark:text-blue-300">Risk Mitigation</div>
+                <div className="text-center p-6 bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-xl">
+                  <div className="text-3xl font-bold text-red-600 dark:text-red-400 mb-2">{inputFromPreviousSteps.risks.length}</div>
+                  <div className="text-sm text-red-700 dark:text-red-300">Risks Classified</div>
                 </div>
                 
                 <div className="text-center p-6 bg-gradient-to-r from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 rounded-xl">
-                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">94%</div>
-                  <div className="text-sm text-purple-700 dark:text-purple-300">Control Effectiveness</div>
+                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">{inputFromPreviousSteps.controls.length}</div>
+                  <div className="text-sm text-purple-700 dark:text-purple-300">Controls Assigned</div>
                 </div>
                 
-                <div className="text-center p-6 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-xl">
-                  <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mb-2">100%</div>
-                  <div className="text-sm text-yellow-700 dark:text-yellow-300">Traceability</div>
+                <div className="text-center p-6 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl">
+                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">100%</div>
+                  <div className="text-sm text-blue-700 dark:text-blue-300">Traceability Coverage</div>
                 </div>
               </div>
             </div>
           ) : (
             <div className="space-y-6">
-              {/* Stakeholder Assignment Matrix */}
+              {/* Compliance Framework Picker */}
               <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 border border-indigo-200 dark:border-indigo-700 rounded-xl p-6">
-                <h3 className="text-xl font-bold text-indigo-900 dark:text-indigo-100 mb-6">Governance Stakeholder Assignment</h3>
+                <h3 className="text-xl font-bold text-indigo-900 dark:text-indigo-100 mb-6">Compliance Framework Mapping</h3>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {Object.entries(governanceMatrix.stakeholders).map(([roleKey, stakeholder]: [string, any]) => (
-                    <div key={roleKey} className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-                      <div className="flex items-center justify-between mb-2">
-                        <h5 className="font-medium text-gray-900 dark:text-white text-sm">
-                          {roleKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                        </h5>
-                        <div className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(stakeholder.status)}`}>
-                          {getStatusIcon(stakeholder.status)}
-                        </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {complianceFrameworks.map(framework => (
+                    <div key={framework} className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="font-medium text-gray-900 dark:text-white">{framework}</h4>
+                        <input type="checkbox" defaultChecked={['NIST RMF', 'EU AI Act'].includes(framework)} className="rounded border-gray-300" />
                       </div>
-                      <div className="text-sm text-gray-900 dark:text-white font-medium">{stakeholder.name}</div>
-                      <div className="text-xs text-gray-600 dark:text-gray-400">{stakeholder.role}</div>
-                      <div className="flex items-center space-x-2 mt-2">
-                        <Mail className="w-3 h-3 text-gray-400" />
-                        <span className="text-xs text-gray-500 dark:text-gray-500">{stakeholder.contact}</span>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                        Mapped to {governanceMatrix.filter(row => row.complianceMapping.includes(framework)).length} risk(s)
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Approval Workflow Status */}
+              {/* Evidence Type Configuration */}
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center space-x-2">
-                  <Activity className="w-5 h-5 text-blue-600" />
-                  <span>Digital Governance Approval Workflow</span>
-                </h4>
-                <div className="space-y-3">
-                  {governanceMatrix.approvalWorkflow.map((step) => (
-                    <div key={step.step} className="flex items-center space-x-4 p-3 border border-gray-200 dark:border-gray-600 rounded-lg">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                        step.status === 'completed' || step.status === 'approved' ? 'bg-green-500 text-white' :
-                        step.status === 'in_progress' ? 'bg-blue-500 text-white' :
-                        'bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-400'
-                      }`}>
-                        {step.step}
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-medium text-gray-900 dark:text-white">{step.role}</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">{step.task}</div>
-                        {step.completedAt && (
-                          <div className="text-xs text-green-600 dark:text-green-400">
-                            Completed: {new Date(step.completedAt).toLocaleDateString()}
-                          </div>
-                        )}
-                      </div>
-                      <div className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(step.status)}`}>
-                        {step.status.replace('_', ' ')}
-                      </div>
-                    </div>
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Evidence Type Configuration</h4>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {evidenceTypes.map(evidence => (
+                    <label key={evidence} className="flex items-center space-x-2">
+                      <input type="checkbox" defaultChecked className="rounded border-gray-300" />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">{evidence}</span>
+                    </label>
                   ))}
                 </div>
               </div>
@@ -495,14 +522,14 @@ const GovernanceMatrix: React.FC<GovernanceMatrixProps> = ({
               {canCreate && (
                 <>
                   <button className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2">
-                    <Download className="w-4 h-4" />
-                    <span>Export Matrix</span>
+                    <Save className="w-4 h-4" />
+                    <span>Save Matrix</span>
                   </button>
                   <button 
                     onClick={handleComplete}
                     className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg flex items-center space-x-2"
                   >
-                    <span>Generate Final Matrix</span>
+                    <span>Complete Stage 1</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </>
@@ -512,12 +539,12 @@ const GovernanceMatrix: React.FC<GovernanceMatrixProps> = ({
         </div>
       </div>
 
-      {/* Final Output */}
+      {/* Completion Status */}
       {isComplete && (
         <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-6 rounded-xl border border-emerald-200 dark:border-emerald-700">
           <div className="flex items-center space-x-3 mb-4">
             <CheckCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-            <h3 className="text-lg font-semibold text-emerald-900 dark:text-emerald-100">Risk Mapping & Governance Complete</h3>
+            <h3 className="text-lg font-semibold text-emerald-900 dark:text-emerald-100">Stage 1: Risk Mapping & Governance Complete</h3>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -527,18 +554,27 @@ const GovernanceMatrix: React.FC<GovernanceMatrixProps> = ({
                 <div>✓ Use Case → Risk → Control mapping complete</div>
                 <div>✓ Compliance framework alignment verified</div>
                 <div>✓ Evidence requirements documented</div>
-                <div>✓ Stakeholder assignments confirmed</div>
+                <div>✓ Ready for Trust Metrics Engine (Stage 2)</div>
               </div>
             </div>
             
             <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
               <h4 className="font-medium text-gray-900 dark:text-white mb-3">Export-Ready Governance Report</h4>
               <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                <div>✓ PDF report generated</div>
                 <div>✓ JSON data export ready</div>
                 <div>✓ CSV format available</div>
+                <div>✓ PDF report generated</div>
+                <div>✓ Audit-ready documentation</div>
               </div>
             </div>
+          </div>
+
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+            <h4 className="font-medium text-gray-900 dark:text-white mb-3">Next: Stage 2 - Trust Metrics Engine</h4>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              The Governance Matrix will now feed into the Trust Metrics Engine to quantify trustworthiness 
+              and establish monitoring thresholds for your GenAI application.
+            </p>
           </div>
         </div>
       )}
