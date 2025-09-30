@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AlertTriangle, Shield, Target, Brain, Users, FileText, CheckCircle, XCircle, Clock, Eye, Edit, Download, Plus, BarChart3, Activity, Globe, Lock, Heart, Scale, Building, Gavel, ArrowRight, ArrowDown, ArrowLeft, Layers, Save, Database, List, Tag } from 'lucide-react';
+import { AlertTriangle, Shield, Target, Brain, Users, FileText, CheckCircle, XCircle, Clock, Eye, CreditCard as Edit, Download, Plus, BarChart3, Activity, Globe, Lock, Heart, Scale, Building, Gavel, ArrowRight, ArrowDown, ArrowLeft, Layers, Save, Database, List, Tag } from 'lucide-react';
 
 interface RiskClassificationProps {
   currentUser?: any;
