@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Target, Users, CheckCircle, XCircle, Clock, AlertTriangle, Eye, Edit, Download, Plus, Filter, Search, BarChart3, Activity, Shield, FileText, Crown, Gavel, Code, Building, Globe, Lock, Brain, Heart, Scale, Database, Settings, Calendar, Mail, Phone, ExternalLink, ArrowRight, ArrowDown, ArrowLeft, Layers, Save, Grid2x2 as Grid, List, Table } from 'lucide-react';
+import { Target, Users, CheckCircle, XCircle, Clock, AlertTriangle, Eye, CreditCard as Edit, Download, Plus, Filter, Search, BarChart3, Activity, Shield, FileText, Crown, Gavel, Code, Building, Globe, Lock, Brain, Heart, Scale, Database, Settings, Calendar, Mail, Phone, ExternalLink, ArrowRight, ArrowDown, ArrowLeft, Layers, Save, Grid2x2 as Grid, List, Table } from 'lucide-react';
 
 interface GovernanceMatrixProps {
   currentUser?: any;
