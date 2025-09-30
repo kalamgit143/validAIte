@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Settings, CheckCircle, XCircle, Clock, AlertTriangle, Users, FileText, Target, Eye, Edit, Download, Plus, Play, Pause, BarChart3, Activity, Lock, Globe, Brain, Scale, Heart, Code, Database, Zap, Crown, Gavel, ArrowRight, ArrowDown, ArrowLeft, Layers, Save, Link2, Filter } from 'lucide-react';
+import { Shield, Settings, CheckCircle, XCircle, Clock, AlertTriangle, Users, FileText, Target, Eye, CreditCard as Edit, Download, Plus, Play, Pause, BarChart3, Activity, Lock, Globe, Brain, Scale, Heart, Code, Database, Zap, Crown, Gavel, ArrowRight, ArrowDown, ArrowLeft, Layers, Save, Link2, Filter } from 'lucide-react';
 
 interface GovernanceControlsProps {
   currentUser?: any;
