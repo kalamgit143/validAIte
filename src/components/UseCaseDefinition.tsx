@@ -1,30 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  FileText, 
-  Target, 
-  Users, 
-  AlertTriangle, 
-  CheckCircle, 
-  Plus, 
-  Edit, 
-  Eye, 
-  Download, 
-  Save, 
-  Trash2,
-  ArrowRight,
-  ArrowDown,
-  ArrowLeft,
-  List,
-  BookOpen,
-  Briefcase,
-  Building,
-  Code,
-  MessageSquare,
-  Shield,
-  Database,
-  ChevronDown,
-  ChevronRight
-} from 'lucide-react';
+import { FileText, Target, Users, AlertTriangle, CheckCircle, Plus, CreditCard as Edit, Eye, Download, Save, Trash2, ArrowRight, ArrowDown, ArrowLeft, List, BookOpen, Briefcase, Building, Code, MessageSquare, Shield, Database, ChevronDown, ChevronRight } from 'lucide-react';
 
 interface UseCaseDefinitionProps {
   currentUser?: any;
