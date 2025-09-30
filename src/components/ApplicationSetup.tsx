@@ -623,59 +623,6 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700 rounded-b-xl border-t border-gray-200 dark:border-gray-600">
-          <div className="flex items-center justify-between">
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              Complete all required fields to proceed to Use Case Definition
-            </div>
-            
-            <div className="flex items-center space-x-3">
-              <button
-                type="button"
-                className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-500 transition-colors flex items-center space-x-2"
-              >
-                <Save className="w-4 h-4" />
-                <span>Save Draft</span>
-              </button>
-              
-              <button
-                onClick={handleComplete}
-                disabled={!canCreate}
-                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center space-x-2"
-              >
-                <CheckCircle className="w-4 h-4" />
-                <span>Complete Setup</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Completion Status */}
-      {isComplete && (
-        <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-200 dark:border-green-700">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
-              <h4 className="font-medium text-green-900 dark:text-green-100 mb-2 flex items-center space-x-2">
-                <CheckCircle className="w-5 h-5" />
-                <span>Application Profile Created</span>
-              </h4>
-              <div className="text-sm text-green-800 dark:text-green-200 space-y-1">
-                <div>Name: {formData.applicationName}</div>
-                <div>Business: {formData.businessCriticality}</div>
-                <div>EU AI Act: {formData.euAiActRiskClass}</div>
-                <div>Frameworks: {formData.applicableFrameworks.length}</div>
-              </div>
-            </div>
-            
-            <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Next Steps</h4>
-              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                <div>✓ Profile created</div>
-                <div>✓ Context established</div>
-                <div>→ Navigating to Use Cases...</div>
               </div>
             </div>
           </div>
