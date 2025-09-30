@@ -622,9 +622,11 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
             </div>
           </div>
         </div>
-
               </div>
-            </div>
+        </div>
+        
+        {/* Action Buttons */}
+        <div className="p-6 border-t border-gray-200 dark:border-gray-700">
           </div>
         </div>
       )}
