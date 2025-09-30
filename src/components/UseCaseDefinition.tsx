@@ -1,45 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  FileText, 
-  Target, 
-  Users, 
-  AlertTriangle, 
-  CheckCircle, 
-  Plus, 
-  Edit, 
-  Eye, 
-  Download, 
-  Save, 
-  Trash2, 
-  ArrowRight, 
-  ArrowDown, 
-  ArrowLeft, 
-  List, 
-  BookOpen, 
-  Briefcase, 
-  Building, 
-  Code, 
-  MessageSquare, 
-  Shield, 
-  Database, 
-  ChevronDown, 
-  ChevronRight,
-  Upload,
-  Link,
-  UserCheck,
-  Calendar,
-  Clock,
-  X,
-  Search,
-  Filter,
-  RefreshCw,
-  ExternalLink,
-  FileUp,
-  Globe,
-  Settings,
-  Brain,
-  Zap
-} from 'lucide-react';
+import { FileText, Target, Users, AlertTriangle, CheckCircle, Plus, CreditCard as Edit, Eye, Download, Save, Trash2, ArrowRight, ArrowDown, ArrowLeft, List, BookOpen, Briefcase, Building, Code, MessageSquare, Shield, Database, ChevronDown, ChevronRight, Upload, Link, UserCheck, Calendar, Clock, X, Search, Filter, RefreshCw, ExternalLink, FileUp, Globe, Settings, Brain, Zap } from 'lucide-react';
 
 interface UseCaseDefinitionProps {
   currentUser?: any;
