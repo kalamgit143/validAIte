@@ -19,6 +19,25 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
     domain: '',
     environment: '',
     
+    // NIST RMF Required Fields
+    businessCriticality: '',
+    dataClassification: '',
+    userBase: '',
+    geographicScope: '',
+    
+    // EU TEVV Required Fields
+    euAiActRiskClass: '',
+    intendedPurpose: '',
+    targetUsers: '',
+    deploymentContext: '',
+    humanOversight: '',
+    
+    // Technical Architecture
+    modelProvider: '',
+    modelType: '',
+    dataFlow: '',
+    integrationPattern: '',
+    
     // Optional Integration Details
     apiEndpoint: '',
     authMethod: '',
@@ -121,6 +140,50 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
     }
   ];
 
+  // Business Criticality levels (NIST RMF)
+  const businessCriticalityLevels = [
+    { id: 'mission_critical', name: 'Mission Critical', description: 'Essential for core business operations', riskMultiplier: 'High' },
+    { id: 'business_critical', name: 'Business Critical', description: 'Important for business operations', riskMultiplier: 'Medium' },
+    { id: 'business_important', name: 'Business Important', description: 'Supports business operations', riskMultiplier: 'Medium' },
+    { id: 'administrative', name: 'Administrative', description: 'Administrative or support functions', riskMultiplier: 'Low' }
+  ];
+
+  // Data Classification levels
+  const dataClassifications = [
+    { id: 'public', name: 'Public', description: 'No harm if disclosed', riskLevel: 'Low' },
+    { id: 'internal', name: 'Internal', description: 'Internal business information', riskLevel: 'Medium' },
+    { id: 'confidential', name: 'Confidential', description: 'Sensitive business information', riskLevel: 'High' },
+    { id: 'restricted', name: 'Restricted', description: 'Highly sensitive, regulated data', riskLevel: 'Critical' }
+  ];
+
+  // EU AI Act Risk Classifications
+  const euAiActRiskClasses = [
+    { id: 'unacceptable', name: 'Unacceptable Risk', description: 'Prohibited AI practices', color: 'red' },
+    { id: 'high_risk', name: 'High Risk', description: 'Mandatory TEVV requirements', color: 'orange' },
+    { id: 'limited_risk', name: 'Limited Risk', description: 'Transparency obligations', color: 'yellow' },
+    { id: 'minimal_risk', name: 'Minimal Risk', description: 'No specific obligations', color: 'green' }
+  ];
+
+  // User Base sizes
+  const userBaseSizes = [
+    { id: 'small', name: 'Small (< 1K users)', description: 'Limited user base', riskLevel: 'Low' },
+    { id: 'medium', name: 'Medium (1K - 10K users)', description: 'Moderate user base', riskLevel: 'Medium' },
+    { id: 'large', name: 'Large (10K - 100K users)', description: 'Large user base', riskLevel: 'High' },
+    { id: 'enterprise', name: 'Enterprise (> 100K users)', description: 'Very large user base', riskLevel: 'Critical' }
+  ];
+
+  // Model Providers
+  const modelProviders = [
+    'OpenAI', 'Anthropic', 'Google', 'Microsoft Azure OpenAI', 'AWS Bedrock', 
+    'Hugging Face', 'Cohere', 'Mistral', 'Meta', 'Custom/On-premise'
+  ];
+
+  // Model Types
+  const modelTypes = [
+    'Large Language Model (LLM)', 'Multimodal Model', 'Embedding Model', 
+    'Fine-tuned Model', 'RAG System', 'Agent Framework', 'Custom Model'
+  ];
+
   // Authentication methods for integration
   const authMethods = [
     'API Key',
@@ -157,6 +220,21 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
     if (!formData.environment) {
       errors.push('Environment must be selected');
     }
+    if (!formData.businessCriticality) {
+      errors.push('Business Criticality must be selected');
+    }
+    if (!formData.dataClassification) {
+      errors.push('Data Classification must be selected');
+    }
+    if (!formData.euAiActRiskClass) {
+      errors.push('EU AI Act Risk Classification must be selected');
+    }
+    if (!formData.intendedPurpose.trim()) {
+      errors.push('Intended Purpose is required');
+    }
+    if (!formData.modelProvider) {
+      errors.push('Model Provider must be selected');
+    }
 
     setValidationErrors(errors);
     return errors.length === 0;
@@ -186,6 +264,15 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
         auditLog: auditEntry,
         evidenceStub: generateEvidenceStub()
       });
+      
+      // Navigate to Use Case Definition after a short delay
+      setTimeout(() => {
+        // This would typically be handled by a router or parent component
+        // For now, we'll trigger a custom event that the parent can listen to
+        window.dispatchEvent(new CustomEvent('navigateToUseCase', {
+          detail: { applicationProfile: generateApplicationProfile() }
+        }));
+      }, 2000);
     }
   };
 
@@ -197,6 +284,19 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
         type: formData.applicationType,
         domain: formData.domain,
         environment: formData.environment,
+        businessCriticality: formData.businessCriticality,
+        dataClassification: formData.dataClassification,
+        userBase: formData.userBase,
+        geographicScope: formData.geographicScope,
+        euAiActRiskClass: formData.euAiActRiskClass,
+        intendedPurpose: formData.intendedPurpose,
+        targetUsers: formData.targetUsers,
+        deploymentContext: formData.deploymentContext,
+        humanOversight: formData.humanOversight,
+        modelProvider: formData.modelProvider,
+        modelType: formData.modelType,
+        dataFlow: formData.dataFlow,
+        integrationPattern: formData.integrationPattern,
         integrationDetails: formData.skipIntegration ? null : {
           apiEndpoint: formData.apiEndpoint,
           authMethod: formData.authMethod,
