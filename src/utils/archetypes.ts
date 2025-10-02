@@ -367,7 +367,3 @@ export const getArchetypeNavigation = (archetypeId: string): string[] => {
 
   return navigation[archetypeId] || navigation['cio_cdo'];
 };
-
-export { getArchetypeFromRole }
-
-export { getArchetypeNavigation }
