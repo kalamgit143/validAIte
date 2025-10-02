@@ -1,43 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  Target, 
-  BarChart3, 
-  TrendingUp, 
-  CheckCircle,
-  XCircle,
-  AlertTriangle,
-  Eye,
-  Download,
-  Settings,
-  ArrowRight,
-  ArrowDown,
-  ArrowLeft,
-  Database,
-  Activity,
-  Brain,
-  Shield,
-  Users,
-  Lock,
-  Zap,
-  FileText,
-  Save,
-  Filter,
-  Calendar,
-  RefreshCw,
-  Award,
-  Gauge,
-  PieChart,
-  LineChart,
-  Grid,
-  Layers,
-  Map,
-  Lightbulb,
-  Heart,
-  Scale,
-  Crown,
-  Building,
-  Globe
-} from 'lucide-react';
+import { Target, BarChart3, TrendingUp, CheckCircle, XCircle, AlertTriangle, Eye, Download, Settings, ArrowRight, ArrowDown, ArrowLeft, Database, Activity, Brain, Shield, Users, Lock, Zap, FileText, Save, Filter, Calendar, RefreshCw, Award, Gauge, PieChart, LineChart, Grid2x2 as Grid, Layers, Map, Lightbulb, Heart, Scale, Crown, Building, Globe } from 'lucide-react';
 
 interface TrustAnalyticsProps {
   currentUser?: any;
