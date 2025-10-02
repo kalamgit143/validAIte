@@ -48,6 +48,7 @@ import GovernanceMatrix from './components/GovernanceMatrix';
 
 // Trust Modules
 import TrustMetricsEngine from './components/TrustMetricsEngine';
+import TrustEvaluations from './components/TrustEvaluations';
 import TEVVAutomationSuite from './components/TEVVAutomationSuite';
 import ValidationLab from './components/ValidationLab';
 import ContinuousMonitoring from './components/ContinuousMonitoring';
@@ -343,6 +344,8 @@ function App() {
       // Trust Modules
       case 'trust-metrics':
         return <TrustMetricsEngine />;
+      case 'evaluations':
+        return <TrustEvaluations currentUser={currentUser} canPerformAction={canPerformAction} getUserPermissions={getUserPermissions} />;
       case 'tevv-automation':
         return <TEVVAutomationSuite />;
       case 'validation-lab':
