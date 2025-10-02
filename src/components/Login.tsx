@@ -221,8 +221,8 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
                     <option value="🔵 AI Governance Lead (Risk + Compliance)">🔵 AI Governance Lead</option>
                     <option value="🟢 QA/TEVV Engineer (ISO 25010, Manual Validation)">🟢 QA/TEVV Engineer</option>
                     <option value="🟣 TEVV Automation Engineer (EU AI Act, Test Automation)">🟣 TEVV Automation Engineer</option>
-                    <option value="🔴 AI SecOps Engineer (Security + DevSecOps)">🔴 SecOps Engineer</option>
-                    <option value="🟡 Domain & Ethics Reviewer (Domain + Ethics)">🟡 Ethics Reviewer</option>
+                    <option value="🔴 AI SecOps Engineer (Security + DevSecOps)">🔴 AI SecOps Engineer</option>
+                    <option value="🟡 Domain & Ethics Reviewer (Domain + Ethics)">🟡 Domain & Ethics Reviewer</option>
                   </select>
                 </div>
               </div>
