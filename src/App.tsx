@@ -623,8 +623,8 @@ function App() {
                               // Role-specific color bubbles
                               const roleColors = {
                                 '🔵 AI Governance Lead (Risk + Compliance)': 'bg-blue-500',
-                                '🟢 QA Engineer (ISO 25010, Manual Validation)': 'bg-green-500', 
-                                '🟣 Automation / TEVV Engineer (EU AI Act, Test Automation)': 'bg-purple-500',
+                                '🟢 QA/TEVV Engineer (ISO 25010, Manual Validation)': 'bg-green-500', 
+                                '🟣 TEVV Automation Engineer (EU AI Act, Test Automation)': 'bg-purple-500',
                                 '🔴 AI SecOps Engineer (Security + DevSecOps)': 'bg-red-500',
                                 '🟡 Domain & Ethics Reviewer (Domain + Ethics)': 'bg-yellow-500'
                               };
