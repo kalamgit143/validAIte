@@ -33,6 +33,13 @@ import { getArchetypeFromRole, archetypeConfigs } from './utils/archetypes';
 import ArchetypeDashboard from './components/ArchetypeDashboard';
 import ArchetypeNavigation from './components/ArchetypeNavigation';
 
+// ValidAIte NIST RMF Components
+import ArchetypeClassifier from './components/ArchetypeClassifier';
+import TEVVPackManager from './components/TEVVPackManager';
+import RMFWorkflow from './components/RMFWorkflow';
+import MetricsDashboard from './components/MetricsDashboard';
+import EvidencePackManager from './components/EvidencePackManager';
+
 // Authentication Components
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -260,11 +267,23 @@ function App() {
 
   const navItems = [
     // Core Platform
-    { 
+    {
       category: 'Platform',
       items: [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
         { id: 'applications', label: 'AI Applications', icon: Zap },
+      ]
+    },
+
+    // ValidAIte NIST RMF Modules
+    {
+      category: 'ValidAIte - NIST RMF',
+      items: [
+        { id: 'archetype-classifier', label: 'Archetype Classifier', icon: Brain },
+        { id: 'rmf-workflow', label: 'RMF Workflow', icon: GitBranch },
+        { id: 'tevv-pack-manager', label: 'TEVV Pack Manager', icon: TestTube },
+        { id: 'metrics-dashboard', label: 'Metrics Dashboard', icon: TrendingUp },
+        { id: 'evidence-pack', label: 'Evidence Pack', icon: FileText },
       ]
     },
     
@@ -359,6 +378,18 @@ function App() {
         return <ArchetypeDashboard currentUser={currentUser} onNavigate={setActiveTab} />;
       case 'applications':
         return <Applications />;
+
+      // ValidAIte NIST RMF
+      case 'archetype-classifier':
+        return <ArchetypeClassifier />;
+      case 'rmf-workflow':
+        return <RMFWorkflow />;
+      case 'tevv-pack-manager':
+        return <TEVVPackManager />;
+      case 'metrics-dashboard':
+        return <MetricsDashboard />;
+      case 'evidence-pack':
+        return <EvidencePackManager />;
       
       // Risk Mapping & Governance
       case 'application-setup':
@@ -399,8 +430,6 @@ function App() {
         return <PromptTesting />;
       case 'model-comparison':
         return <ModelComparison />;
-      case 'evaluations':
-        return <Evaluations />;
       case 'benchmarks':
         return <Benchmarks />;
       
