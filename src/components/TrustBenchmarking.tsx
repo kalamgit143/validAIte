@@ -152,12 +152,12 @@ const TrustBenchmarking: React.FC<TrustBenchmarkingProps> = ({
 
   // Benchmarking State
   const [benchmarkingResults, setBenchmarkingResults] = useState(() => {
-    return inputFromTrustEvaluations.evaluationResults.map(eval => {
-      const benchmark = getBenchmarkValue(eval.metricId, eval.benchmarkSource);
-      const status = getBenchmarkStatus(eval.rawScore, eval.threshold, benchmark, eval.metricId);
+    return inputFromTrustEvaluations.evaluationResults.map(evaluation => {
+      const benchmark = getBenchmarkValue(evaluation.metricId, evaluation.benchmarkSource);
+      const status = getBenchmarkStatus(evaluation.rawScore, evaluation.threshold, benchmark, evaluation.metricId);
       
       return {
-        ...eval,
+        ...evaluation,
         benchmark: benchmark,
         status: status,
         benchmarkedAt: new Date().toISOString(),
