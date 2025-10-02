@@ -144,7 +144,14 @@ const ArchetypeNavigation: React.FC<ArchetypeNavigationProps> = ({
     if (!module) return '';
     
     const permissions = getUserPermissions(module);
-    return permissions.join('•');
+    const permissionLabels = {
+      'C': 'Create',
+      'E': 'Edit', 
+      'R': 'Run',
+      'A': 'Approve',
+      'V': 'View'
+    };
+    return permissions.map(p => permissionLabels[p as keyof typeof permissionLabels]).join(' • ');
   };
 
   // Get role color for permission indicators
@@ -279,9 +286,35 @@ const ArchetypeNavigation: React.FC<ArchetypeNavigationProps> = ({
         <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
           {config.focus[0]} Focus
         </div>
+        <div className="text-xs text-gray-500 dark:text-gray-500 mb-3">
+          Workflow: {config.description}
+        </div>
         <div className="flex items-center space-x-2">
           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
           <span className="text-xs text-gray-500 dark:text-gray-500">Active</span>
+        </div>
+      </div>
+
+      {/* Permission Legend */}
+      <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <h5 className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Permission Legend</h5>
+        <div className="grid grid-cols-2 gap-1 text-xs text-gray-600 dark:text-gray-400">
+          <div className="flex items-center space-x-1">
+            <div className={`w-2 h-2 ${getRoleColor()} rounded-full ring-2 ring-white`}></div>
+            <span>Approve</span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <div className={`w-2 h-2 ${getRoleColor()} rounded-full`}></div>
+            <span>Create/Edit</span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <div className={`w-2 h-2 ${getRoleColor()} rounded-full opacity-75`}></div>
+            <span>Execute</span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+            <span>View Only</span>
+          </div>
         </div>
       </div>
     </nav>

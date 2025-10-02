@@ -22,6 +22,7 @@ import {
   Server,
   Smartphone
 } from 'lucide-react';
+import { getArchetypeInputsOutputs } from '../utils/archetypes';
 
 interface ApplicationSetupProps {
   onNavigateToUseCase?: () => void;
@@ -73,6 +74,13 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
   });
 
   const [isComplete, setIsComplete] = useState(false);
+  
+  // Get archetype-specific context
+  const archetypeId = currentUser?.role ? currentUser.role.includes('Governance') ? 'cio_cdo' :
+                     currentUser.role.includes('QA') ? 'qa_tevv_engineer' :
+                     currentUser.role.includes('Automation') ? 'tevv_automation_engineer' :
+                     currentUser.role.includes('SecOps') ? 'ai_secops_engineer' : 'domain_ethics_reviewer' : 'cio_cdo';
+  const inputsOutputs = getArchetypeInputsOutputs(archetypeId);
 
   const handleInputChange = (field: string, value: string | string[]) => {
     setFormData(prev => ({
@@ -152,6 +160,44 @@ const ApplicationSetup: React.FC<ApplicationSetupProps> = ({
         </div>
       </div>
 
+      {/* Archetype Context for Application Setup */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-700">
+        <div className="flex items-center space-x-3 mb-4">
+          <FileText className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+          <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100">
+            {currentUser?.role || 'User'} - Application Setup Context
+          </h3>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Your Role in Setup</h4>
+            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+              {inputsOutputs.responsibilities.slice(0, 3).map((resp: string, index: number) => (
+                <div key={index}>• {resp}</div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+            <h4 className="font-medium text-gray-900 dark:text-white mb-2">What You'll Provide</h4>
+            <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+              {inputsOutputs.outputs.slice(0, 3).map((output: string, index: number) => (
+                <div key={index}>• {output.split(' ').slice(0, 4).join(' ')}...</div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg">
+            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Next Steps</h4>
+            <div className="text-sm text-green-600 dark:text-green-400 space-y-1">
+              <div>✓ Complete application profile</div>
+              <div>✓ Feed into use case definition</div>
+              <div>✓ Enable downstream workflows</div>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* Main Form */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
         <div className="p-6 space-y-8">

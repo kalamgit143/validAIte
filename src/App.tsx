@@ -229,6 +229,27 @@ function App() {
     const permissions = getUserPermissions(module);
     return permissions.includes(action);
   };
+
+  // Get archetype-specific workflow information
+  const getArchetypeWorkflow = () => {
+    if (!currentUser?.role) return null;
+    const roleConfig = roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation];
+    return roleConfig?.workflow || null;
+  };
+
+  // Get archetype responsibilities
+  const getArchetypeResponsibilities = () => {
+    if (!currentUser?.role) return [];
+    const roleConfig = roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation];
+    return roleConfig?.responsibilities || [];
+  };
+
+  // Get archetype restrictions
+  const getArchetypeRestrictions = () => {
+    if (!currentUser?.role) return [];
+    const roleConfig = roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation];
+    return roleConfig?.restrictions || [];
+  };
   // Show authentication screens if not logged in
   if (!isAuthenticated) {
     if (showSignup) {
