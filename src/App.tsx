@@ -113,7 +113,7 @@ function App() {
         'Compliance Reporting': ['C', 'E', 'A', 'V']
       }
     },
-    '🟢 QA Engineer (ISO 25010, Manual Validation)': {
+    '🟢 QA/TEVV Engineer (ISO 25010, Manual Validation)': {
       sections: ['Platform', 'TEVV Automation Suite', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
       workflow: 'Manual Trust Validation → TEVV Design → HITL Testing → QA Evidence',
       responsibilities: ['Manual validation ownership', 'Traceability matrix maintenance', 'ISO 25010 quality dimensions', 'Defect triage and feedback'],
@@ -127,7 +127,7 @@ function App() {
         'Compliance Reporting': ['C', 'V'] // upload manual evidence
       }
     },
-    '🟣 Automation / TEVV Engineer (EU AI Act, Test Automation)': {
+    '🟣 TEVV Automation Engineer (EU AI Act, Test Automation)': {
       sections: ['Platform', 'Trust Metrics Engine', 'TEVV Automation Suite', 'Continuous Monitoring'],
       workflow: 'Trust Automation → TEVV Execution → CI/CD Integration → Evidence Automation',
       responsibilities: ['EU TEVV compliance execution', 'Automated evidence collection', 'Cross-module regression runs', 'Pipeline integration'],
