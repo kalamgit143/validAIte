@@ -308,40 +308,66 @@ export const getArchetypeInsights = (archetypeId: string): ArchetypeInsight[] =>
   return insights[archetypeId] || [];
 };
 
-export const getArchetypeInputsOutputs = (archetypeId: string) => {
-  const inputsOutputs: { [key: string]: any } = {
-    'cio_cdo': {
-      workflow: 'Risk Mapping → Trust Thresholds → Compliance Sign-off → Drift Review',
-      responsibilities: [
-        'Risk acceptance decisions',
-        'Compliance sign-off authority', 
-        'Trust threshold approval',
-        'Governance-level decisions'
-      ],
-      restrictions: [
-        'No day-to-day testing execution',
-        'No technical test design'
-      ],
-      inputs: [
-        'Risk assessment reports from QA teams',
-        'Trust metric thresholds from automation engineers',
-        'Compliance status from domain reviewers',
-        'Security posture from SecOps teams',
-        'Business impact analysis from portfolio'
-      ],
-      outputs: [
-        'Strategic approval/rejection decisions',
-        'Risk acceptance documentation',
-        'Compliance sign-off certificates',
-        'Trust threshold authorizations',
-        'Portfolio governance directives'
-      ],
-      keyDecisions: [
-        'Accept/reject deployment based on risk assessment',
-        'Approve trust metric thresholds for production',
-        'Sign-off on compliance framework adherence',
-        'Authorize budget for compliance investments'
-      ]
-    },
-    'qa_tevv_engineer': {
-      workflow: 'Manual Trust Validation → TEVV Design →
+export const getArchetypeFromRole = (role: string): string => {
+  const roleMapping: { [key: string]: string } = {
+    '🔵 AI Governance Lead (Risk + Compliance)': 'cio_cdo',
+    '🟢 QA/TEVV Engineer (ISO 25010, Manual Validation)': 'qa_tevv_engineer',
+    '🟣 TEVV Automation Engineer (EU AI Act, Test Automation)': 'tevv_automation_engineer',
+    '🔴 AI SecOps Engineer (Security + DevSecOps)': 'ai_secops_engineer',
+    '🟡 Domain & Ethics Reviewer (Domain + Ethics)': 'domain_ethics_reviewer'
+  };
+
+  return roleMapping[role] || 'cio_cdo';
+};
+
+export const getArchetypeNavigation = (archetypeId: string): string[] => {
+  const navigation: { [key: string]: string[] } = {
+    'cio_cdo': [
+      'dashboard',
+      'applications', 
+      'risk-assessment',
+      'compliance-reporting',
+      'analytics',
+      'reports'
+    ],
+    'qa_tevv_engineer': [
+      'dashboard',
+      'applications',
+      'evaluations',
+      'model-validation',
+      'datasets',
+      'human-feedback',
+      'reports'
+    ],
+    'tevv_automation_engineer': [
+      'dashboard',
+      'applications',
+      'tevv-automation',
+      'continuous-monitoring',
+      'observability',
+      'analytics'
+    ],
+    'ai_secops_engineer': [
+      'dashboard',
+      'applications',
+      'guardrails',
+      'alerts',
+      'observability',
+      'audit-trail'
+    ],
+    'domain_ethics_reviewer': [
+      'dashboard',
+      'applications',
+      'ethical-ai',
+      'bias-auditing',
+      'human-feedback',
+      'reports'
+    ]
+  };
+
+  return navigation[archetypeId] || navigation['cio_cdo'];
+};
+
+export { getArchetypeFromRole }
+
+export { getArchetypeNavigation }
