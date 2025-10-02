@@ -324,7 +324,7 @@ export const getArchetypeNavigation = (archetypeId: string): string[] => {
   const navigation: { [key: string]: string[] } = {
     'cio_cdo': [
       'dashboard',
-      'applications', 
+      'applications',
       'risk-assessment',
       'compliance-reporting',
       'analytics',
@@ -366,4 +366,81 @@ export const getArchetypeNavigation = (archetypeId: string): string[] => {
   };
 
   return navigation[archetypeId] || navigation['cio_cdo'];
+};
+
+export const getArchetypeInputsOutputs = (archetypeId: string) => {
+  const inputsOutputs: { [key: string]: { responsibilities: string[], outputs: string[] } } = {
+    'cio_cdo': {
+      responsibilities: [
+        'Strategic oversight of AI initiatives',
+        'Business impact assessment',
+        'Portfolio risk management',
+        'Compliance verification'
+      ],
+      outputs: [
+        'Application business criticality classification',
+        'Strategic alignment validation',
+        'ROI projections and business value assessment',
+        'Executive approval for high-risk deployments'
+      ]
+    },
+    'qa_tevv_engineer': {
+      responsibilities: [
+        'Manual quality validation',
+        'ISO 25010 quality assessment',
+        'Evidence collection',
+        'Test case design and execution'
+      ],
+      outputs: [
+        'Quality metrics and test coverage reports',
+        'Manual validation evidence',
+        'Defect identification and tracking',
+        'Quality assurance certification'
+      ]
+    },
+    'tevv_automation_engineer': {
+      responsibilities: [
+        'CI/CD pipeline integration',
+        'EU AI Act automation',
+        'Automated evidence collection',
+        'Pipeline health monitoring'
+      ],
+      outputs: [
+        'Automated TEVV pipeline configuration',
+        'EU AI Act compliance automation',
+        'Evidence automation frameworks',
+        'Pipeline performance metrics'
+      ]
+    },
+    'ai_secops_engineer': {
+      responsibilities: [
+        'Security testing and validation',
+        'Threat detection and response',
+        'Adversarial testing',
+        'Vulnerability assessment'
+      ],
+      outputs: [
+        'Security posture assessment',
+        'Threat detection reports',
+        'Incident response documentation',
+        'Security remediation plans'
+      ]
+    },
+    'domain_ethics_reviewer': {
+      responsibilities: [
+        'Ethics review and validation',
+        'Domain accuracy assessment',
+        'Fairness evaluation',
+        'Expert consensus building'
+      ],
+      outputs: [
+        'Ethics assessment reports',
+        'Domain-specific validation',
+        'Fairness assessment scores',
+        'Expert panel consensus documentation'
+      ]
+    }
+  };
+
+  return inputsOutputs[archetypeId] || inputsOutputs['cio_cdo'];
 };
