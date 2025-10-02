@@ -688,5 +688,3 @@ const ArchetypeDashboard: React.FC<ArchetypeDashboardProps> = ({ currentUser, on
 };
 
 export default ArchetypeDashboard;
-
-export default ArchetypeDashboard
