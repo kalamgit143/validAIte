@@ -52,6 +52,7 @@ import TrustEvaluations from './components/TrustEvaluations';
 import TrustBenchmarking from './components/TrustBenchmarking';
 import FairnessAssessment from './components/FairnessAssessment';
 import ExplainabilityEngine from './components/ExplainabilityEngine';
+import TrustAnalytics from './components/TrustAnalytics';
 import TEVVAutomationSuite from './components/TEVVAutomationSuite';
 import ValidationLab from './components/ValidationLab';
 import ContinuousMonitoring from './components/ContinuousMonitoring';
@@ -262,6 +263,7 @@ function App() {
         { id: 'trust-benchmarking', label: 'Trust Benchmarking', icon: BarChart3 },
         { id: 'fairness-assessment', label: 'Fairness Assessment', icon: Users },
         { id: 'explainability-engine', label: 'Explainability Engine', icon: Brain },
+        { id: 'trust-analytics', label: 'Trust Analytics', icon: TrendingUp },
         { id: 'analytics', label: 'Trust Analytics', icon: TrendingUp },
       ]
     },
@@ -353,6 +355,8 @@ function App() {
         return <TrustBenchmarking currentUser={currentUser} canPerformAction={canPerformAction} getUserPermissions={getUserPermissions} />;
       case 'fairness-assessment':
         return <FairnessAssessment currentUser={currentUser} canPerformAction={canPerformAction} getUserPermissions={getUserPermissions} />;
+      case 'trust-analytics':
+        return <TrustAnalytics currentUser={currentUser} canPerformAction={canPerformAction} getUserPermissions={getUserPermissions} />;
       case 'tevv-automation':
         return <TEVVAutomationSuite />;
       case 'validation-lab':
