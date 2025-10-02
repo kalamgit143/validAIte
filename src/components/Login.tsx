@@ -14,7 +14,9 @@ import {
   TrendingUp,
   GitBranch,
   TestTube,
-  Sparkles
+  Sparkles,
+  Zap,
+  Target
 } from 'lucide-react';
 
 interface LoginProps {
@@ -129,12 +131,6 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
     }
   ];
 
-  const stats = [
-    { label: "Organizations Trust Us", value: "500+", icon: Building },
-    { label: "AI Applications Governed", value: "2,000+", icon: Zap },
-    { label: "Compliance Frameworks", value: "12+", icon: Shield },
-    { label: "Trust Assessments", value: "50K+", icon: Target }
-  ];
 
   if (currentView === 'login') {
     // Login banner will be shown on homepage
