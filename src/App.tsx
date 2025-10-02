@@ -51,6 +51,7 @@ import TrustMetricsEngine from './components/TrustMetricsEngine';
 import TrustEvaluations from './components/TrustEvaluations';
 import TrustBenchmarking from './components/TrustBenchmarking';
 import FairnessAssessment from './components/FairnessAssessment';
+import ExplainabilityEngine from './components/ExplainabilityEngine';
 import TEVVAutomationSuite from './components/TEVVAutomationSuite';
 import ValidationLab from './components/ValidationLab';
 import ContinuousMonitoring from './components/ContinuousMonitoring';
@@ -260,8 +261,7 @@ function App() {
         { id: 'evaluations', label: 'Trust Evaluations', icon: Target },
         { id: 'trust-benchmarking', label: 'Trust Benchmarking', icon: BarChart3 },
         { id: 'fairness-assessment', label: 'Fairness Assessment', icon: Users },
-        { id: 'bias-auditing', label: 'Fairness Assessment', icon: Users },
-        { id: 'explainability', label: 'Explainability Engine', icon: Brain },
+        { id: 'explainability-engine', label: 'Explainability Engine', icon: Brain },
         { id: 'analytics', label: 'Trust Analytics', icon: TrendingUp },
       ]
     },
