@@ -1,37 +1,19 @@
 import React, { useState } from 'react';
-import { 
-  Brain, 
-  Mail, 
-  Lock, 
-  Eye, 
+import {
+  Brain,
+  Mail,
+  Lock,
+  Eye,
   EyeOff,
   Building,
   Globe,
   Shield,
-  CheckCircle,
   ArrowRight,
-  Users,
-  Zap,
-  Target,
-  Star,
   Award,
-  BarChart3,
-  AlertTriangle,
   FileText,
-  Activity,
   TrendingUp,
-  Heart,
-  Scale,
-  Database,
-  Code,
-  Crown,
-  Gavel,
-  Play,
-  ChevronRight,
-  Sparkles,
-  Rocket,
-  Clock,
-  DollarSign
+  GitBranch,
+  TestTube
 } from 'lucide-react';
 
 interface LoginProps {
