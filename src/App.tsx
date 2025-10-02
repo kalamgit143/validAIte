@@ -106,7 +106,7 @@ function App() {
       restrictions: ['No day-to-day testing execution', 'No technical test design'],
       actionPermissions: {
         'Risk Mapping & Governance': ['C', 'E', 'A', 'V'],
-        'Trust Metrics Engine': ['C', 'A', 'V'], // thresholds only
+        'Trust Metrics Engine': ['C', 'A', 'V'], // Create official risk-to-metric mappings, Approve thresholds, View oversight
         'TEVV Automation Suite': ['V'],
         'Validation Lab (HITL)': ['A', 'V'], // approve reports
         'Continuous Monitoring': ['A', 'V'], // governance alerts
@@ -120,7 +120,7 @@ function App() {
       restrictions: ['No risk acceptance decisions', 'No compliance sign-off'],
       actionPermissions: {
         'Risk Mapping & Governance': ['C', 'E', 'V'], // use cases, suggest risks
-        'Trust Metrics Engine': ['R', 'V'], // manual validations
+        'Trust Metrics Engine': ['C', 'E', 'V'], // Create test configs, Edit evaluation setups, View results (NO APPROVE)
         'TEVV Automation Suite': ['R', 'V'], // manual/exploratory tests
         'Validation Lab (HITL)': ['R', 'V'], // manual HITL validation
         'Continuous Monitoring': ['V'],
