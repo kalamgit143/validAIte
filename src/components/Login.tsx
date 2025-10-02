@@ -63,46 +63,39 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
 
   const features = [
     {
-      icon: Target,
-     title: "Risk Assessment",
-     description: "NIST RMF-compliant risk classification and EU AI Act compliance automation",
-     color: "red",
-     stats: "87% compliance rate"
+      icon: Brain,
+      title: "Archetype Classifier",
+      description: "Categorize your GenAI applications into 12 NIST-aligned archetypes for targeted risk assessment",
+      color: "blue",
+      stats: "12 archetypes"
     },
     {
-      icon: Shield,
-     title: "Trust Metrics Engine",
-     description: "Quantify AI trustworthiness through accuracy, fairness, robustness, and transparency metrics",
-     color: "emerald",
-     stats: "94% avg trust score"
+      icon: GitBranch,
+      title: "RMF Workflow",
+      description: "6-phase NIST AI Risk Management Framework workflow with visual tracking and compliance mapping",
+      color: "cyan",
+      stats: "6 RMF phases"
     },
     {
-      icon: Activity,
-      title: "TEVV Automation",
-      description: "Automated Testing, Evaluation, Validation, and Verification for EU AI Act",
-      color: "violet",
-      stats: "98% test coverage"
+      icon: TestTube,
+      title: "TEVV Pack Manager",
+      description: "Configure and manage Test, Evaluation, Verification & Validation evidence packages",
+      color: "purple",
+      stats: "Complete TEVV"
     },
     {
-      icon: Users,
-      title: "Human-in-the-Loop",
-      description: "Expert validation lab with domain specialists and ethics review boards",
-      color: "amber",
-      stats: "89% expert approval"
-    },
-    {
-      icon: BarChart3,
-      title: "Continuous Monitoring",
-      description: "Real-time drift detection, safety guardrails, and incident response",
-      color: "orange",
-      stats: "24/7 monitoring"
+      icon: TrendingUp,
+      title: "Metrics Dashboard",
+      description: "Real-time trust metrics monitoring including accuracy, fairness, robustness, and transparency",
+      color: "green",
+      stats: "Live metrics"
     },
     {
       icon: FileText,
-      title: "Compliance Reporting",
-      description: "Automated evidence collection and regulatory reporting for audits",
+      title: "Evidence Pack Manager",
+      description: "Centralized repository for compliance evidence, audit trails, and regulatory documentation",
       color: "indigo",
-      stats: "100% audit ready"
+      stats: "Audit ready"
     }
   ];
 
@@ -171,12 +164,12 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
       <header className="container mx-auto px-6 py-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-              <Brain className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center">
+              <Shield className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">validAIte</h1>
-              <p className="text-blue-600 dark:text-blue-400 text-sm font-medium">GenAI Trust & Governance Platform</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">ValidAIte</h1>
+              <p className="text-blue-600 dark:text-blue-400 text-sm font-medium">NIST AI RMF Platform</p>
             </div>
           </div>
           
@@ -207,28 +200,6 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Select Your Role
-                </label>
-                <div className="relative">
-                  <Users className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <select
-                    value={formData.role}
-                    onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
-                    className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                  >
-                    <option value="🔵 AI Governance Lead (Risk + Compliance)">🔵 CIO/CDO - Strategic Governance</option>
-                    <option value="🟢 QA/TEVV Engineer (ISO 25010, Manual Validation)">🟢 QA/TEVV Engineer - Quality Assurance</option>
-                    <option value="🟣 TEVV Automation Engineer (EU AI Act, Test Automation)">🟣 TEVV Automation Engineer - EU AI Act</option>
-                    <option value="🔴 AI SecOps Engineer (Security + DevSecOps)">🔴 AI SecOps Engineer - Security Operations</option>
-                    <option value="🟡 Domain & Ethics Reviewer (Domain + Ethics)">🟡 Domain & Ethics Reviewer - Independent Review</option>
-                  </select>
-                </div>
-                <div className="mt-2 text-xs text-gray-500 dark:text-gray-500">
-                  Each role has tailored workflows and permissions
-                </div>
-              </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -325,13 +296,12 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
         <div className="text-center mb-16">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
-              Make Your AI
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block lg:inline"> Trustworthy</span>
+              NIST AI RMF
+              <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent block lg:inline"> Compliance Platform</span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Enterprise AI governance platform ensuring your GenAI applications are 
-              <strong className="text-gray-900 dark:text-white"> safe, fair, and compliant</strong> with 
-              NIST RMF and EU AI Act requirements.
+              Five powerful modules to classify, assess, test, monitor, and validate your GenAI applications
+              <strong className="text-gray-900 dark:text-white"> following NIST AI Risk Management Framework</strong>.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
@@ -343,8 +313,8 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
         <div className="mb-16 text-center">
           <div className="max-w-4xl mx-auto">
             <img 
-              src="/image.png" 
-              alt="validAIte robot testing LLM powered GenAI app robot"
+              src="/image.png"
+              alt="ValidAIte NIST AI RMF Platform"
               className="w-full h-[500px] object-cover rounded-3xl shadow-2xl border-2 border-gray-200 dark:border-gray-700 hover:shadow-3xl hover:scale-105 transition-all duration-500"
             />
             <p className="text-xl text-gray-600 dark:text-gray-400 mt-6 italic font-medium whitespace-nowrap">
@@ -357,16 +327,16 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
         <div className="mb-16">
           <div className="text-center mb-12">
             <div className="inline-flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full mb-6">
-              <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              <span className="text-blue-800 dark:text-blue-200 font-semibold">Complete AI Governance Suite</span>
+              <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              <span className="text-blue-800 dark:text-blue-200 font-semibold">NIST AI RMF Core Modules</span>
             </div>
-            <h3 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Six Integrated Trust Modules</h3>
+            <h3 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Five Core ValidAIte Modules</h3>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              From risk assessment to continuous monitoring - everything you need for trustworthy AI
+              Streamlined NIST compliance workflow for GenAI application validation
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
@@ -406,7 +376,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
               <Award className="w-4 h-4 text-purple-500" />
               <span className="text-sm font-medium">ISO 27001</span>
             </div>
-            <span className="text-sm">&copy; 2024 validAIte</span>
+            <span className="text-sm">&copy; 2024 ValidAIte</span>
           </div>
         </footer>
       </div>
