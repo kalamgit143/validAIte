@@ -13,7 +13,8 @@ import {
   FileText,
   TrendingUp,
   GitBranch,
-  TestTube
+  TestTube,
+  Sparkles
 } from 'lucide-react';
 
 interface LoginProps {
