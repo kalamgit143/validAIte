@@ -28,6 +28,11 @@ import {
   Crown
 } from 'lucide-react';
 
+// Archetype utilities
+import { getArchetypeFromRole, archetypeConfigs } from './utils/archetypes';
+import ArchetypeDashboard from './components/ArchetypeDashboard';
+import ArchetypeNavigation from './components/ArchetypeNavigation';
+
 // Authentication Components
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -330,7 +335,7 @@ function App() {
     switch (activeTab) {
       // Core Platform
       case 'dashboard':
-        return <Dashboard />;
+        return <ArchetypeDashboard currentUser={currentUser} onNavigate={setActiveTab} />;
       case 'applications':
         return <Applications />;
       
@@ -453,23 +458,27 @@ function App() {
           <div className="flex items-center space-x-4">
             {/* User Info */}
             <div className="hidden md:flex items-center space-x-3 px-3 py-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <div className={`w-8 h-8 bg-gradient-to-r ${
+                currentUser?.role ? archetypeConfigs[getArchetypeFromRole(currentUser.role)]?.color || 'from-blue-500 to-purple-600' : 'from-blue-500 to-purple-600'
+              } rounded-lg flex items-center justify-center`}>
                 <span className="text-white text-sm font-semibold">
                   {currentUser?.name?.split(' ').map((n: string) => n[0]).join('') || 'U'}
                 </span>
               </div>
               <div>
                 <div className="text-sm font-medium text-gray-900 dark:text-white">{currentUser?.name}</div>
-                <div className="text-xs text-gray-600 dark:text-gray-400">{currentUser?.role}</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400">
+                  {currentUser?.role ? archetypeConfigs[getArchetypeFromRole(currentUser.role)]?.name : currentUser?.role}
+                </div>
               </div>
             </div>
 
             {/* Workflow Indicator */}
-            {getCurrentWorkflow() && (
+            {currentUser?.role && archetypeConfigs[getArchetypeFromRole(currentUser.role)] && (
               <div className="hidden lg:flex items-center space-x-2 px-3 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                 <Activity className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 <span className="text-xs text-blue-800 dark:text-blue-300 font-medium">
-                  {getCurrentWorkflow()}
+                  {archetypeConfigs[getArchetypeFromRole(currentUser.role)].focus[0]} Focus
                 </span>
               </div>
             )}
@@ -513,138 +522,12 @@ function App() {
       <div className="flex">
         {/* Sidebar */}
         <aside className={`${sidebarOpen ? 'w-80' : 'w-0'} lg:w-80 transition-all duration-300 overflow-hidden bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 min-h-screen shadow-sm`}>
-          <nav className="p-4 space-y-6 h-screen overflow-y-auto">
-            {getFilteredNavItems().map((section, sectionIndex) => (
-              <div key={sectionIndex}>
-                {section.items.length > 0 && (
-                  <>
-                    <h3 className={`text-sm font-bold uppercase tracking-wide mb-4 px-3 ${
-                      section.category === 'Platform' ? 'text-blue-700 dark:text-blue-300' :
-                      section.category === 'Risk Mapping & Governance' ? 'text-red-700 dark:text-red-300' :
-                      section.category === 'Trust Metrics Engine' ? 'text-emerald-700 dark:text-emerald-300' :
-                      section.category === 'TEVV Automation Suite' ? 'text-violet-700 dark:text-violet-300' :
-                      section.category === 'Validation Lab (HITL)' ? 'text-amber-700 dark:text-amber-300' :
-                      section.category === 'Continuous Monitoring' ? 'text-orange-700 dark:text-orange-300' :
-                      section.category === 'Compliance Reporting' ? 'text-indigo-700 dark:text-indigo-300' :
-                      section.category === 'Organization' ? 'text-slate-700 dark:text-slate-300' :
-                      'text-gray-500 dark:text-gray-400'
-                    }`}>
-                      {section.category}
-                      {currentUser?.role && (
-                        <div className="text-xs font-normal text-gray-500 dark:text-gray-400 mt-1 normal-case">
-                          {/* Role-based action indicators */}
-                          {section.category === 'Risk Mapping & Governance' && (
-                            getUserPermissions('Risk Mapping & Governance').includes('A') ? 'C•E•A•V' :
-                            getUserPermissions('Risk Mapping & Governance').includes('C') ? 'C•E•V' :
-                            getUserPermissions('Risk Mapping & Governance').includes('E') ? 'E•V' : 'V'
-                          )}
-                          {section.category === 'Trust Metrics Engine' && (
-                            getUserPermissions('Trust Metrics Engine').includes('A') ? 'C•A•V' :
-                            getUserPermissions('Trust Metrics Engine').includes('R') ? 'R•V' :
-                            getUserPermissions('Trust Metrics Engine').includes('C') ? 'C•E•R•V' : 'V'
-                          )}
-                          {section.category === 'TEVV Automation Suite' && (
-                            getUserPermissions('TEVV Automation Suite').includes('C') ? 'C•E•R•V' :
-                            getUserPermissions('TEVV Automation Suite').includes('R') ? 'R•V' : 'V'
-                          )}
-                          {section.category === 'Validation Lab (HITL)' && (
-                            getUserPermissions('Validation Lab (HITL)').includes('A') ? 'A•V' :
-                            getUserPermissions('Validation Lab (HITL)').includes('R') ? 'R•V' : 'V'
-                          )}
-                          {section.category === 'Continuous Monitoring' && (
-                            getUserPermissions('Continuous Monitoring').includes('C') ? 'C•E•R•A•V' :
-                            getUserPermissions('Continuous Monitoring').includes('A') ? 'A•V' : 'V'
-                          )}
-                          {section.category === 'Compliance Reporting' && (
-                            getUserPermissions('Compliance Reporting').includes('A') ? 'C•E•A•V' :
-                            getUserPermissions('Compliance Reporting').includes('C') ? 'C•V' : 'V'
-                          )}
-                        </div>
-                      )}
-                    </h3>
-                    <div className="space-y-2">
-                      {section.items.map((item) => {
-                        const Icon = item.icon;
-                        return (
-                          <button
-                            key={item.id}
-                            onClick={() => setActiveTab(item.id)}
-                            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left transition-all duration-200 text-sm font-semibold ${
-                              activeTab === item.id
-                                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl transform scale-[1.02] border border-blue-300'
-                                : 'text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white hover:shadow-md'
-                            }`}
-                          >
-                            <Icon className={`w-5 h-5 ${activeTab === item.id ? 'text-white' : ''}`} />
-                            <span>{item.label}</span>
-                            {/* RBAC Action Indicators */}
-                            {(() => {
-                              const moduleMap: { [key: string]: string } = {
-                                'application-setup': 'Risk Mapping & Governance',
-                                'use-case-definition': 'Risk Mapping & Governance',
-                                'risk-classification': 'Risk Mapping & Governance',
-                                'governance-controls': 'Risk Mapping & Governance',
-                                'governance-matrix': 'Risk Mapping & Governance',
-                                'trust-metrics': 'Trust Metrics Engine',
-                                'evaluations': 'Trust Metrics Engine',
-                                'benchmarks': 'Trust Metrics Engine',
-                                'bias-auditing': 'Trust Metrics Engine',
-                                'explainability': 'Trust Metrics Engine',
-                                'analytics': 'Trust Metrics Engine',
-                                'tevv-automation': 'TEVV Automation Suite',
-                                'model-validation': 'TEVV Automation Suite',
-                                'playground': 'TEVV Automation Suite',
-                                'prompt-testing': 'TEVV Automation Suite',
-                                'model-comparison': 'TEVV Automation Suite',
-                                'datasets': 'TEVV Automation Suite',
-                                'validation-lab': 'Validation Lab (HITL)',
-                                'human-feedback': 'Validation Lab (HITL)',
-                                'ethical-ai': 'Validation Lab (HITL)',
-                                'experiments': 'Validation Lab (HITL)',
-                                'model-documentation': 'Validation Lab (HITL)',
-                                'continuous-monitoring': 'Continuous Monitoring',
-                                'traces': 'Continuous Monitoring',
-                                'observability': 'Continuous Monitoring',
-                                'data-drift': 'Continuous Monitoring',
-                                'guardrails': 'Continuous Monitoring',
-                                'alerts': 'Continuous Monitoring',
-                                'compliance-reporting': 'Compliance Reporting',
-                                'reports': 'Compliance Reporting'
-                              };
-                              
-                              const module = moduleMap[item.id];
-                              if (!module) return null;
-                              
-                              const permissions = getUserPermissions(module);
-                              const hasCreate = permissions.includes('C');
-                              const hasApprove = permissions.includes('A');
-                              const hasRun = permissions.includes('R');
-                              
-                              // Role-specific color bubbles
-                              const roleColors = {
-                                '🔵 AI Governance Lead (Risk + Compliance)': 'bg-blue-500',
-                                '🟢 QA/TEVV Engineer (ISO 25010, Manual Validation)': 'bg-green-500', 
-                                '🟣 TEVV Automation Engineer (EU AI Act, Test Automation)': 'bg-purple-500',
-                                '🔴 AI SecOps Engineer (Security + DevSecOps)': 'bg-red-500',
-                                '🟡 Domain & Ethics Reviewer (Domain + Ethics)': 'bg-yellow-500'
-                              };
-                              
-                              const userRoleColor = roleColors[currentUser?.role as keyof typeof roleColors] || 'bg-gray-400';
-                              
-                              if (hasApprove) return <div className={`ml-auto w-2 h-2 ${userRoleColor} rounded-full ring-2 ring-white`} title="Approval Authority" />;
-                              if (hasCreate) return <div className={`ml-auto w-2 h-2 ${userRoleColor} rounded-full`} title="Create/Configure Authority" />;
-                              if (hasRun) return <div className={`ml-auto w-2 h-2 ${userRoleColor} rounded-full opacity-75`} title="Execute Authority" />;
-                              return <div className="ml-auto w-2 h-2 bg-gray-300 rounded-full" title="View Only" />;
-                            })()}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </>
-                )}
-              </div>
-            ))}
-          </nav>
+          <ArchetypeNavigation 
+            currentUser={currentUser}
+            activeTab={activeTab}
+            onNavigate={setActiveTab}
+            getUserPermissions={getUserPermissions}
+          />
         </aside>
 
         {/* Main Content */}

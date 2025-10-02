@@ -218,12 +218,15 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
                     onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
                     className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                   >
-                    <option value="🔵 AI Governance Lead (Risk + Compliance)">🔵 AI Governance Lead</option>
-                    <option value="🟢 QA/TEVV Engineer (ISO 25010, Manual Validation)">🟢 QA/TEVV Engineer</option>
-                    <option value="🟣 TEVV Automation Engineer (EU AI Act, Test Automation)">🟣 TEVV Automation Engineer</option>
-                    <option value="🔴 AI SecOps Engineer (Security + DevSecOps)">🔴 AI SecOps Engineer</option>
-                    <option value="🟡 Domain & Ethics Reviewer (Domain + Ethics)">🟡 Domain & Ethics Reviewer</option>
+                    <option value="🔵 AI Governance Lead (Risk + Compliance)">🔵 CIO/CDO - Strategic Governance</option>
+                    <option value="🟢 QA/TEVV Engineer (ISO 25010, Manual Validation)">🟢 QA/TEVV Engineer - Quality Assurance</option>
+                    <option value="🟣 TEVV Automation Engineer (EU AI Act, Test Automation)">🟣 TEVV Automation Engineer - EU AI Act</option>
+                    <option value="🔴 AI SecOps Engineer (Security + DevSecOps)">🔴 AI SecOps Engineer - Security Operations</option>
+                    <option value="🟡 Domain & Ethics Reviewer (Domain + Ethics)">🟡 Domain & Ethics Reviewer - Independent Review</option>
                   </select>
+                </div>
+                <div className="mt-2 text-xs text-gray-500 dark:text-gray-500">
+                  Each role has tailored workflows and permissions
                 </div>
               </div>
 
