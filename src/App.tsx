@@ -1,37 +1,15 @@
 import React, { useState } from 'react';
-import { 
-  BarChart3, 
-  Brain, 
-  Settings, 
-  PlayCircle, 
-  Users, 
+import {
+  Brain,
+  Shield,
   TrendingUp,
-  AlertTriangle,
-  Zap,
   FileText,
-  Target,
-  Search,
-  Bell,
-  User, 
   TestTube,
   GitBranch,
   Menu,
   X,
-  Activity,
-  Shield,
-  Database,
-  Eye,
-  Code,
-  MessageSquare,
-  LogOut,
-  Building,
-  Crown
+  LogOut
 } from 'lucide-react';
-
-// Archetype utilities
-import { getArchetypeFromRole, archetypeConfigs } from './utils/archetypes';
-import ArchetypeDashboard from './components/ArchetypeDashboard';
-import ArchetypeNavigation from './components/ArchetypeNavigation';
 
 // ValidAIte NIST RMF Components
 import ArchetypeClassifier from './components/ArchetypeClassifier';
@@ -43,145 +21,13 @@ import EvidencePackManager from './components/EvidencePackManager';
 // Authentication Components
 import Login from './components/Login';
 import Signup from './components/Signup';
-import UserManagement from './components/UserManagement';
-import TenantSettings from './components/TenantSettings';
-
-// Core Platform Components
-import Dashboard from './components/Dashboard';
-import Applications from './components/Applications';
-import SettingsPanel from './components/Settings';
-
-// Risk Mapping & Governance Components
-import ApplicationSetup from './components/ApplicationSetup';
-import UseCaseDefinition from './components/UseCaseDefinition';
-import RiskClassification from './components/RiskClassification';
-import GovernanceControls from './components/GovernanceControls';
-import GovernanceMatrix from './components/GovernanceMatrix';
-
-// Trust Modules
-import TrustMetricsEngine from './components/TrustMetricsEngine';
-import TrustEvaluations from './components/TrustEvaluations';
-import TrustBenchmarking from './components/TrustBenchmarking';
-import FairnessAssessment from './components/FairnessAssessment';
-import ExplainabilityEngine from './components/ExplainabilityEngine';
-import TrustAnalytics from './components/TrustAnalytics';
-import TEVVAutomationSuite from './components/TEVVAutomationSuite';
-import ValidationLab from './components/ValidationLab';
-import ContinuousMonitoring from './components/ContinuousMonitoring';
-import ComplianceReporting from './components/ComplianceReporting';
-
-// Supporting Components
-import Playground from './components/Playground';
-import PromptTesting from './components/PromptTesting';
-import ModelComparison from './components/ModelComparison';
-import Evaluations from './components/Evaluations';
-import Benchmarks from './components/Benchmarks';
-import Traces from './components/Traces';
-import Analytics from './components/Analytics';
-import Observability from './components/Observability';
-import DataDrift from './components/DataDrift';
-import Guardrails from './components/Guardrails';
-import HumanFeedback from './components/HumanFeedback';
-import Alerts from './components/Alerts';
-import Datasets from './components/Datasets';
-import Experiments from './components/Experiments';
-import Reports from './components/Reports';
-import RiskAssessment from './components/RiskAssessment';
-import ComplianceFramework from './components/ComplianceFramework';
-import ModelValidation from './components/ModelValidation';
-import EthicalAI from './components/EthicalAI';
-import RegulatoryCompliance from './components/RegulatoryCompliance';
-import AuditTrail from './components/AuditTrail';
-import ModelGovernance from './components/ModelGovernance';
-import BiasAuditing from './components/BiasAuditing';
-import ExplainabilityAI from './components/ExplainabilityAI';
-import ModelDocumentation from './components/ModelDocumentation';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('archetype-classifier');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-
-  // Navigation handler for components
-  const handleNavigateToUseCase = () => {
-    setActiveTab('use-case-definition');
-  };
-
-  // Role-based navigation configuration
-  const roleBasedNavigation = {
-    '🔵 AI Governance Lead (Risk + Compliance)': {
-      sections: ['Platform', 'Risk Mapping & Governance', 'Trust Metrics Engine', 'Compliance Reporting', 'Organization'],
-      workflow: 'Risk Mapping → Trust Thresholds → Compliance Sign-off → Drift Review',
-      responsibilities: ['Risk acceptance decisions', 'Compliance sign-off authority', 'Trust threshold approval', 'Governance-level decisions'],
-      restrictions: ['No day-to-day testing execution', 'No technical test design'],
-      actionPermissions: {
-        'Risk Mapping & Governance': ['C', 'E', 'A', 'V'],
-        'Trust Metrics Engine': ['C', 'A', 'V'], // Create official risk-to-metric mappings, Approve thresholds, View oversight
-        'TEVV Automation Suite': ['V'],
-        'Validation Lab (HITL)': ['A', 'V'], // approve reports
-        'Continuous Monitoring': ['A', 'V'], // governance alerts
-        'Compliance Reporting': ['C', 'E', 'A', 'V']
-      }
-    },
-    '🟢 QA/TEVV Engineer (ISO 25010, Manual Validation)': {
-      sections: ['Platform', 'TEVV Automation Suite', 'Validation Lab (HITL)', 'Trust Metrics Engine'],
-      workflow: 'Manual Trust Validation → TEVV Design → HITL Testing → QA Evidence',
-      responsibilities: ['Manual validation ownership', 'Traceability matrix maintenance', 'ISO 25010 quality dimensions', 'Defect triage and feedback'],
-      restrictions: ['No risk acceptance decisions', 'No compliance sign-off'],
-      actionPermissions: {
-        'Risk Mapping & Governance': ['C', 'E', 'V'], // use cases, suggest risks
-        'Trust Metrics Engine': ['C', 'E', 'V'], // Create test configs, Edit evaluation setups, View results (NO APPROVE)
-        'TEVV Automation Suite': ['R', 'V'], // manual/exploratory tests
-        'Validation Lab (HITL)': ['R', 'V'], // manual HITL validation
-        'Continuous Monitoring': ['V'],
-        'Compliance Reporting': ['C', 'V'] // upload manual evidence
-      }
-    },
-    '🟣 TEVV Automation Engineer (EU AI Act, Test Automation)': {
-      sections: ['Platform', 'Trust Metrics Engine', 'TEVV Automation Suite', 'Continuous Monitoring'],
-      workflow: 'Trust Automation → TEVV Execution → CI/CD Integration → Evidence Automation',
-      responsibilities: ['EU TEVV compliance execution', 'Automated evidence collection', 'Cross-module regression runs', 'Pipeline integration'],
-      restrictions: ['No risk acceptance', 'No compliance sign-off', 'Technical execution focus'],
-      actionPermissions: {
-        'Risk Mapping & Governance': ['E', 'V'], // tag testable risks
-        'Trust Metrics Engine': ['C', 'E', 'R', 'V'],
-        'TEVV Automation Suite': ['C', 'E', 'R', 'V'],
-        'Validation Lab (HITL)': ['V'],
-        'Continuous Monitoring': ['V'],
-        'Compliance Reporting': ['C', 'V'] // export evidence logs
-      }
-    },
-    '🔴 AI SecOps Engineer (Security + DevSecOps)': {
-      sections: ['Platform', 'Risk Mapping & Governance', 'TEVV Automation Suite', 'Continuous Monitoring'],
-      workflow: 'Security Risk Input → Adversarial Testing → Security Validation → Incident Response',
-      responsibilities: ['Incident response ownership', 'Security testing and red-teaming', 'Pipeline guardrails', 'Security monitoring'],
-      restrictions: ['No business risk decisions', 'No compliance sign-off'],
-      actionPermissions: {
-        'Risk Mapping & Governance': ['C', 'E', 'V'], // security risks
-        'Trust Metrics Engine': ['R', 'V'], // security trust metrics
-        'TEVV Automation Suite': ['R', 'V'], // security tests
-        'Validation Lab (HITL)': ['R', 'V'], // security HITL validations
-        'Continuous Monitoring': ['C', 'E', 'R', 'A', 'V'], // full ownership
-        'Compliance Reporting': ['C', 'V'] // security evidence
-      }
-    },
-    '🟡 Domain & Ethics Reviewer (Domain + Ethics)': {
-      sections: ['Platform', 'Risk Mapping & Governance', 'Trust Metrics Engine', 'Validation Lab (HITL)', 'Continuous Monitoring'],
-      workflow: 'Domain Risk Input → Domain Trust Validation → Ethical HITL Review → Domain Evidence',
-      responsibilities: ['Ethical threshold definition', 'Domain correctness validation', 'Independent ethics review', 'Fairness oversight'],
-      restrictions: ['Independent from dev/test teams', 'No technical execution', 'Ethics and domain focus only'],
-      actionPermissions: {
-        'Risk Mapping & Governance': ['C', 'E', 'V'], // domain/ethical risks
-        'Trust Metrics Engine': ['R', 'V'], // bias/fairness checks
-        'TEVV Automation Suite': ['V'], // domain edge cases input
-        'Validation Lab (HITL)': ['R', 'V'], // fairness/ethics validation
-        'Continuous Monitoring': ['V'], // domain anomaly spotting
-        'Compliance Reporting': ['C', 'V'] // fairness/ethics notes
-      }
-    }
-  };
 
   // Mock authentication handlers
   const handleLogin = (credentials: any) => {
@@ -209,54 +55,9 @@ function App() {
   const handleLogout = () => {
     setCurrentUser(null);
     setIsAuthenticated(false);
-    setActiveTab('dashboard');
+    setActiveTab('archetype-classifier');
   };
 
-  // Filter navigation items based on user role
-  const getFilteredNavItems = () => {
-    // All users see all sections - RBAC controls actions within components
-    return navItems;
-  };
-
-  // Get current user's workflow
-  const getCurrentWorkflow = () => {
-    if (!currentUser?.role) return null;
-    return roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation]?.workflow || null;
-  };
-
-  // Get user's action permissions for a specific module
-  const getUserPermissions = (module: string) => {
-    if (!currentUser?.role) return [];
-    const roleConfig = roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation];
-    return roleConfig?.actionPermissions?.[module] || ['V']; // Default to view-only
-  };
-
-  // Check if user can perform specific action
-  const canPerformAction = (module: string, action: 'C' | 'E' | 'R' | 'A' | 'V') => {
-    const permissions = getUserPermissions(module);
-    return permissions.includes(action);
-  };
-
-  // Get archetype-specific workflow information
-  const getArchetypeWorkflow = () => {
-    if (!currentUser?.role) return null;
-    const roleConfig = roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation];
-    return roleConfig?.workflow || null;
-  };
-
-  // Get archetype responsibilities
-  const getArchetypeResponsibilities = () => {
-    if (!currentUser?.role) return [];
-    const roleConfig = roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation];
-    return roleConfig?.responsibilities || [];
-  };
-
-  // Get archetype restrictions
-  const getArchetypeRestrictions = () => {
-    if (!currentUser?.role) return [];
-    const roleConfig = roleBasedNavigation[currentUser.role as keyof typeof roleBasedNavigation];
-    return roleConfig?.restrictions || [];
-  };
   // Show authentication screens if not logged in
   if (!isAuthenticated) {
     if (showSignup) {
@@ -266,120 +67,22 @@ function App() {
   }
 
   const navItems = [
-    // Core Platform
+    // ValidAIte NIST RMF Core Modules
     {
-      category: 'Platform',
-      items: [
-        { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
-        { id: 'applications', label: 'AI Applications', icon: Zap },
-      ]
-    },
-
-    // ValidAIte NIST RMF Modules
-    {
-      category: 'ValidAIte - NIST RMF',
+      category: 'ValidAIte',
       items: [
         { id: 'archetype-classifier', label: 'Archetype Classifier', icon: Brain },
         { id: 'rmf-workflow', label: 'RMF Workflow', icon: GitBranch },
         { id: 'tevv-pack-manager', label: 'TEVV Pack Manager', icon: TestTube },
         { id: 'metrics-dashboard', label: 'Metrics Dashboard', icon: TrendingUp },
-        { id: 'evidence-pack', label: 'Evidence Pack', icon: FileText },
-      ]
-    },
-    
-    // Module 1: Risk Mapping & Governance
-    { 
-      category: 'Risk Mapping & Governance',
-      items: [
-        { id: 'application-setup', label: 'Application Setup', icon: Database },
-        { id: 'use-case-definition', label: 'Use Case Definition', icon: FileText },
-        { id: 'risk-classification', label: 'Risk Classification', icon: AlertTriangle },
-        { id: 'governance-controls', label: 'Governance Controls', icon: Shield },
-        { id: 'governance-matrix', label: 'Governance Matrix', icon: Target },
-      ]
-    },
-    
-    // Module 2: Trust Metrics Engine
-    { 
-      category: 'Trust Metrics Engine',
-      items: [
-        { id: 'trust-metrics', label: 'Trust Metrics Engine', icon: Target },
-        { id: 'evaluations', label: 'Trust Evaluations', icon: Target },
-        { id: 'trust-benchmarking', label: 'Trust Benchmarking', icon: BarChart3 },
-        { id: 'fairness-assessment', label: 'Fairness Assessment', icon: Users },
-        { id: 'explainability-engine', label: 'Explainability Engine', icon: Brain },
-        { id: 'trust-analytics', label: 'Trust Analytics', icon: TrendingUp },
-        { id: 'analytics', label: 'Trust Analytics', icon: TrendingUp },
-      ]
-    },
-    
-    // Module 3: TEVV Automation Suite
-    { 
-      category: 'TEVV Automation Suite',
-      items: [
-        { id: 'tevv-automation', label: 'TEVV Automation Suite', icon: Activity },
-        { id: 'model-validation', label: 'Automated Validation', icon: Target },
-        { id: 'playground', label: 'Testing Playground', icon: PlayCircle },
-        { id: 'prompt-testing', label: 'Prompt Evolution', icon: MessageSquare },
-        { id: 'model-comparison', label: 'Model Testing', icon: Brain },
-        { id: 'datasets', label: 'Test Data Management', icon: Database },
-      ]
-    },
-    
-    // Module 4: Validation Lab (HITL)
-    { 
-      category: 'Validation Lab (HITL)',
-      items: [
-        { id: 'validation-lab', label: 'Validation Lab (HITL)', icon: Users },
-        { id: 'human-feedback', label: 'Human-in-the-Loop', icon: Users },
-        { id: 'ethical-ai', label: 'Ethics Review Board', icon: Users },
-        { id: 'experiments', label: 'Human Validation', icon: Eye },
-        { id: 'model-documentation', label: 'Expert Documentation', icon: FileText },
-      ]
-    },
-    
-    // Module 5: Continuous Monitoring
-    { 
-      category: 'Continuous Monitoring',
-      items: [
-        { id: 'continuous-monitoring', label: 'Continuous Monitoring', icon: Activity },
-        { id: 'traces', label: 'Real-time Tracing', icon: Activity },
-        { id: 'observability', label: 'System Health', icon: Activity },
-        { id: 'data-drift', label: 'Drift Detection', icon: AlertTriangle },
-        { id: 'guardrails', label: 'Safety Guardrails', icon: Shield },
-        { id: 'alerts', label: 'Incident Response', icon: Bell },
-      ]
-    },
-    
-    // Module 6: Compliance Reporting
-    { 
-      category: 'Compliance Reporting',
-      items: [
-        { id: 'compliance-reporting', label: 'Compliance Reporting', icon: FileText },
-        { id: 'reports', label: 'Compliance Reports', icon: FileText },
-      ]
-    },
-    
-    // Organization Management
-    { 
-      category: 'Organization',
-      items: [
-        { id: 'user-management', label: 'User Management', icon: Users },
-        { id: 'tenant-settings', label: 'Organization Settings', icon: Building },
-        { id: 'settings', label: 'Platform Settings', icon: Settings },
+        { id: 'evidence-pack', label: 'Evidence Pack Manager', icon: FileText },
       ]
     }
   ];
 
   const renderActiveComponent = () => {
     switch (activeTab) {
-      // Core Platform
-      case 'dashboard':
-        return <ArchetypeDashboard currentUser={currentUser} onNavigate={setActiveTab} />;
-      case 'applications':
-        return <Applications />;
-
-      // ValidAIte NIST RMF
+      // ValidAIte NIST RMF Core Modules
       case 'archetype-classifier':
         return <ArchetypeClassifier />;
       case 'rmf-workflow':
@@ -390,93 +93,9 @@ function App() {
         return <MetricsDashboard />;
       case 'evidence-pack':
         return <EvidencePackManager />;
-      
-      // Risk Mapping & Governance
-      case 'application-setup':
-        return <ApplicationSetup onNavigateToUseCase={handleNavigateToUseCase} currentUser={currentUser} canPerformAction={canPerformAction} getUserPermissions={getUserPermissions} />;
-      case 'use-case-definition':
-        return <UseCaseDefinition />;
-      case 'risk-classification':
-        return <RiskClassification />;
-      case 'governance-controls':
-        return <GovernanceControls />;
-      case 'governance-matrix':
-        return <GovernanceMatrix />;
-      
-      // Trust Modules
-      case 'trust-metrics':
-        return <TrustMetricsEngine />;
-      case 'evaluations':
-        return <TrustEvaluations currentUser={currentUser} canPerformAction={canPerformAction} getUserPermissions={getUserPermissions} />;
-      case 'trust-benchmarking':
-        return <TrustBenchmarking currentUser={currentUser} canPerformAction={canPerformAction} getUserPermissions={getUserPermissions} />;
-      case 'fairness-assessment':
-        return <FairnessAssessment currentUser={currentUser} canPerformAction={canPerformAction} getUserPermissions={getUserPermissions} />;
-      case 'trust-analytics':
-        return <TrustAnalytics currentUser={currentUser} canPerformAction={canPerformAction} getUserPermissions={getUserPermissions} />;
-      case 'tevv-automation':
-        return <TEVVAutomationSuite />;
-      case 'validation-lab':
-        return <ValidationLab />;
-      case 'continuous-monitoring':
-        return <ContinuousMonitoring />;
-      case 'compliance-reporting':
-        return <ComplianceReporting />;
-      
-      // Supporting Components
-      case 'playground':
-        return <Playground />;
-      case 'prompt-testing':
-        return <PromptTesting />;
-      case 'model-comparison':
-        return <ModelComparison />;
-      case 'benchmarks':
-        return <Benchmarks />;
-      
-      case 'traces':
-        return <Traces />;
-      case 'analytics':
-        return <Analytics />;
-      case 'observability':
-        return <Observability />;
-      case 'data-drift':
-        return <DataDrift />;
-      
-      case 'guardrails':
-        return <Guardrails />;
-      case 'human-feedback':
-        return <HumanFeedback />;
-      case 'alerts':
-        return <Alerts />;
-      
-      case 'datasets':
-        return <Datasets />;
-      case 'experiments':
-        return <Experiments />;
-      case 'reports':
-        return <Reports />;
-      
-      case 'model-validation':
-        return <ModelValidation />;
-      case 'ethical-ai':
-        return <EthicalAI />;
-      case 'bias-auditing':
-        return <BiasAuditing />;
-      case 'explainability':
-        return <ExplainabilityAI />;
-      case 'model-documentation':
-        return <ModelDocumentation />;
-      
-      // Organization Management
-      case 'user-management':
-        return <UserManagement />;
-      case 'tenant-settings':
-        return <TenantSettings />;
-      case 'settings':
-        return <SettingsPanel />;
-      
+
       default:
-        return <Dashboard />;
+        return <ArchetypeClassifier />;
     }
   };
 
@@ -493,72 +112,33 @@ function App() {
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <Brain className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center">
+                <Shield className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">QUALIZEAL</h1>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">ValidAIte</h1>
                 <p className="text-xs text-gray-600 dark:text-gray-400">
-                  {currentUser?.role || 'GenAI Trust Platform'} • {currentUser?.tenant}
+                  NIST AI RMF Platform
                 </p>
               </div>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             {/* User Info */}
             <div className="hidden md:flex items-center space-x-3 px-3 py-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className={`w-8 h-8 bg-gradient-to-r ${
-                currentUser?.role ? archetypeConfigs[getArchetypeFromRole(currentUser.role)]?.color || 'from-blue-500 to-purple-600' : 'from-blue-500 to-purple-600'
-              } rounded-lg flex items-center justify-center`}>
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center">
                 <span className="text-white text-sm font-semibold">
                   {currentUser?.name?.split(' ').map((n: string) => n[0]).join('') || 'U'}
                 </span>
               </div>
               <div>
                 <div className="text-sm font-medium text-gray-900 dark:text-white">{currentUser?.name}</div>
-                <div className="text-xs text-gray-600 dark:text-gray-400">
-                  {currentUser?.role ? archetypeConfigs[getArchetypeFromRole(currentUser.role)]?.name : currentUser?.role}
-                </div>
+                <div className="text-xs text-gray-600 dark:text-gray-400">{currentUser?.tenant}</div>
               </div>
             </div>
 
-            {/* Workflow Indicator */}
-            {currentUser?.role && archetypeConfigs[getArchetypeFromRole(currentUser.role)] && (
-              <div className="hidden lg:flex items-center space-x-2 px-3 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <Activity className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                <span className="text-xs text-blue-800 dark:text-blue-300 font-medium">
-                  {archetypeConfigs[getArchetypeFromRole(currentUser.role)].focus[0]} Focus
-                </span>
-              </div>
-            )}
-
-            <div className="relative">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 border-0 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:bg-white dark:focus:bg-gray-600"
-              />
-            </div>
-            
-            <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors relative">
-              <Bell className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
-            </button>
-            
-            <button 
-              onClick={() => setActiveTab('user-management')}
-              className={`p-2 rounded-lg transition-colors ${
-                activeTab === 'user-management' 
-                  ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' 
-                  : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-              }`}
-            >
-              <Users className="w-5 h-5" />
-            </button>
-            
-            <button 
+            <button
               onClick={handleLogout}
               className="p-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors"
               title="Sign Out"
@@ -571,23 +151,40 @@ function App() {
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className={`${sidebarOpen ? 'w-80' : 'w-0'} lg:w-80 transition-all duration-300 overflow-hidden bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 min-h-screen shadow-sm`}>
-          <ArchetypeNavigation 
-            currentUser={currentUser}
-            activeTab={activeTab}
-            onNavigate={setActiveTab}
-            getUserPermissions={getUserPermissions}
-          />
+        <aside className={`${sidebarOpen ? 'w-64' : 'w-0'} lg:w-64 transition-all duration-300 overflow-hidden bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 min-h-screen shadow-sm`}>
+          <nav className="p-4">
+            {navItems.map((section) => (
+              <div key={section.category} className="mb-6">
+                <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                  {section.category}
+                </h3>
+                <div className="space-y-1">
+                  {section.items.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => setActiveTab(item.id)}
+                        className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-colors ${
+                          activeTab === item.id
+                            ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                        }`}
+                      >
+                        <Icon className="w-5 h-5" />
+                        <span className="text-sm font-medium">{item.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </nav>
         </aside>
 
         {/* Main Content */}
         <main className="flex-1 p-6 bg-slate-50 dark:bg-slate-900">
-          {/* Pass RBAC functions to components */}
-          {React.cloneElement(renderActiveComponent() as React.ReactElement, {
-            currentUser,
-            canPerformAction,
-            getUserPermissions
-          })}
+          {renderActiveComponent()}
         </main>
       </div>
     </div>
