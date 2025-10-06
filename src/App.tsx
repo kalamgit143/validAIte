@@ -71,15 +71,15 @@ function App() {
 
   const navItems = [
     {
-      category: '7-Stage AI Governance Workflow',
+      category: 'AI Governance Workflow',
       items: [
-        { id: 'stage-0', label: 'Stage-0: Archetype Classification', icon: Brain },
-        { id: 'stage-1', label: 'Stage-1: Risk Mapping & Governance', icon: Shield },
-        { id: 'stage-2', label: 'Stage-2: Trust Metrics Engine', icon: TrendingUp },
-        { id: 'stage-3', label: 'Stage-3: TEVV Automation Suite', icon: TestTube },
-        { id: 'stage-4', label: 'Stage-4: Validation Lab (HITL)', icon: Users },
-        { id: 'stage-5', label: 'Stage-5: Continuous Monitoring', icon: GitBranch },
-        { id: 'stage-6', label: 'Stage-6: Compliance Reporting', icon: FileText },
+        { id: 'stage-0', label: 'Archetype Classification', icon: Brain, stage: '0' },
+        { id: 'stage-1', label: 'Risk Mapping & Governance', icon: Shield, stage: '1' },
+        { id: 'stage-2', label: 'Trust Metrics Engine', icon: TrendingUp, stage: '2' },
+        { id: 'stage-3', label: 'TEVV Automation Suite', icon: TestTube, stage: '3' },
+        { id: 'stage-4', label: 'Validation Lab (HITL)', icon: Users, stage: '4' },
+        { id: 'stage-5', label: 'Continuous Monitoring', icon: GitBranch, stage: '5' },
+        { id: 'stage-6', label: 'Compliance Reporting', icon: FileText, stage: '6' },
       ]
     }
   ];
@@ -158,28 +158,55 @@ function App() {
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className={`${sidebarOpen ? 'w-64' : 'w-0'} lg:w-64 transition-all duration-300 overflow-hidden bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 min-h-screen shadow-sm`}>
-          <nav className="p-4">
+        <aside className={`${sidebarOpen ? 'w-72' : 'w-0'} lg:w-72 transition-all duration-300 overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-gray-900 dark:to-gray-800 border-r border-gray-200 dark:border-gray-700 min-h-screen shadow-lg`}>
+          <nav className="p-6">
             {navItems.map((section) => (
-              <div key={section.category} className="mb-6">
-                <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-                  {section.category}
-                </h3>
-                <div className="space-y-1">
+              <div key={section.category} className="mb-8">
+                <div className="flex items-center space-x-2 mb-4">
+                  <div className="h-1 w-1 rounded-full bg-blue-500"></div>
+                  <h3 className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+                    {section.category}
+                  </h3>
+                </div>
+                <div className="space-y-2">
                   {section.items.map((item) => {
                     const Icon = item.icon;
                     return (
                       <button
                         key={item.id}
                         onClick={() => setActiveTab(item.id)}
-                        className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-colors ${
+                        className={`w-full group relative flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                           activeTab === item.id
-                            ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                            ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 scale-105'
+                            : 'text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-800 hover:shadow-md hover:scale-102'
                         }`}
                       >
-                        <Icon className="w-5 h-5" />
-                        <span className="text-sm font-medium">{item.label}</span>
+                        <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
+                          activeTab === item.id
+                            ? 'bg-white/20'
+                            : 'bg-gray-100 dark:bg-gray-700 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20'
+                        }`}>
+                          <Icon className={`w-5 h-5 ${
+                            activeTab === item.id
+                              ? 'text-white'
+                              : 'text-gray-600 dark:text-gray-400 group-hover:text-blue-500'
+                          }`} />
+                        </div>
+                        <div className="flex-1 text-left">
+                          <span className={`block text-sm font-semibold ${
+                            activeTab === item.id
+                              ? 'text-white'
+                              : 'text-gray-900 dark:text-gray-200'
+                          }`}>{item.label}</span>
+                          <span className={`block text-xs ${
+                            activeTab === item.id
+                              ? 'text-white/80'
+                              : 'text-gray-500 dark:text-gray-400'
+                          }`}>Stage {item.stage}</span>
+                        </div>
+                        {activeTab === item.id && (
+                          <div className="absolute right-2 w-1 h-8 bg-white rounded-full"></div>
+                        )}
                       </button>
                     );
                   })}
