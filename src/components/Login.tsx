@@ -49,37 +49,65 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
   const features = [
     {
       icon: Brain,
-      title: "Archetype Classifier",
-      description: "Categorize your GenAI applications into 12 NIST-aligned archetypes for targeted risk assessment",
-      color: "blue",
+      stage: "Stage-0",
+      title: "Archetype Classification",
+      description: "Define what kind of app it is - classify applications into 12 NIST-aligned archetypes with risk tier and assurance playbook",
+      inputs: "App manifest, tech stack, modifiers, risk context",
+      outputs: "Archetype code, risk tier, assurance playbook",
       stats: "12 archetypes"
     },
     {
-      icon: GitBranch,
-      title: "RMF Workflow",
-      description: "6-phase NIST AI Risk Management Framework workflow with visual tracking and compliance mapping",
-      color: "cyan",
-      stats: "6 RMF phases"
-    },
-    {
-      icon: TestTube,
-      title: "TEVV Pack Manager",
-      description: "Configure and manage Test, Evaluation, Verification & Validation evidence packages",
-      color: "purple",
-      stats: "Complete TEVV"
+      icon: Shield,
+      stage: "Stage-1",
+      title: "Risk Mapping & Governance",
+      description: "Find risks and map controls - build comprehensive risk register with governance controls and compliance mapping",
+      inputs: "Application profile, use case catalog, risk library",
+      outputs: "Risk register, governance controls, governance matrix",
+      stats: "Risk registry"
     },
     {
       icon: TrendingUp,
-      title: "Metrics Dashboard",
-      description: "Real-time trust metrics monitoring including accuracy, fairness, robustness, and transparency",
-      color: "green",
+      stage: "Stage-2",
+      title: "Trust Metrics Engine",
+      description: "Turn risks into measurable trust metrics - map risks to quantifiable metrics with thresholds and benchmarks",
+      inputs: "Risks, controls, metric library, thresholds",
+      outputs: "Risk-metric mapping, evaluation configs, trust index",
       stats: "Live metrics"
     },
     {
+      icon: TestTube,
+      stage: "Stage-3",
+      title: "TEVV Automation Suite",
+      description: "Automate testing for those metrics - run comprehensive test packs with full traceability to risks",
+      inputs: "Risk register, metric mapping, test datasets, CI/CD hooks",
+      outputs: "Automated test packs, traceability matrix, test results",
+      stats: "Auto testing"
+    },
+    {
+      icon: Brain,
+      stage: "Stage-4",
+      title: "Validation Lab (HITL)",
+      description: "Let humans check fairness and ethics - domain experts validate sensitive cases and provide feedback",
+      inputs: "Test results, human-sensitive datasets, SME feedback",
+      outputs: "Human-validated evidence, validation notes",
+      stats: "Human review"
+    },
+    {
+      icon: GitBranch,
+      stage: "Stage-5",
+      title: "Continuous Monitoring",
+      description: "Keep monitoring after release - track production metrics, detect drift, and trigger alerts on anomalies",
+      inputs: "Production logs, telemetry, drift configs, anomaly triggers",
+      outputs: "Monitoring dashboards, alerts, feedback loops",
+      stats: "Live monitoring"
+    },
+    {
       icon: FileText,
-      title: "Evidence Pack Manager",
-      description: "Centralized repository for compliance evidence, audit trails, and regulatory documentation",
-      color: "indigo",
+      stage: "Stage-6",
+      title: "Compliance Reporting",
+      description: "Generate compliance reports - create audit-ready evidence bundles aligned to regulatory frameworks",
+      inputs: "Governance matrix, trust scores, TEVV results, HITL evidence, monitoring logs",
+      outputs: "Compliance pack, regulatory reports, executive dashboard",
       stats: "Audit ready"
     }
   ];
@@ -279,7 +307,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
               <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent block lg:inline"> Compliance Platform</span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Five powerful modules to classify, assess, test, monitor, and validate your GenAI applications
+              Seven-stage lifecycle to classify, assess, test, validate, monitor, and report compliance for your GenAI applications
               <strong className="text-gray-900 dark:text-white"> following NIST AI Risk Management Framework</strong>.
             </p>
             
@@ -309,9 +337,9 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
               <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               <span className="text-blue-800 dark:text-blue-200 font-semibold">NIST AI RMF Core Modules</span>
             </div>
-            <h3 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Five Core ValidAIte Modules</h3>
+            <h3 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">7-Stage AI Governance Workflow</h3>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Streamlined NIST compliance workflow for GenAI application validation
+              End-to-end NIST AI RMF lifecycle from archetype classification to compliance reporting
             </p>
           </div>
           
@@ -321,15 +349,30 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
               return (
                 <div key={index} className="group relative bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden">
                   {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-900/5 to-transparent dark:from-gray-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 dark:from-blue-500/10 dark:to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
                   <div className="relative z-10">
-                    <div className="w-16 h-16 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
-                      <Icon className="w-7 h-7 text-white" />
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-14 h-14 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                        <Icon className="w-7 h-7 text-white" />
+                      </div>
+                      <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-bold">{feature.stage}</span>
                     </div>
-                    <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{feature.title}</h4>
+                    <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{feature.title}</h4>
                     <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed text-sm">{feature.description}</p>
-                    <div className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 text-blue-800 dark:text-blue-300 rounded-xl text-sm font-semibold shadow-sm">
+
+                    <div className="space-y-3 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                      <div>
+                        <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Inputs</div>
+                        <div className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{feature.inputs}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Outputs</div>
+                        <div className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{feature.outputs}</div>
+                      </div>
+                    </div>
+
+                    <div className="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 text-blue-700 dark:text-blue-300 rounded-xl text-sm font-semibold shadow-sm mt-4">
                       <Sparkles className="w-4 h-4" />
                       <span>{feature.stats}</span>
                     </div>

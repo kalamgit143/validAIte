@@ -8,22 +8,25 @@ import {
   GitBranch,
   Menu,
   X,
-  LogOut
+  LogOut,
+  Users
 } from 'lucide-react';
 
-// ValidAIte NIST RMF Components
+// ValidAIte 7-Stage Components
 import ArchetypeClassifier from './components/ArchetypeClassifier';
-import TEVVPackManager from './components/TEVVPackManager';
-import RMFWorkflow from './components/RMFWorkflow';
-import MetricsDashboard from './components/MetricsDashboard';
-import EvidencePackManager from './components/EvidencePackManager';
+import ModelGovernance from './components/ModelGovernance';
+import TrustMetricsEngine from './components/TrustMetricsEngine';
+import TEVVAutomationSuite from './components/TEVVAutomationSuite';
+import ValidationLab from './components/ValidationLab';
+import ContinuousMonitoring from './components/ContinuousMonitoring';
+import ComplianceReporting from './components/ComplianceReporting';
 
 // Authentication Components
 import Login from './components/Login';
 import Signup from './components/Signup';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('archetype-classifier');
+  const [activeTab, setActiveTab] = useState('stage-0');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
@@ -55,7 +58,7 @@ function App() {
   const handleLogout = () => {
     setCurrentUser(null);
     setIsAuthenticated(false);
-    setActiveTab('archetype-classifier');
+    setActiveTab('stage-0');
   };
 
   // Show authentication screens if not logged in
@@ -67,32 +70,36 @@ function App() {
   }
 
   const navItems = [
-    // ValidAIte NIST RMF Core Modules
     {
-      category: 'ValidAIte',
+      category: '7-Stage AI Governance Workflow',
       items: [
-        { id: 'archetype-classifier', label: 'Archetype Classifier', icon: Brain },
-        { id: 'rmf-workflow', label: 'RMF Workflow', icon: GitBranch },
-        { id: 'tevv-pack-manager', label: 'TEVV Pack Manager', icon: TestTube },
-        { id: 'metrics-dashboard', label: 'Metrics Dashboard', icon: TrendingUp },
-        { id: 'evidence-pack', label: 'Evidence Pack Manager', icon: FileText },
+        { id: 'stage-0', label: 'Stage-0: Archetype Classification', icon: Brain },
+        { id: 'stage-1', label: 'Stage-1: Risk Mapping & Governance', icon: Shield },
+        { id: 'stage-2', label: 'Stage-2: Trust Metrics Engine', icon: TrendingUp },
+        { id: 'stage-3', label: 'Stage-3: TEVV Automation Suite', icon: TestTube },
+        { id: 'stage-4', label: 'Stage-4: Validation Lab (HITL)', icon: Users },
+        { id: 'stage-5', label: 'Stage-5: Continuous Monitoring', icon: GitBranch },
+        { id: 'stage-6', label: 'Stage-6: Compliance Reporting', icon: FileText },
       ]
     }
   ];
 
   const renderActiveComponent = () => {
     switch (activeTab) {
-      // ValidAIte NIST RMF Core Modules
-      case 'archetype-classifier':
+      case 'stage-0':
         return <ArchetypeClassifier />;
-      case 'rmf-workflow':
-        return <RMFWorkflow />;
-      case 'tevv-pack-manager':
-        return <TEVVPackManager />;
-      case 'metrics-dashboard':
-        return <MetricsDashboard />;
-      case 'evidence-pack':
-        return <EvidencePackManager />;
+      case 'stage-1':
+        return <ModelGovernance />;
+      case 'stage-2':
+        return <TrustMetricsEngine />;
+      case 'stage-3':
+        return <TEVVAutomationSuite />;
+      case 'stage-4':
+        return <ValidationLab />;
+      case 'stage-5':
+        return <ContinuousMonitoring />;
+      case 'stage-6':
+        return <ComplianceReporting />;
 
       default:
         return <ArchetypeClassifier />;
