@@ -134,8 +134,8 @@ function App() {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900 dark:text-white">ValidAIte</h1>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
-                  NIST AI RMF Platform
+                <p className="text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                  NIST AI RMF Compliance Platform
                 </p>
               </div>
             </div>
