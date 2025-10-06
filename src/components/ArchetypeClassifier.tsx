@@ -107,18 +107,126 @@ const ArchetypeClassifier: React.FC = () => {
   const [isClassifying, setIsClassifying] = useState(false);
 
   const archetypeDefinitions = [
-    { code: 'A1', name: 'Assistive Text Generation', description: 'Single-turn text completion, no memory or retrieval' },
-    { code: 'A2', name: 'Conversational Assistant', description: 'Multi-turn dialog with memory, no retrieval' },
-    { code: 'A3', name: 'RAG Knowledge Assistant', description: 'Retrieval-augmented generation with citations' },
-    { code: 'A4', name: 'Structured Generation', description: 'JSON/table output with schema validation' },
-    { code: 'A5', name: 'Code Generation', description: 'Code/test generation with security scanning' },
-    { code: 'A6', name: 'Generative Analytics', description: 'Natural language to SQL/DSL' },
-    { code: 'A7', name: 'Multimodal AI', description: 'Vision/speech + text processing' },
-    { code: 'A8', name: 'Fine-Tuned Domain Expert', description: 'Domain-specific fine-tuned models' },
-    { code: 'A9', name: 'Tool-Using Agent', description: 'LLM with tool/API calling capabilities' },
-    { code: 'A10', name: 'Autonomous Workflow Agent', description: 'Multi-step autonomous execution' },
-    { code: 'A11', name: 'Enterprise-Integrated GenAI', description: 'Embedded in mission-critical systems' },
-    { code: 'A12', name: 'Safety-Critical HITL', description: 'Regulated decision support with mandatory human oversight' }
+    {
+      code: 'A1',
+      name: 'Assistive Text Generation (Single-Turn)',
+      shortName: 'Assistive Text Generation',
+      description: 'Prompt-in → prose/summary/outlines → prompt-out. No tools, no memory, no external KB.',
+      signals: ['No retrieval connectors', 'No function-calling', '/completions style APIs', 'Stateless calls'],
+      useCases: ['Draft emails', 'Rewrite copy', 'Summarize documents'],
+      risks: ['Hallucination', 'Style drift', 'Leakage via prompts'],
+      archetypeCode: 'A1|TXT|STAT|GEN'
+    },
+    {
+      code: 'A2',
+      name: 'Conversational Assistant (Multi-Turn Dialog)',
+      shortName: 'Conversational Assistant',
+      description: 'Dialog manager with memory; may do light grounding but no retrieval layer.',
+      signals: ['Conversation state store', 'Session memory', 'Turn IDs', 'No vector DB'],
+      useCases: ['HR FAQs', 'Campus help', 'General concierge'],
+      risks: ['Context carryover errors', 'Jailbreak via long history', 'Prompt injection'],
+      archetypeCode: 'A2|TXT|DIAL|GEN'
+    },
+    {
+      code: 'A3',
+      name: 'RAG Knowledge Assistant / Policy Explainer',
+      shortName: 'RAG Knowledge Assistant',
+      description: 'Retrieval-Augmented Generation over internal KB/policies with grounding and citations.',
+      signals: ['Vector DB', 'Retriever ranker', 'Citations', 'Chunking pipeline'],
+      useCases: ['Insurance policy Q&A', 'SOP assistants', 'Product knowledge bots'],
+      risks: ['Fabrication when retrieval fails', 'Outdated/poisoned KB', 'Citation mismatch'],
+      archetypeCode: 'A3|TXT|RAG|ENT'
+    },
+    {
+      code: 'A4',
+      name: 'Structured Generation & Document Automation',
+      shortName: 'Structured Generation',
+      description: 'Generates constrained outputs (JSON, tables, forms) and/or transforms documents.',
+      signals: ['JSON schemas', 'Function-call outputs', 'Validators', 'Template engines'],
+      useCases: ['Claims forms', 'KYC pack assembly', 'Report drafting', 'Doc extraction'],
+      risks: ['Schema non-conformance', 'Hidden hallucinated fields', 'Data leakage'],
+      archetypeCode: 'A4|STRC|FUNC|ENT'
+    },
+    {
+      code: 'A5',
+      name: 'Code Generation & DevOps Assistant',
+      shortName: 'Code Generation',
+      description: 'Generates code/tests, refactors, performs tool-assisted IDE actions, CI suggestions.',
+      signals: ['IDE plugins', 'Repo connectors', 'SARIF', 'Unit test scaffolding', 'Static analyzers'],
+      useCases: ['Boilerplate code', 'Unit tests', 'IaC templates', 'CI fix suggestions'],
+      risks: ['Insecure patterns', 'License contamination', 'Flaky tests', 'Supply-chain risk'],
+      archetypeCode: 'A5|CODE|TOOLS|ENG'
+    },
+    {
+      code: 'A6',
+      name: 'Generative Analytics & Data Reasoning',
+      shortName: 'Generative Analytics',
+      description: 'NL → SQL / DSL; reasoning over datasets/warehouses; narrative BI.',
+      signals: ['SQL generator', 'Semantic layer/BI connectors', 'Query sandbox', 'Guardrails'],
+      useCases: ['Self-serve analytics', 'Anomaly narratives', 'Metric QA'],
+      risks: ['Wrong queries with confident narratives', 'Privacy joins', 'Row-level leaks'],
+      archetypeCode: 'A6|DATA|NLQ|ENT'
+    },
+    {
+      code: 'A7',
+      name: 'Multimodal Perception–Generation (Vision/Speech)',
+      shortName: 'Multimodal AI',
+      description: 'Vision+Text and/or Speech+Text; perception (OCR/VLM/ASR) + generation.',
+      signals: ['Image/audio inputs', 'VLM/ASR/TTS models', 'Media pipelines'],
+      useCases: ['Document intelligence', 'Call-center transcription', 'Compliance spotting'],
+      risks: ['Perception bias', 'Adversarial images/audio prompts', 'PHI leakage in media'],
+      archetypeCode: 'A7|MMOD|PERCEP|ENT'
+    },
+    {
+      code: 'A8',
+      name: 'Fine-Tuned Domain Expert (Regulation-Aware)',
+      shortName: 'Fine-Tuned Domain Expert',
+      description: 'Fine-tuned models on domain corpora (health, insurance, finance, legal) for expert answers.',
+      signals: ['Custom checkpoints', 'LoRA adapters', 'Domain eval suites', 'Model cards'],
+      useCases: ['Clinical note assistants', 'Underwriting guidance', 'Compliance drafting'],
+      risks: ['Confident wrongs in high-stakes domains', 'Bias', 'Outdated domain facts'],
+      archetypeCode: 'A8|TXT|FTUNE|REG'
+    },
+    {
+      code: 'A9',
+      name: 'Tool-Using Agent (Orchestrated Actions)',
+      shortName: 'Tool-Using Agent',
+      description: 'LLM plans + calls tools/APIs (search, calculators, ticketing), with human approvals on critical steps.',
+      signals: ['Function-calling', 'Tool registry', 'Planner-executor loop', 'Guardrail policies'],
+      useCases: ['ITSM triage→ticket update', 'Knowledge lookup→draft response', 'CRM note creation'],
+      risks: ['Tool misuse', 'Prompt-injection via tool outputs', 'Chain-of-thought leakage', 'Cost/runaway loops'],
+      archetypeCode: 'A9|AGNT|TOOLS|ENT'
+    },
+    {
+      code: 'A10',
+      name: 'Autonomous Workflow Agent (Limited Autonomy)',
+      shortName: 'Autonomous Workflow Agent',
+      description: 'Multi-step agents executing workflows with policy-gated autonomy (auto-approve under thresholds).',
+      signals: ['Planners', 'Memory', 'Evaluators/critics', 'Policy engines', 'Rollback mechanisms'],
+      useCases: ['Invoice matching & dispute drafting', 'Low-risk ops runbooks with auto-remediation'],
+      risks: ['Cascading errors', 'Policy drift', 'Silent failures', 'Unsafe autonomy escalation'],
+      archetypeCode: 'A10|AGNT|AUTO|OPS'
+    },
+    {
+      code: 'A11',
+      name: 'Enterprise-Integrated GenAI (Mission-Critical)',
+      shortName: 'Enterprise-Integrated GenAI',
+      description: 'GenAI embedded in core systems (ERP/CRM/Guidewire/SAP/ServiceNow) affecting business KPIs.',
+      signals: ['Deep system adapters', 'SSO/SCIM', 'Audit trails', 'Change-management hooks', 'Release gates'],
+      useCases: ['Order-to-cash note assistants', 'Claims triage', 'CX routing', 'Forecasting narratives'],
+      risks: ['Business integrity', 'Compliance', 'Data residency', 'Vendor lock-in side-effects'],
+      archetypeCode: 'A11|ENT|EMBED|BIZ'
+    },
+    {
+      code: 'A12',
+      name: 'Safety-Critical / Regulated Decision Support (HITL-Mandatory)',
+      shortName: 'Safety-Critical HITL',
+      description: 'Supports decisions with material safety/compliance impact; human-in-the-loop required.',
+      signals: ['HITL checkpoints', 'Rationale capture', 'Dual control', 'Immutable evidence packs'],
+      useCases: ['Clinical decision support', 'Claims adjudication', 'KYC/AML escalations', 'Credit risk notes'],
+      risks: ['Harmful guidance', 'Discrimination', 'Regulatory breaches', 'Explainability gaps'],
+      archetypeCode: 'A12|REG|HITL|HIGH'
+    }
   ];
 
   const classifyApplication = () => {
@@ -595,7 +703,7 @@ const ArchetypeClassifier: React.FC = () => {
                 onClick={() => toggleArrayValue('systems', sys)}
                 className={`px-3 py-1 rounded-full text-sm ${
                   (vamData.systems || []).includes(sys)
-                    ? 'bg-purple-600 text-white'
+                    ? 'bg-cyan-600 text-white'
                     : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
                 }`}
               >
@@ -680,7 +788,7 @@ const ArchetypeClassifier: React.FC = () => {
 
     return (
       <div className="space-y-6">
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
+        <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
           <div className="flex items-start justify-between">
             <div className="space-y-2">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -707,7 +815,7 @@ const ArchetypeClassifier: React.FC = () => {
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Modifiers</h4>
             <div className="flex flex-wrap gap-2">
               {classification.modifiers.map(mod => (
-                <span key={mod} className="px-3 py-1 bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400 rounded-full text-sm font-medium">
+                <span key={mod} className="px-3 py-1 bg-cyan-100 text-cyan-800 dark:bg-cyan-900/20 dark:text-cyan-400 rounded-full text-sm font-medium">
                   {mod}
                 </span>
               ))}
@@ -814,20 +922,24 @@ const ArchetypeClassifier: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {archetypeDefinitions.slice(0, 3).map((arch) => (
-          <div key={arch.code} className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-            <div className="flex items-start space-x-3">
-              <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <span className="text-blue-600 dark:text-blue-400 font-bold text-sm">{arch.code}</span>
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white text-sm">{arch.name}</h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">{arch.description}</p>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Archetype Reference Guide</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {archetypeDefinitions.map((arch) => (
+            <div key={arch.code} className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600 transition-colors">
+              <div className="flex items-start space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span className="text-white font-bold text-sm">{arch.code}</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-semibold text-gray-900 dark:text-white text-sm mb-1">{arch.shortName}</h4>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">{arch.description}</p>
+                  <div className="text-xs text-blue-600 dark:text-blue-400 font-mono">{arch.archetypeCode}</div>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
