@@ -11,8 +11,11 @@ import {
   Layers,
   FileText,
   ChevronRight,
-  Download
+  Download,
+  Target,
+  Eye
 } from 'lucide-react';
+import { classifyApplication as admClassify } from '../utils/admClassifier';
 
 interface VAMData {
   name: string;
@@ -26,20 +29,29 @@ interface VAMData {
   vectorDb: string;
   freshnessPolicy: string;
   structuredOutput: string;
+  schemaRefs: string[];
   idePlugins: boolean;
   repoConnectors: string[];
+  staticAnalyzer: boolean;
   nlqToSql: boolean;
   biConnectors: string[];
+  queryValidation: boolean;
   vlm: boolean;
   asr: boolean;
   tts: boolean;
+  mediaRedaction: boolean;
   modelProvider: string;
   fineTuned: boolean;
   adapters: string[];
+  checkpoints: string[];
   toolUse: boolean;
   planner: string;
   autonomyThreshold: number;
   humanApprovalSteps: string;
+  costQuotaControls: boolean;
+  policyEngine: boolean;
+  rollbackKillswitch: boolean;
+  conversationMemory: boolean;
   systems: string[];
   ssoScim: boolean;
   releaseGates: boolean;
@@ -56,14 +68,25 @@ interface ArchetypeScore {
   signals: string[];
 }
 
+interface RMFProfile {
+  categorize: string;
+  selectControls: string[];
+  assessPacks: string[];
+  authorizeThresholds: string[];
+  monitoring: string[];
+}
+
 interface ClassificationResult {
   primaryArchetype: ArchetypeScore;
   archetypes: ArchetypeScore[];
+  dominant: string;
   modifiers: string[];
   riskTier: string;
+  riskScore: number;
   confidence: number;
   decisionTrace: string[];
   mixture: Record<string, number>;
+  rmfProfile: RMFProfile;
 }
 
 const ArchetypeClassifier: React.FC = () => {
@@ -80,20 +103,29 @@ const ArchetypeClassifier: React.FC = () => {
     vectorDb: 'none',
     freshnessPolicy: 'none',
     structuredOutput: 'none',
+    schemaRefs: [],
     idePlugins: false,
     repoConnectors: [],
+    staticAnalyzer: false,
     nlqToSql: false,
     biConnectors: [],
+    queryValidation: false,
     vlm: false,
     asr: false,
     tts: false,
+    mediaRedaction: false,
     modelProvider: 'openai',
     fineTuned: false,
     adapters: [],
+    checkpoints: [],
     toolUse: false,
     planner: 'none',
     autonomyThreshold: 0,
     humanApprovalSteps: 'high',
+    costQuotaControls: false,
+    policyEngine: false,
+    rollbackKillswitch: false,
+    conversationMemory: false,
     systems: [],
     ssoScim: false,
     releaseGates: false,
@@ -234,172 +266,7 @@ const ArchetypeClassifier: React.FC = () => {
     setStep('classify');
 
     setTimeout(() => {
-      const scores: Record<string, number> = {};
-      const signals: Record<string, string[]> = {};
-
-      Object.keys(archetypeDefinitions).forEach(key => {
-        scores[archetypeDefinitions[parseInt(key)].code] = 0;
-        signals[archetypeDefinitions[parseInt(key)].code] = [];
-      });
-
-      if (vamData.interactionPattern === 'single_turn' && !vamData.retrievalEnabled) {
-        scores['A1'] += 5;
-        signals['A1'].push('single_turn (+5)');
-        signals['A1'].push('retrieval disabled (+3)');
-        scores['A1'] += 3;
-      }
-
-      if (vamData.interactionPattern === 'multi_turn' && !vamData.retrievalEnabled) {
-        scores['A2'] += 5;
-        signals['A2'].push('multi_turn (+5)');
-      }
-
-      if (vamData.retrievalEnabled) {
-        scores['A3'] += 5;
-        signals['A3'].push('retrieval enabled (+5)');
-        if (vamData.citationsEnabled) {
-          scores['A3'] += 3;
-          signals['A3'].push('citations enabled (+3)');
-        }
-        if (vamData.vectorDb !== 'none') {
-          scores['A3'] += 3;
-          signals['A3'].push(`vector DB: ${vamData.vectorDb} (+3)`);
-        }
-      }
-
-      if (vamData.structuredOutput !== 'none') {
-        scores['A4'] += 5;
-        signals['A4'].push(`structured output: ${vamData.structuredOutput} (+5)`);
-      }
-
-      if (vamData.idePlugins || (vamData.repoConnectors && vamData.repoConnectors.length > 0)) {
-        scores['A5'] += 5;
-        signals['A5'].push('code generation tools (+5)');
-      }
-
-      if (vamData.nlqToSql) {
-        scores['A6'] += 5;
-        signals['A6'].push('NL to SQL (+5)');
-      }
-
-      if (vamData.vlm || vamData.asr || vamData.tts) {
-        scores['A7'] += 5;
-        signals['A7'].push('multimodal capabilities (+5)');
-      }
-
-      if (vamData.fineTuned && ['healthcare', 'finance', 'legal', 'insurance'].includes(vamData.domain || '')) {
-        scores['A8'] += 5;
-        signals['A8'].push('fine-tuned domain model (+5)');
-      }
-
-      if (vamData.toolUse) {
-        scores['A9'] += 5;
-        signals['A9'].push('tool use enabled (+5)');
-        if (vamData.planner !== 'none') {
-          scores['A9'] += 3;
-          signals['A9'].push(`planner: ${vamData.planner} (+3)`);
-        }
-      }
-
-      if ((vamData.autonomyThreshold || 0) > 0) {
-        scores['A10'] += 5;
-        signals['A10'].push(`autonomy threshold: ${vamData.autonomyThreshold}% (+5)`);
-      }
-
-      if (vamData.systems && vamData.systems.length > 0) {
-        scores['A11'] += 5;
-        signals['A11'].push(`enterprise systems: ${vamData.systems.join(', ')} (+5)`);
-        if (vamData.releaseGates) {
-          scores['A11'] += 3;
-          signals['A11'].push('release gates (+3)');
-        }
-      }
-
-      if (vamData.hitlMandatory || (vamData.regulatorScope && vamData.regulatorScope.length > 0)) {
-        scores['A12'] += 5;
-        signals['A12'].push('safety-critical/regulated (+5)');
-      }
-
-      const total = Object.values(scores).reduce((a, b) => Math.max(a, 0) + Math.max(b, 0), 0);
-      const probs: Record<string, number> = {};
-
-      Object.keys(scores).forEach(key => {
-        probs[key] = total > 0 ? Math.max(scores[key], 0) / total : 0;
-      });
-
-      const sortedArchetypes = Object.entries(probs)
-        .sort(([, a], [, b]) => b - a)
-        .filter(([, prob]) => prob >= 0.15)
-        .map(([code, prob]) => ({
-          code,
-          name: archetypeDefinitions.find(a => a.code === code)?.name || code,
-          probability: prob,
-          signals: signals[code]
-        }));
-
-      const modifiers: string[] = [];
-      if (vamData.retrievalEnabled) modifiers.push('RAG');
-      if (vamData.fineTuned) modifiers.push('FT');
-      if (vamData.vlm || vamData.asr || vamData.tts) modifiers.push('MM');
-      if (vamData.toolUse) modifiers.push('AG');
-      if ((vamData.autonomyThreshold || 0) > 0) modifiers.push('AUTO');
-      if (vamData.dataSensitivity && vamData.dataSensitivity.length > 0) {
-        vamData.dataSensitivity.forEach(s => modifiers.push(s.toUpperCase()));
-      }
-      if (vamData.systems && vamData.systems.length > 0) modifiers.push('ENT');
-      if (vamData.regulatorScope && vamData.regulatorScope.length > 0) modifiers.push('REG');
-
-      let riskScore = 0;
-      const impactScores: Record<string, number> = {
-        'internal': 1,
-        'customer_facing': 2,
-        'mission_critical': 3,
-        'safety_critical': 4
-      };
-      riskScore += impactScores[vamData.impactContext || 'internal'] || 1;
-
-      if (vamData.dataSensitivity && vamData.dataSensitivity.includes('none')) riskScore += 0;
-      else if (vamData.dataSensitivity && vamData.dataSensitivity.includes('pii')) riskScore += 1;
-      else if (vamData.dataSensitivity && (vamData.dataSensitivity.includes('phi') || vamData.dataSensitivity.includes('pci'))) riskScore += 2;
-
-      const autoThreshold = vamData.autonomyThreshold || 0;
-      if (autoThreshold === 0) riskScore += 0;
-      else if (autoThreshold <= 30) riskScore += 1;
-      else if (autoThreshold <= 70) riskScore += 2;
-      else riskScore += 3;
-
-      if (vamData.regulatorScope && vamData.regulatorScope.length > 0) {
-        riskScore += vamData.regulatorScope.length > 1 ? 3 : 2;
-      }
-
-      if (vamData.systems && vamData.systems.length > 0) riskScore += 1;
-
-      let riskTier = 'LOW';
-      if (riskScore >= 9) riskTier = 'CRITICAL';
-      else if (riskScore >= 6) riskTier = 'HIGH';
-      else if (riskScore >= 3) riskTier = 'MODERATE';
-
-      const confidence = sortedArchetypes.length > 0
-        ? sortedArchetypes[0].probability - (sortedArchetypes[1]?.probability || 0)
-        : 0;
-
-      const decisionTrace: string[] = [];
-      sortedArchetypes.forEach(arch => {
-        arch.signals.forEach(signal => {
-          decisionTrace.push(`${arch.code}: ${signal}`);
-        });
-      });
-
-      const result: ClassificationResult = {
-        primaryArchetype: sortedArchetypes[0],
-        archetypes: sortedArchetypes.slice(0, 3),
-        modifiers,
-        riskTier,
-        confidence: Math.min(confidence, 1),
-        decisionTrace,
-        mixture: Object.fromEntries(sortedArchetypes.map(a => [a.code, a.probability]))
-      };
-
+      const result = admClassify(vamData);
       setClassification(result);
       setStep('results');
       setIsClassifying(false);
@@ -628,6 +495,76 @@ const ArchetypeClassifier: React.FC = () => {
             />
             <span className="text-sm text-gray-700 dark:text-gray-300">IDE Plugins</span>
           </label>
+
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={vamData.staticAnalyzer}
+              onChange={(e) => updateVAM('staticAnalyzer', e.target.checked)}
+              className="rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">Static Analyzer</span>
+          </label>
+
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={vamData.queryValidation}
+              onChange={(e) => updateVAM('queryValidation', e.target.checked)}
+              className="rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">Query Validation</span>
+          </label>
+
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={vamData.mediaRedaction}
+              onChange={(e) => updateVAM('mediaRedaction', e.target.checked)}
+              className="rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">Media Redaction</span>
+          </label>
+
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={vamData.conversationMemory}
+              onChange={(e) => updateVAM('conversationMemory', e.target.checked)}
+              className="rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">Conversation Memory</span>
+          </label>
+
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={vamData.costQuotaControls}
+              onChange={(e) => updateVAM('costQuotaControls', e.target.checked)}
+              className="rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">Cost Quota Controls</span>
+          </label>
+
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={vamData.policyEngine}
+              onChange={(e) => updateVAM('policyEngine', e.target.checked)}
+              className="rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">Policy Engine</span>
+          </label>
+
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={vamData.rollbackKillswitch}
+              onChange={(e) => updateVAM('rollbackKillswitch', e.target.checked)}
+              className="rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">Rollback/Killswitch</span>
+          </label>
         </div>
 
         {vamData.toolUse && (
@@ -850,6 +787,71 @@ const ArchetypeClassifier: React.FC = () => {
         )}
 
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center space-x-2">
+            <Target className="w-5 h-5 text-blue-600" />
+            <span>RMF Profile & TEVV Linkage</span>
+          </h4>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <div>
+                <h5 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center space-x-1">
+                  <Shield className="w-4 h-4" />
+                  <span>Select Controls</span>
+                </h5>
+                <div className="flex flex-wrap gap-2">
+                  {classification.rmfProfile.selectControls.map((control, idx) => (
+                    <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded text-xs font-medium">
+                      {control}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h5 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center space-x-1">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>Assess Packs</span>
+                </h5>
+                <div className="flex flex-wrap gap-2">
+                  {classification.rmfProfile.assessPacks.map((pack, idx) => (
+                    <span key={idx} className="px-2 py-1 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 rounded text-xs font-medium">
+                      {pack}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <h5 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center space-x-1">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>Authorize Thresholds</span>
+                </h5>
+                <div className="space-y-1">
+                  {classification.rmfProfile.authorizeThresholds.map((threshold, idx) => (
+                    <div key={idx} className="text-xs text-gray-600 dark:text-gray-400 font-mono bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded">
+                      {threshold}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h5 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center space-x-1">
+                  <Eye className="w-4 h-4" />
+                  <span>Monitoring</span>
+                </h5>
+                <div className="flex flex-wrap gap-2">
+                  {classification.rmfProfile.monitoring.map((mon, idx) => (
+                    <span key={idx} className="px-2 py-1 bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400 rounded text-xs font-medium">
+                      {mon}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
           <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Decision Trace</h4>
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {classification.decisionTrace.map((trace, idx) => (
@@ -861,20 +863,23 @@ const ArchetypeClassifier: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
-          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Next Steps</h4>
-          <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-blue-600" />
-              <span>Generate TEVV pack for {classification.primaryArchetype.code}</span>
+        <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-6 rounded-lg border border-green-200 dark:border-green-800">
+          <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <span>Classification Summary</span>
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div>
+              <span className="text-gray-600 dark:text-gray-400">Dominant:</span>
+              <span className="ml-2 font-semibold text-gray-900 dark:text-white">{classification.dominant}</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-blue-600" />
-              <span>Apply {classification.riskTier} risk tier thresholds</span>
+            <div>
+              <span className="text-gray-600 dark:text-gray-400">Risk Score:</span>
+              <span className="ml-2 font-semibold text-gray-900 dark:text-white">{classification.riskScore}/12</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-blue-600" />
-              <span>Configure controls and evidence capture</span>
+            <div>
+              <span className="text-gray-600 dark:text-gray-400">Confidence:</span>
+              <span className="ml-2 font-semibold text-gray-900 dark:text-white">{(classification.confidence * 100).toFixed(1)}%</span>
             </div>
           </div>
         </div>
