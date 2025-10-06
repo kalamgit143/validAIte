@@ -132,9 +132,10 @@ function App() {
               <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center">
                 <Shield className="w-5 h-5 text-white" />
               </div>
-              <div>
+              <div className="flex items-center space-x-2">
                 <h1 className="text-xl font-bold text-gray-900 dark:text-white">ValidAIte</h1>
-                <p className="text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                <span className="text-gray-400 dark:text-gray-500">|</span>
+                <p className="text-[10px] text-gray-600 dark:text-gray-400 whitespace-nowrap">
                   NIST AI RMF Compliance Platform
                 </p>
               </div>
