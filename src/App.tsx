@@ -85,24 +85,34 @@ function App() {
   ];
 
   const renderActiveComponent = () => {
-    switch (activeTab) {
-      case 'stage-0':
-        return <ArchetypeClassifier />;
-      case 'stage-1':
-        return <ModelGovernance />;
-      case 'stage-2':
-        return <TrustMetricsEngine />;
-      case 'stage-3':
-        return <TEVVAutomationSuite />;
-      case 'stage-4':
-        return <ValidationLab />;
-      case 'stage-5':
-        return <ContinuousMonitoring />;
-      case 'stage-6':
-        return <ComplianceReporting />;
+    try {
+      switch (activeTab) {
+        case 'stage-0':
+          return <ArchetypeClassifier />;
+        case 'stage-1':
+          return <ModelGovernance />;
+        case 'stage-2':
+          return <TrustMetricsEngine />;
+        case 'stage-3':
+          return <TEVVAutomationSuite />;
+        case 'stage-4':
+          return <ValidationLab />;
+        case 'stage-5':
+          return <ContinuousMonitoring />;
+        case 'stage-6':
+          return <ComplianceReporting />;
 
-      default:
-        return <ArchetypeClassifier />;
+        default:
+          return <ArchetypeClassifier />;
+      }
+    } catch (error) {
+      console.error('Error rendering component:', error);
+      return (
+        <div className="p-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          <h3 className="text-red-800 dark:text-red-400 font-semibold mb-2">Component Error</h3>
+          <p className="text-red-600 dark:text-red-400 text-sm">Failed to render component. Please check the console for details.</p>
+        </div>
+      );
     }
   };
 
