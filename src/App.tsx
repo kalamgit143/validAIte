@@ -9,7 +9,13 @@ import {
   Menu,
   X,
   LogOut,
-  Users
+  Users,
+  Package,
+  Target,
+  FolderOpen,
+  Activity,
+  Eye,
+  Layers
 } from 'lucide-react';
 
 // ValidAIte 7-Stage Components
@@ -20,6 +26,15 @@ import TEVVAutomationSuite from './components/TEVVAutomationSuite';
 import ValidationLab from './components/ValidationLab';
 import ContinuousMonitoring from './components/ContinuousMonitoring';
 import ComplianceReporting from './components/ComplianceReporting';
+
+// Step 3 Components
+import TEVVPackViewer from './components/TEVVPackViewer';
+import ControlLibrary from './components/ControlLibrary';
+import MetricsThresholdDashboard from './components/MetricsThresholdDashboard';
+import EvidencePackGenerator from './components/EvidencePackGenerator';
+import AuthorizationEngine from './components/AuthorizationEngine';
+import MonitoringSLODashboard from './components/MonitoringSLODashboard';
+import RMFValidAIteMapping from './components/RMFValidAIteMapping';
 
 // Authentication Components
 import Login from './components/Login';
@@ -81,6 +96,23 @@ function App() {
         { id: 'stage-5', label: 'Continuous Monitoring', icon: GitBranch, stage: '5' },
         { id: 'stage-6', label: 'Compliance Reporting', icon: FileText, stage: '6' },
       ]
+    },
+    {
+      category: 'RMF & TEVV Framework',
+      items: [
+        { id: 'rmf-mapping', label: 'RMF → ValidAIte Mapping', icon: Layers, stage: 'RMF' },
+        { id: 'tevv-packs', label: 'TEVV Pack Library', icon: Package, stage: 'TEVV' },
+        { id: 'controls', label: 'Control Library (ACC)', icon: Shield, stage: 'ACC' },
+        { id: 'metrics', label: 'Metrics & Thresholds', icon: Target, stage: 'Metrics' },
+      ]
+    },
+    {
+      category: 'Authorization & Evidence',
+      items: [
+        { id: 'authorization', label: 'Authorization Engine', icon: Shield, stage: 'Auth' },
+        { id: 'evidence', label: 'Evidence Pack Generator', icon: FolderOpen, stage: 'Evidence' },
+        { id: 'monitoring-slo', label: 'Monitoring & SLO', icon: Activity, stage: 'Monitor' },
+      ]
     }
   ];
 
@@ -101,6 +133,21 @@ function App() {
           return <ContinuousMonitoring />;
         case 'stage-6':
           return <ComplianceReporting />;
+
+        case 'rmf-mapping':
+          return <RMFValidAIteMapping />;
+        case 'tevv-packs':
+          return <TEVVPackViewer />;
+        case 'controls':
+          return <ControlLibrary />;
+        case 'metrics':
+          return <MetricsThresholdDashboard />;
+        case 'authorization':
+          return <AuthorizationEngine />;
+        case 'evidence':
+          return <EvidencePackGenerator />;
+        case 'monitoring-slo':
+          return <MonitoringSLODashboard />;
 
         default:
           return <ArchetypeClassifier />;
