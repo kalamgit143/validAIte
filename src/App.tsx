@@ -10,31 +10,26 @@ import {
   X,
   LogOut,
   Users,
-  Package,
   Target,
   FolderOpen,
-  Activity,
-  Eye,
-  Layers
+  Layers,
+  CheckCircle
 } from 'lucide-react';
 
-// ValidAIte 7-Stage Components
+// 7-Stage Workflow Components
 import ArchetypeClassifier from './components/ArchetypeClassifier';
 import ModelGovernance from './components/ModelGovernance';
 import TrustMetricsEngine from './components/TrustMetricsEngine';
 import TEVVAutomationSuite from './components/TEVVAutomationSuite';
 import ValidationLab from './components/ValidationLab';
+import AuthorizationEngine from './components/AuthorizationEngine';
 import ContinuousMonitoring from './components/ContinuousMonitoring';
-import ComplianceReporting from './components/ComplianceReporting';
 
-// Step 3 Components
-import TEVVPackViewer from './components/TEVVPackViewer';
+// Reference & Tools
+import RMFValidAIteMapping from './components/RMFValidAIteMapping';
 import ControlLibrary from './components/ControlLibrary';
 import MetricsThresholdDashboard from './components/MetricsThresholdDashboard';
 import EvidencePackGenerator from './components/EvidencePackGenerator';
-import AuthorizationEngine from './components/AuthorizationEngine';
-import MonitoringSLODashboard from './components/MonitoringSLODashboard';
-import RMFValidAIteMapping from './components/RMFValidAIteMapping';
 
 // Authentication Components
 import Login from './components/Login';
@@ -87,30 +82,22 @@ function App() {
     {
       category: 'AI Governance Workflow',
       items: [
-        { id: 'stage-0', label: 'Archetype Classification', icon: Brain, stage: '0' },
-        { id: 'stage-1', label: 'Risk Mapping & Governance', icon: Shield, stage: '1' },
-        { id: 'stage-2', label: 'Trust Metrics Engine', icon: TrendingUp, stage: '2' },
-        { id: 'stage-3', label: 'TEVV Automation Suite', icon: TestTube, stage: '3' },
-        { id: 'stage-4', label: 'Validation Lab (HITL)', icon: Users, stage: '4' },
-        { id: 'stage-5', label: 'Continuous Monitoring', icon: GitBranch, stage: '5' },
-        { id: 'stage-6', label: 'Compliance Reporting', icon: FileText, stage: '6' },
+        { id: 'stage-0', label: 'Archetype Classification', icon: Brain, stage: '0', description: 'Classify AI system and determine risk tier' },
+        { id: 'stage-1', label: 'Control Selection', icon: Shield, stage: '1', description: 'Select controls based on archetype' },
+        { id: 'stage-2', label: 'Configure TEVV Pack', icon: Target, stage: '2', description: 'Set tests and thresholds' },
+        { id: 'stage-3', label: 'Execute Tests', icon: TestTube, stage: '3', description: 'Run automated test suite' },
+        { id: 'stage-4', label: 'Human Review', icon: Users, stage: '4', description: 'Expert validation (HITL)' },
+        { id: 'stage-5', label: 'Authorization', icon: CheckCircle, stage: '5', description: 'Approve or reject deployment' },
+        { id: 'stage-6', label: 'Continuous Monitoring', icon: GitBranch, stage: '6', description: 'Monitor metrics and drift' },
       ]
     },
     {
-      category: 'RMF & TEVV Framework',
+      category: 'Reference & Tools',
       items: [
-        { id: 'rmf-mapping', label: 'RMF → ValidAIte Mapping', icon: Layers, stage: 'RMF' },
-        { id: 'tevv-packs', label: 'TEVV Pack Library', icon: Package, stage: 'TEVV' },
-        { id: 'controls', label: 'Control Library (ACC)', icon: Shield, stage: 'ACC' },
-        { id: 'metrics', label: 'Metrics & Thresholds', icon: Target, stage: 'Metrics' },
-      ]
-    },
-    {
-      category: 'Authorization & Evidence',
-      items: [
-        { id: 'authorization', label: 'Authorization Engine', icon: Shield, stage: 'Auth' },
-        { id: 'evidence', label: 'Evidence Pack Generator', icon: FolderOpen, stage: 'Evidence' },
-        { id: 'monitoring-slo', label: 'Monitoring & SLO', icon: Activity, stage: 'Monitor' },
+        { id: 'rmf-reference', label: 'NIST RMF Reference', icon: Layers, stage: 'REF', description: 'RMF framework overview' },
+        { id: 'control-library', label: 'Control Library', icon: Shield, stage: 'LIB', description: 'Browse all ACC controls' },
+        { id: 'metric-catalog', label: 'Metric Catalog', icon: TrendingUp, stage: 'CAT', description: 'All trust metrics defined' },
+        { id: 'evidence-export', label: 'Evidence Export', icon: FolderOpen, stage: 'EXP', description: 'Generate compliance bundle' },
       ]
     }
   ];
@@ -129,24 +116,18 @@ function App() {
         case 'stage-4':
           return <ValidationLab />;
         case 'stage-5':
-          return <ContinuousMonitoring />;
-        case 'stage-6':
-          return <ComplianceReporting />;
-
-        case 'rmf-mapping':
-          return <RMFValidAIteMapping />;
-        case 'tevv-packs':
-          return <TEVVPackViewer />;
-        case 'controls':
-          return <ControlLibrary />;
-        case 'metrics':
-          return <MetricsThresholdDashboard />;
-        case 'authorization':
           return <AuthorizationEngine />;
-        case 'evidence':
+        case 'stage-6':
+          return <ContinuousMonitoring />;
+
+        case 'rmf-reference':
+          return <RMFValidAIteMapping />;
+        case 'control-library':
+          return <ControlLibrary />;
+        case 'metric-catalog':
+          return <MetricsThresholdDashboard />;
+        case 'evidence-export':
           return <EvidencePackGenerator />;
-        case 'monitoring-slo':
-          return <MonitoringSLODashboard />;
 
         default:
           return <ArchetypeClassifier />;
