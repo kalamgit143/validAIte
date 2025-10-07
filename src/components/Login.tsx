@@ -19,7 +19,6 @@ import {
   Target,
   Github
 } from 'lucide-react';
-import { authService } from '../lib/auth';
 
 interface LoginProps {
   onLogin: (credentials: any) => void;
@@ -37,43 +36,20 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(null);
 
-    try {
-      const result = await authService.signIn({
-        email: formData.email,
-        password: formData.password
-      });
-
-      if (result.user) {
-        onLogin({
-          email: result.user.email,
-          name: result.user.user_metadata?.full_name || result.user.email?.split('@')[0],
-          role: result.user.user_metadata?.role || 'Platform Admin',
-          tenant: result.user.user_metadata?.tenant_name || 'Organization'
-        });
-      }
-    } catch (err: any) {
-      setError(err.message || 'Failed to sign in. Please check your credentials.');
+    setTimeout(() => {
+      onLogin(formData);
       setIsLoading(false);
-    }
+    }, 1500);
   };
 
-  const handleOAuthLogin = async (provider: 'google' | 'github') => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      await authService.signInWithOAuth(provider);
-    } catch (err: any) {
-      setError(err.message || `Failed to sign in with ${provider}.`);
-      setIsLoading(false);
-    }
+  const handleOAuthLogin = (provider: 'google' | 'github') => {
+    console.log(`OAuth login with ${provider} clicked`);
+    alert(`${provider.charAt(0).toUpperCase() + provider.slice(1)} OAuth login will be implemented with backend`);
   };
 
   const features = [
@@ -237,12 +213,6 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-              {error && (
-                <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400 text-sm">
-                  {error}
-                </div>
-              )}
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Email Address

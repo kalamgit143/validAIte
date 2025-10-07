@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Brain,
   Shield,
@@ -40,92 +40,40 @@ import RMFValidAIteMapping from './components/RMFValidAIteMapping';
 import Login from './components/Login';
 import Signup from './components/Signup';
 
-// Supabase Auth
-import { authService } from './lib/auth';
-
 function App() {
   const [activeTab, setActiveTab] = useState('stage-0');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    checkUser();
-
-    const { data: authListener } = authService.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session?.user) {
-        const user = session.user;
-        setCurrentUser({
-          name: user.user_metadata?.full_name || user.email?.split('@')[0],
-          email: user.email,
-          role: user.user_metadata?.role || 'Platform Admin',
-          tenant: user.user_metadata?.tenant_name || 'Organization',
-          avatar: user.user_metadata?.avatar_url || null
-        });
-        setIsAuthenticated(true);
-      } else if (event === 'SIGNED_OUT') {
-        setCurrentUser(null);
-        setIsAuthenticated(false);
-        setActiveTab('stage-0');
-      }
-    });
-
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
-  }, []);
-
-  const checkUser = async () => {
-    try {
-      const user = await authService.getCurrentUser();
-      if (user) {
-        setCurrentUser({
-          name: user.user_metadata?.full_name || user.email?.split('@')[0],
-          email: user.email,
-          role: user.user_metadata?.role || 'Platform Admin',
-          tenant: user.user_metadata?.tenant_name || 'Organization',
-          avatar: user.user_metadata?.avatar_url || null
-        });
-        setIsAuthenticated(true);
-      }
-    } catch (error) {
-      console.error('Error checking user:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleLogin = (credentials: any) => {
-    setCurrentUser(credentials);
+    setCurrentUser({
+      name: 'Sarah Chen',
+      email: credentials.email,
+      role: credentials.role || 'Platform Admin',
+      tenant: 'Acme Corporation',
+      avatar: null
+    });
     setIsAuthenticated(true);
   };
 
   const handleSignup = (data: any) => {
-    setCurrentUser(data);
+    setCurrentUser({
+      name: `${data.firstName} ${data.lastName}`,
+      email: data.email,
+      role: data.role || 'Platform Admin',
+      tenant: data.tenantName,
+      avatar: null
+    });
     setIsAuthenticated(true);
   };
 
-  const handleLogout = async () => {
-    try {
-      await authService.signOut();
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setIsAuthenticated(false);
+    setActiveTab('stage-0');
   };
-
-  // Show loading spinner while checking auth
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading ValidAIte...</p>
-        </div>
-      </div>
-    );
-  }
 
   // Show authentication screens if not logged in
   if (!isAuthenticated) {

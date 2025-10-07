@@ -18,7 +18,6 @@ import {
   Star,
   Github
 } from 'lucide-react';
-import { authService } from '../lib/auth';
 
 interface SignupProps {
   onSignup: (data: any) => void;
@@ -41,7 +40,6 @@ const Signup: React.FC<SignupProps> = ({ onSignup, onShowLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const plans = [
     {
@@ -108,53 +106,16 @@ const Signup: React.FC<SignupProps> = ({ onSignup, onShowLogin }) => {
       return;
     }
 
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    if (!formData.acceptTerms) {
-      setError('Please accept the terms and conditions');
-      return;
-    }
-
     setIsLoading(true);
-    setError(null);
-
-    try {
-      const result = await authService.signUp({
-        email: formData.email,
-        password: formData.password,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        tenantName: formData.tenantName,
-        role: 'Platform Admin'
-      });
-
-      if (result.user) {
-        onSignup({
-          email: result.user.email,
-          name: `${formData.firstName} ${formData.lastName}`,
-          role: 'Platform Admin',
-          tenant: formData.tenantName
-        });
-      }
-    } catch (err: any) {
-      setError(err.message || 'Failed to create account. Please try again.');
+    setTimeout(() => {
+      onSignup(formData);
       setIsLoading(false);
-    }
+    }, 2000);
   };
 
-  const handleOAuthSignup = async (provider: 'google' | 'github') => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      await authService.signInWithOAuth(provider);
-    } catch (err: any) {
-      setError(err.message || `Failed to sign up with ${provider}.`);
-      setIsLoading(false);
-    }
+  const handleOAuthSignup = (provider: 'google' | 'github') => {
+    console.log(`OAuth signup with ${provider} clicked`);
+    alert(`${provider.charAt(0).toUpperCase() + provider.slice(1)} OAuth signup will be implemented with backend`);
   };
 
   const renderStep1 = () => (
@@ -510,12 +471,6 @@ const Signup: React.FC<SignupProps> = ({ onSignup, onShowLogin }) => {
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400">
-              {error}
-            </div>
-          )}
-
           <form onSubmit={handleSubmit}>
             {currentStep === 1 && renderStep1()}
             {currentStep === 2 && renderStep2()}
