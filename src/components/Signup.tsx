@@ -115,7 +115,18 @@ const Signup: React.FC<SignupProps> = ({ onSignup, onShowLogin }) => {
 
   const handleOAuthSignup = (provider: 'google' | 'github') => {
     console.log(`OAuth signup with ${provider} clicked`);
-    alert(`${provider.charAt(0).toUpperCase() + provider.slice(1)} OAuth signup will be implemented with backend`);
+    setIsLoading(true);
+
+    setTimeout(() => {
+      onSignup({
+        firstName: provider.charAt(0).toUpperCase() + provider.slice(1),
+        lastName: 'User',
+        email: `user@${provider}.com`,
+        tenantName: 'Organization',
+        role: 'Platform Admin'
+      });
+      setIsLoading(false);
+    }, 1500);
   };
 
   const renderStep1 = () => (

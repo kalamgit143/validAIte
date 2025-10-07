@@ -49,7 +49,17 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
 
   const handleOAuthLogin = (provider: 'google' | 'github') => {
     console.log(`OAuth login with ${provider} clicked`);
-    alert(`${provider.charAt(0).toUpperCase() + provider.slice(1)} OAuth login will be implemented with backend`);
+    setIsLoading(true);
+
+    setTimeout(() => {
+      onLogin({
+        email: `user@${provider}.com`,
+        name: `${provider.charAt(0).toUpperCase() + provider.slice(1)} User`,
+        role: 'Platform Admin',
+        tenant: 'Organization'
+      });
+      setIsLoading(false);
+    }, 1500);
   };
 
   const features = [
