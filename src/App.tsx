@@ -19,6 +19,7 @@ import {
 // 7-Stage Workflow Components
 import ApplicationSetup from './components/ApplicationSetup';
 import RiskIdentification from './components/RiskIdentification';
+import MetricsDefinition from './components/MetricsDefinition';
 import ModelGovernance from './components/ModelGovernance';
 import TrustMetricsEngine from './components/TrustMetricsEngine';
 import TEVVAutomationSuite from './components/TEVVAutomationSuite';
@@ -84,9 +85,10 @@ function App() {
       category: 'AI Governance Workflow',
       items: [
         { id: 'stage-0', label: 'Application Setup', icon: Brain, description: 'Configure application information and setup' },
-        { id: 'risk-identification', label: 'Risk Identification', icon: TrendingUp, description: 'Identify and classify potential risks' },
-        { id: 'stage-1', label: 'Control Selection', icon: Shield, description: 'Select controls based on archetype' },
-        { id: 'stage-2', label: 'Configure TEVV Pack', icon: Target, description: 'Set tests and thresholds' },
+        { id: 'risk-identification', label: 'Risk Identification', icon: Shield, description: 'Identify and classify potential risks' },
+        { id: 'metrics-definition', label: 'Metrics Definition', icon: TrendingUp, description: 'Define measurable trust metrics' },
+        { id: 'stage-1', label: 'Control Selection', icon: Target, description: 'Select controls based on archetype' },
+        { id: 'stage-2', label: 'Configure TEVV Pack', icon: FileText, description: 'Set tests and thresholds' },
         { id: 'stage-3', label: 'Execute Tests', icon: TestTube, description: 'Run automated test suite' },
         { id: 'stage-4', label: 'Human Review', icon: Users, description: 'Expert validation (HITL)' },
         { id: 'stage-5', label: 'Authorization', icon: CheckCircle, description: 'Approve or reject deployment' },
@@ -111,6 +113,8 @@ function App() {
           return <ApplicationSetup />;
         case 'risk-identification':
           return <RiskIdentification />;
+        case 'metrics-definition':
+          return <MetricsDefinition />;
         case 'stage-1':
           return <ModelGovernance />;
         case 'stage-2':
