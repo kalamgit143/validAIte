@@ -23,6 +23,7 @@ import RiskIdentification from './components/RiskIdentification';
 import MetricsDefinition from './components/MetricsDefinition';
 import DatasetGeneration from './components/DatasetGeneration';
 import TestCaseCreation from './components/TestCaseCreation';
+import TrustScoreComputation from './components/TrustScoreComputation';
 import ModelGovernance from './components/ModelGovernance';
 import TrustMetricsEngine from './components/TrustMetricsEngine';
 import TEVVAutomationSuite from './components/TEVVAutomationSuite';
@@ -92,6 +93,7 @@ function App() {
         { id: 'metrics-definition', label: 'Metrics Definition', icon: TrendingUp, description: 'Define measurable trust metrics' },
         { id: 'dataset-generation', label: 'Dataset Generation', icon: FileText, description: 'Generate testable evaluation datasets' },
         { id: 'test-case-creation', label: 'Test Case Creation', icon: Code, description: 'Generate automation scripts' },
+        { id: 'trust-score-computation', label: 'Trust Score Computation', icon: TrendingUp, description: 'Execute tests and compute scores' },
         { id: 'stage-1', label: 'Control Selection', icon: Target, description: 'Select controls based on archetype' },
         { id: 'stage-2', label: 'Configure TEVV Pack', icon: TestTube, description: 'Set tests and thresholds' },
         { id: 'stage-3', label: 'Execute Tests', icon: GitBranch, description: 'Run automated test suite' },
@@ -124,6 +126,8 @@ function App() {
           return <DatasetGeneration />;
         case 'test-case-creation':
           return <TestCaseCreation />;
+        case 'trust-score-computation':
+          return <TrustScoreComputation />;
         case 'stage-1':
           return <ModelGovernance />;
         case 'stage-2':
