@@ -87,7 +87,7 @@ function App() {
     {
       category: 'Overview',
       items: [
-        { id: 'home', label: 'Home Dashboard', icon: Home, description: 'Role-based governance overview' },
+        { id: 'home', label: 'Dashboard', icon: Home, description: 'Role-based governance overview' },
       ]
     },
     {
