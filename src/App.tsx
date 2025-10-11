@@ -18,6 +18,7 @@ import {
 
 // 7-Stage Workflow Components
 import ApplicationSetup from './components/ApplicationSetup';
+import RiskIdentification from './components/RiskIdentification';
 import ModelGovernance from './components/ModelGovernance';
 import TrustMetricsEngine from './components/TrustMetricsEngine';
 import TEVVAutomationSuite from './components/TEVVAutomationSuite';
@@ -83,6 +84,7 @@ function App() {
       category: 'AI Governance Workflow',
       items: [
         { id: 'stage-0', label: 'Application Setup', icon: Brain, stage: '0', description: 'Configure application information and setup' },
+        { id: 'risk-identification', label: 'Risk Identification', icon: TrendingUp, stage: '3', description: 'Identify and classify potential risks' },
         { id: 'stage-1', label: 'Control Selection', icon: Shield, stage: '1', description: 'Select controls based on archetype' },
         { id: 'stage-2', label: 'Configure TEVV Pack', icon: Target, stage: '2', description: 'Set tests and thresholds' },
         { id: 'stage-3', label: 'Execute Tests', icon: TestTube, stage: '3', description: 'Run automated test suite' },
@@ -107,6 +109,8 @@ function App() {
       switch (activeTab) {
         case 'stage-0':
           return <ApplicationSetup />;
+        case 'risk-identification':
+          return <RiskIdentification />;
         case 'stage-1':
           return <ModelGovernance />;
         case 'stage-2':
