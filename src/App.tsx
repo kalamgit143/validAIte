@@ -98,6 +98,7 @@ function App() {
         { id: 'trust-score-computation', label: 'Trust Score Computation', icon: TrendingUp, description: 'Execute tests and compute scores' },
         { id: 'explainability-evidence', label: 'Explainability & Evidence', icon: FileText, description: 'HITL evidence review' },
         { id: 'trust-matrix', label: 'Trust Matrix Dashboard', icon: Shield, description: 'Unified 360° trust view' },
+        { id: 'authorization-engine', label: 'Authorization Engine', icon: CheckCircle, description: 'Deployment approval gate' },
         { id: 'stage-1', label: 'Control Selection', icon: Target, description: 'Select controls based on archetype' },
         { id: 'stage-2', label: 'Configure TEVV Pack', icon: TestTube, description: 'Set tests and thresholds' },
         { id: 'stage-3', label: 'Execute Tests', icon: GitBranch, description: 'Run automated test suite' },
@@ -136,6 +137,8 @@ function App() {
           return <ExplainabilityAI />;
         case 'trust-matrix':
           return <TrustMatrix />;
+        case 'authorization-engine':
+          return <AuthorizationEngine />;
         case 'stage-1':
           return <ModelGovernance />;
         case 'stage-2':
