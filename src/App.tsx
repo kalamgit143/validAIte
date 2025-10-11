@@ -216,7 +216,7 @@ function App() {
         </div>
       </header>
 
-      <div className="flex">
+      <div className="flex overflow-hidden">
         {/* Sidebar */}
         <aside className={`fixed lg:static inset-y-0 left-0 z-50 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 w-80 transition-transform duration-300 overflow-y-auto overflow-x-hidden bg-gradient-to-b from-gray-900 via-slate-900 to-gray-950 border-r border-gray-800/50 min-h-screen shadow-2xl backdrop-blur-xl`}>
           <nav className="p-5 space-y-6 min-h-full">
@@ -296,7 +296,7 @@ function App() {
         )}
 
         {/* Main Content */}
-        <main className="flex-1 w-full lg:w-auto p-6 bg-slate-50 dark:bg-slate-900">
+        <main className="flex-1 w-full lg:w-auto p-6 bg-slate-50 dark:bg-slate-900 overflow-y-auto max-h-screen">
           {renderActiveComponent()}
         </main>
       </div>
