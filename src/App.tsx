@@ -218,8 +218,8 @@ function App() {
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className={`${sidebarOpen ? 'w-80' : 'w-0'} lg:w-80 transition-all duration-300 overflow-hidden bg-gradient-to-b from-gray-900 via-slate-900 to-gray-950 border-r border-gray-800/50 min-h-screen shadow-2xl backdrop-blur-xl`}>
-          <nav className="p-5 space-y-6">
+        <aside className={`${sidebarOpen ? 'w-80' : 'w-0'} lg:w-80 transition-all duration-300 overflow-y-auto overflow-x-hidden bg-gradient-to-b from-gray-900 via-slate-900 to-gray-950 border-r border-gray-800/50 min-h-screen shadow-2xl backdrop-blur-xl`}>
+          <nav className="p-5 space-y-6 min-h-full">
             {navItems.map((section, sectionIndex) => (
               <div key={section.category} className="relative">
                 <div className="flex items-center space-x-2.5 mb-3 px-2">
