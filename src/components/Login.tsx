@@ -394,7 +394,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
               <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent block lg:inline"> Compliance Platform</span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Comprehensive 10-stage workflow to setup, classify, assess, test, validate, authorize, monitor, and report compliance for your GenAI applications
+              Comprehensive workflow to setup, classify, assess, test, validate, authorize, monitor, and report compliance for your GenAI applications
               <strong className="text-gray-900 dark:text-white"> following NIST AI Risk Management Framework</strong>.
             </p>
             
