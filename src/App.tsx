@@ -4,20 +4,17 @@ import {
   Shield,
   TrendingUp,
   FileText,
-  TestTube,
-  GitBranch,
+  Code,
+  Activity,
+  CheckCircle,
   Menu,
   X,
   LogOut,
-  Users,
-  Target,
   FolderOpen,
-  Layers,
-  CheckCircle,
-  Code
+  Layers
 } from 'lucide-react';
 
-// 7-Stage Workflow Components
+// 10-Stage AI Governance Workflow
 import ApplicationSetup from './components/ApplicationSetup';
 import RiskIdentification from './components/RiskIdentification';
 import MetricsDefinition from './components/MetricsDefinition';
@@ -26,10 +23,6 @@ import TestCaseCreation from './components/TestCaseCreation';
 import TrustScoreComputation from './components/TrustScoreComputation';
 import ExplainabilityAI from './components/ExplainabilityAI';
 import TrustMatrix from './components/TrustMatrix';
-import ModelGovernance from './components/ModelGovernance';
-import TrustMetricsEngine from './components/TrustMetricsEngine';
-import TEVVAutomationSuite from './components/TEVVAutomationSuite';
-import ValidationLab from './components/ValidationLab';
 import AuthorizationEngine from './components/AuthorizationEngine';
 import ContinuousMonitoring from './components/ContinuousMonitoring';
 
@@ -90,16 +83,16 @@ function App() {
     {
       category: 'AI Governance Workflow',
       items: [
-        { id: 'stage-0', label: 'Application Setup', icon: Brain, description: 'Configure application information and setup' },
-        { id: 'risk-identification', label: 'Risk Identification', icon: Shield, description: 'Identify and classify potential risks' },
-        { id: 'metrics-definition', label: 'Metrics Definition', icon: TrendingUp, description: 'Define measurable trust metrics' },
-        { id: 'dataset-generation', label: 'Dataset Generation', icon: FileText, description: 'Generate testable evaluation datasets' },
-        { id: 'test-case-creation', label: 'Test Case Creation', icon: Code, description: 'Generate automation scripts' },
-        { id: 'trust-score-computation', label: 'Trust Score Computation', icon: TrendingUp, description: 'Execute tests and compute scores' },
-        { id: 'explainability-evidence', label: 'Explainability & Evidence', icon: FileText, description: 'HITL evidence review' },
-        { id: 'trust-matrix', label: 'Trust Matrix Dashboard', icon: Shield, description: 'Unified 360° trust view' },
-        { id: 'authorization-engine', label: 'Authorization Engine', icon: CheckCircle, description: 'Deployment approval gate' },
-        { id: 'continuous-monitoring', label: 'Continuous Monitoring', icon: Activity, description: 'Post-deployment monitoring' },
+        { id: 'stage-0', label: 'Stage 1: Application Setup', icon: Brain, description: 'Configure application information and setup' },
+        { id: 'risk-identification', label: 'Stage 2: Risk Identification', icon: Shield, description: 'Identify and classify potential risks' },
+        { id: 'metrics-definition', label: 'Stage 3: Metrics Definition', icon: TrendingUp, description: 'Define measurable trust metrics' },
+        { id: 'dataset-generation', label: 'Stage 4: Dataset Generation', icon: FileText, description: 'Generate testable evaluation datasets' },
+        { id: 'test-case-creation', label: 'Stage 5: Test Case Creation', icon: Code, description: 'Generate automation scripts' },
+        { id: 'trust-score-computation', label: 'Stage 6: Trust Score Computation', icon: TrendingUp, description: 'Execute tests and compute scores' },
+        { id: 'explainability-evidence', label: 'Stage 7: Explainability & Evidence', icon: FileText, description: 'HITL evidence review' },
+        { id: 'trust-matrix', label: 'Stage 8: Trust Matrix Dashboard', icon: Shield, description: 'Unified 360° trust view' },
+        { id: 'authorization-engine', label: 'Stage 9: Authorization Engine', icon: CheckCircle, description: 'Deployment approval gate' },
+        { id: 'continuous-monitoring', label: 'Stage 10: Continuous Monitoring', icon: Activity, description: 'Post-deployment monitoring' },
       ]
     },
     {
