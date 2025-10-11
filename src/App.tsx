@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 
 // 7-Stage Workflow Components
-import ArchetypeClassifier from './components/ArchetypeClassifier';
+import ApplicationSetup from './components/ApplicationSetup';
 import ModelGovernance from './components/ModelGovernance';
 import TrustMetricsEngine from './components/TrustMetricsEngine';
 import TEVVAutomationSuite from './components/TEVVAutomationSuite';
@@ -82,7 +82,7 @@ function App() {
     {
       category: 'AI Governance Workflow',
       items: [
-        { id: 'stage-0', label: 'Archetype Classification', icon: Brain, stage: '0', description: 'Classify AI system and determine risk tier' },
+        { id: 'stage-0', label: 'Application Setup', icon: Brain, stage: '0', description: 'Configure application information and setup' },
         { id: 'stage-1', label: 'Control Selection', icon: Shield, stage: '1', description: 'Select controls based on archetype' },
         { id: 'stage-2', label: 'Configure TEVV Pack', icon: Target, stage: '2', description: 'Set tests and thresholds' },
         { id: 'stage-3', label: 'Execute Tests', icon: TestTube, stage: '3', description: 'Run automated test suite' },
@@ -106,7 +106,7 @@ function App() {
     try {
       switch (activeTab) {
         case 'stage-0':
-          return <ArchetypeClassifier />;
+          return <ApplicationSetup />;
         case 'stage-1':
           return <ModelGovernance />;
         case 'stage-2':
@@ -130,7 +130,7 @@ function App() {
           return <EvidencePackGenerator />;
 
         default:
-          return <ArchetypeClassifier />;
+          return <ApplicationSetup />;
       }
     } catch (error) {
       console.error('Error rendering component:', error);
