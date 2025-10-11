@@ -13,7 +13,8 @@ import {
   Target,
   FolderOpen,
   Layers,
-  CheckCircle
+  CheckCircle,
+  Code
 } from 'lucide-react';
 
 // 7-Stage Workflow Components
@@ -21,6 +22,7 @@ import ApplicationSetup from './components/ApplicationSetup';
 import RiskIdentification from './components/RiskIdentification';
 import MetricsDefinition from './components/MetricsDefinition';
 import DatasetGeneration from './components/DatasetGeneration';
+import TestCaseCreation from './components/TestCaseCreation';
 import ModelGovernance from './components/ModelGovernance';
 import TrustMetricsEngine from './components/TrustMetricsEngine';
 import TEVVAutomationSuite from './components/TEVVAutomationSuite';
@@ -89,6 +91,7 @@ function App() {
         { id: 'risk-identification', label: 'Risk Identification', icon: Shield, description: 'Identify and classify potential risks' },
         { id: 'metrics-definition', label: 'Metrics Definition', icon: TrendingUp, description: 'Define measurable trust metrics' },
         { id: 'dataset-generation', label: 'Dataset Generation', icon: FileText, description: 'Generate testable evaluation datasets' },
+        { id: 'test-case-creation', label: 'Test Case Creation', icon: Code, description: 'Generate automation scripts' },
         { id: 'stage-1', label: 'Control Selection', icon: Target, description: 'Select controls based on archetype' },
         { id: 'stage-2', label: 'Configure TEVV Pack', icon: TestTube, description: 'Set tests and thresholds' },
         { id: 'stage-3', label: 'Execute Tests', icon: GitBranch, description: 'Run automated test suite' },
@@ -119,6 +122,8 @@ function App() {
           return <MetricsDefinition />;
         case 'dataset-generation':
           return <DatasetGeneration />;
+        case 'test-case-creation':
+          return <TestCaseCreation />;
         case 'stage-1':
           return <ModelGovernance />;
         case 'stage-2':
