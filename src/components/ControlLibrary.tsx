@@ -76,7 +76,7 @@ const ControlLibrary: React.FC = () => {
   }, {} as Record<string, typeof controls>);
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="space-y-6">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center space-x-3 mb-2">
           <Shield className="w-8 h-8 text-blue-600" />
