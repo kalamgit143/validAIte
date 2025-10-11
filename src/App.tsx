@@ -83,23 +83,23 @@ function App() {
     {
       category: 'AI Governance Workflow',
       items: [
-        { id: 'stage-0', label: 'Application Setup', icon: Brain, stage: '0', description: 'Configure application information and setup' },
-        { id: 'risk-identification', label: 'Risk Identification', icon: TrendingUp, stage: '3', description: 'Identify and classify potential risks' },
-        { id: 'stage-1', label: 'Control Selection', icon: Shield, stage: '1', description: 'Select controls based on archetype' },
-        { id: 'stage-2', label: 'Configure TEVV Pack', icon: Target, stage: '2', description: 'Set tests and thresholds' },
-        { id: 'stage-3', label: 'Execute Tests', icon: TestTube, stage: '3', description: 'Run automated test suite' },
-        { id: 'stage-4', label: 'Human Review', icon: Users, stage: '4', description: 'Expert validation (HITL)' },
-        { id: 'stage-5', label: 'Authorization', icon: CheckCircle, stage: '5', description: 'Approve or reject deployment' },
-        { id: 'stage-6', label: 'Continuous Monitoring', icon: GitBranch, stage: '6', description: 'Monitor metrics and drift' },
+        { id: 'stage-0', label: 'Application Setup', icon: Brain, description: 'Configure application information and setup' },
+        { id: 'risk-identification', label: 'Risk Identification', icon: TrendingUp, description: 'Identify and classify potential risks' },
+        { id: 'stage-1', label: 'Control Selection', icon: Shield, description: 'Select controls based on archetype' },
+        { id: 'stage-2', label: 'Configure TEVV Pack', icon: Target, description: 'Set tests and thresholds' },
+        { id: 'stage-3', label: 'Execute Tests', icon: TestTube, description: 'Run automated test suite' },
+        { id: 'stage-4', label: 'Human Review', icon: Users, description: 'Expert validation (HITL)' },
+        { id: 'stage-5', label: 'Authorization', icon: CheckCircle, description: 'Approve or reject deployment' },
+        { id: 'stage-6', label: 'Continuous Monitoring', icon: GitBranch, description: 'Monitor metrics and drift' },
       ]
     },
     {
       category: 'Reference & Tools',
       items: [
-        { id: 'rmf-reference', label: 'NIST RMF Reference', icon: Layers, stage: 'REF', description: 'RMF framework overview' },
-        { id: 'control-library', label: 'Control Library', icon: Shield, stage: 'LIB', description: 'Browse all ACC controls' },
-        { id: 'metric-catalog', label: 'Metric Catalog', icon: TrendingUp, stage: 'CAT', description: 'All trust metrics defined' },
-        { id: 'evidence-export', label: 'Evidence Export', icon: FolderOpen, stage: 'EXP', description: 'Generate compliance bundle' },
+        { id: 'rmf-reference', label: 'NIST RMF Reference', icon: Layers, description: 'RMF framework overview' },
+        { id: 'control-library', label: 'Control Library', icon: Shield, description: 'Browse all ACC controls' },
+        { id: 'metric-catalog', label: 'Metric Catalog', icon: TrendingUp, description: 'All trust metrics defined' },
+        { id: 'evidence-export', label: 'Evidence Export', icon: FolderOpen, description: 'Generate compliance bundle' },
       ]
     }
   ];
@@ -244,7 +244,7 @@ function App() {
                             activeTab === item.id
                               ? 'text-white/80'
                               : 'text-gray-500 dark:text-gray-400'
-                          }`}>Stage {item.stage}</span>
+                          }`}>{item.description}</span>
                         </div>
                         {activeTab === item.id && (
                           <div className="absolute right-2 w-1 h-8 bg-white rounded-full"></div>
