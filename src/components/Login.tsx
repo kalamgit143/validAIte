@@ -17,7 +17,14 @@ import {
   Sparkles,
   Zap,
   Target,
-  Github
+  Github,
+  Settings,
+  Database,
+  Code,
+  Lightbulb,
+  Layout,
+  CheckCircle,
+  Activity
 } from 'lucide-react';
 
 interface LoginProps {
@@ -64,67 +71,94 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
 
   const features = [
     {
-      icon: Brain,
-      stage: "Stage-0",
-      title: "Archetype Classification",
-      description: "Define what kind of app it is - classify applications into 12 NIST-aligned archetypes with risk tier and assurance playbook",
+      icon: Settings,
+      stage: "Stage-1",
+      title: "Application Setup",
+      description: "Configure application details, archetype classification, and technical specifications for your GenAI system",
       inputs: "App manifest, tech stack, modifiers, risk context",
-      outputs: "Archetype code, risk tier, assurance playbook",
+      outputs: "Application profile, archetype code, risk tier",
       stats: "12 archetypes"
     },
     {
       icon: Shield,
-      stage: "Stage-1",
-      title: "Risk Mapping & Governance",
-      description: "Find risks and map controls - build comprehensive risk register with governance controls and compliance mapping",
+      stage: "Stage-2",
+      title: "Risk Identification",
+      description: "Identify and classify AI risks using NIST taxonomy - build comprehensive risk register with governance controls",
       inputs: "Application profile, use case catalog, risk library",
-      outputs: "Risk register, governance controls, governance matrix",
+      outputs: "Risk register, governance controls, compliance mapping",
       stats: "Risk registry"
     },
     {
       icon: TrendingUp,
-      stage: "Stage-2",
-      title: "Trust Metrics Engine",
-      description: "Turn risks into measurable trust metrics - map risks to quantifiable metrics with thresholds and benchmarks",
+      stage: "Stage-3",
+      title: "Metrics Definition",
+      description: "Define measurable trust metrics mapped to identified risks with thresholds and benchmarks",
       inputs: "Risks, controls, metric library, thresholds",
       outputs: "Risk-metric mapping, evaluation configs, trust index",
       stats: "Live metrics"
     },
     {
-      icon: TestTube,
-      stage: "Stage-3",
-      title: "TEVV Automation Suite",
-      description: "Automate testing for those metrics - run comprehensive test packs with full traceability to risks",
+      icon: Database,
+      stage: "Stage-4",
+      title: "Dataset Generation",
+      description: "Generate comprehensive evaluation datasets for testing AI system performance and safety",
+      inputs: "Use cases, risk scenarios, test requirements",
+      outputs: "Test datasets, edge cases, validation sets",
+      stats: "Auto datasets"
+    },
+    {
+      icon: Code,
+      stage: "Stage-5",
+      title: "Test Case Creation",
+      description: "Generate automated test scripts and evaluation workflows with full traceability to risks",
       inputs: "Risk register, metric mapping, test datasets, CI/CD hooks",
-      outputs: "Automated test packs, traceability matrix, test results",
+      outputs: "Automated test packs, traceability matrix, test scripts",
       stats: "Auto testing"
     },
     {
-      icon: Brain,
-      stage: "Stage-4",
-      title: "Validation Lab (HITL)",
-      description: "Let humans check fairness and ethics - domain experts validate sensitive cases and provide feedback",
+      icon: Target,
+      stage: "Stage-6",
+      title: "Trust Score Computation",
+      description: "Execute comprehensive TEVV tests and compute quantified trust scores across all dimensions",
+      inputs: "Test results, metric thresholds, benchmark data",
+      outputs: "Trust scores, performance metrics, gap analysis",
+      stats: "Trust scores"
+    },
+    {
+      icon: Lightbulb,
+      stage: "Stage-7",
+      title: "Explainability & Evidence",
+      description: "Human-in-the-loop review - domain experts validate sensitive cases and provide interpretability evidence",
       inputs: "Test results, human-sensitive datasets, SME feedback",
-      outputs: "Human-validated evidence, validation notes",
+      outputs: "Human-validated evidence, explainability reports",
       stats: "Human review"
     },
     {
-      icon: GitBranch,
-      stage: "Stage-5",
+      icon: Layout,
+      stage: "Stage-8",
+      title: "Trust Matrix",
+      description: "Unified 360° trust view consolidating all evaluation results, evidence, and compliance status",
+      inputs: "Trust scores, TEVV results, HITL evidence, compliance data",
+      outputs: "Trust matrix, risk heatmap, executive dashboard",
+      stats: "360° view"
+    },
+    {
+      icon: CheckCircle,
+      stage: "Stage-9",
+      title: "Authorization Engine",
+      description: "Automated deployment gate - authorize production release based on trust scores and compliance thresholds",
+      inputs: "Trust matrix, approval policies, stakeholder signoffs",
+      outputs: "Deployment authorization, approval workflows",
+      stats: "Auto gate"
+    },
+    {
+      icon: Activity,
+      stage: "Stage-10",
       title: "Continuous Monitoring",
-      description: "Keep monitoring after release - track production metrics, detect drift, and trigger alerts on anomalies",
+      description: "Post-deployment monitoring - track production metrics, detect drift, trigger alerts on anomalies",
       inputs: "Production logs, telemetry, drift configs, anomaly triggers",
       outputs: "Monitoring dashboards, alerts, feedback loops",
       stats: "Live monitoring"
-    },
-    {
-      icon: FileText,
-      stage: "Stage-6",
-      title: "Compliance Reporting",
-      description: "Generate compliance reports - create audit-ready evidence bundles aligned to regulatory frameworks",
-      inputs: "Governance matrix, trust scores, TEVV results, HITL evidence, monitoring logs",
-      outputs: "Compliance pack, regulatory reports, executive dashboard",
-      stats: "Audit ready"
     }
   ];
 
