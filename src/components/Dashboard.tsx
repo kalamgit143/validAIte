@@ -822,7 +822,9 @@ const Dashboard: React.FC = () => {
       {/* Main Dashboard Header */}
       <div className="mb-6">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">AI Governance Dashboard</h2>
-        <p className="text-gray-600 dark:text-gray-400">Role-based insights for AI governance and oversight</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          Role-based insights across our comprehensive 10-stage AI governance workflow - from application setup through deployment authorization to continuous monitoring.
+        </p>
       </div>
 
       {/* Role Selector Header */}

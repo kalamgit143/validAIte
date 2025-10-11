@@ -11,7 +11,8 @@ import {
   X,
   LogOut,
   FolderOpen,
-  Layers
+  Layers,
+  Home
 } from 'lucide-react';
 
 // 10-Stage AI Governance Workflow
@@ -26,6 +27,9 @@ import TrustMatrix from './components/TrustMatrix';
 import AuthorizationEngine from './components/AuthorizationEngine';
 import ContinuousMonitoring from './components/ContinuousMonitoring';
 
+// Dashboard
+import Dashboard from './components/Dashboard';
+
 // Reference & Tools
 import RMFValidAIteMapping from './components/RMFValidAIteMapping';
 import ControlLibrary from './components/ControlLibrary';
@@ -37,7 +41,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('stage-0');
+  const [activeTab, setActiveTab] = useState('home');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
@@ -81,6 +85,12 @@ function App() {
 
   const navItems = [
     {
+      category: 'Overview',
+      items: [
+        { id: 'home', label: 'Home Dashboard', icon: Home, description: 'Role-based governance overview' },
+      ]
+    },
+    {
       category: 'AI Governance Workflow',
       items: [
         { id: 'stage-0', label: 'Application Setup', icon: Brain, description: 'Configure application information and setup' },
@@ -109,6 +119,8 @@ function App() {
   const renderActiveComponent = () => {
     try {
       switch (activeTab) {
+        case 'home':
+          return <Dashboard />;
         case 'stage-0':
           return <ApplicationSetup />;
         case 'risk-identification':
