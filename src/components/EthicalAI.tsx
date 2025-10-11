@@ -54,7 +54,7 @@ const EthicalAI: React.FC = () => {
       name: 'Human-Centric AI Assessment',
       application: 'Content Generator',
       status: 'in_progress',
-      assessor: 'Sarah Chen',
+      assessor: 'Madhu Ronanki',
       startedAt: '2024-01-12T14:00:00Z',
       progress: 60,
       principles: {

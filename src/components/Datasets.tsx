@@ -37,7 +37,7 @@ const Datasets: React.FC = () => {
       tags: ['customer-support', 'quality', 'production'],
       createdAt: '2024-01-10T14:30:00Z',
       updatedAt: '2024-01-14T09:15:00Z',
-      createdBy: 'Sarah Chen',
+      createdBy: 'Madhu Ronanki',
       status: 'ready',
       usage: 15,
       lastUsed: '2024-01-15T10:30:00Z'

@@ -294,7 +294,7 @@ const Signup: React.FC<SignupProps> = ({ onSignup, onShowLogin }) => {
             type="text"
             value={formData.tenantName}
             onChange={(e) => setFormData(prev => ({ ...prev, tenantName: e.target.value }))}
-            placeholder="Acme Corporation"
+            placeholder="QualiZeal"
             required
             className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />

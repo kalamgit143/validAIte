@@ -35,7 +35,7 @@ const RiskAssessment: React.FC = () => {
       riskLevel: 'medium',
       score: 8.2,
       euAiActClass: 'high_risk',
-      assessor: 'Sarah Chen',
+      assessor: 'Madhu Ronanki',
       approvedBy: 'CIO & CISO',
       completedAt: '2024-01-15T10:00:00Z',
       governanceSignature: 'SIGNED_2024_001',
@@ -755,7 +755,7 @@ const RiskAssessment: React.FC = () => {
                   <div>
                     <label className="block text-xs text-gray-500 dark:text-gray-500 mb-1">Risk Owner (CIO/CDO)</label>
                     <select className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-sm">
-                      <option>Sarah Chen (CIO)</option>
+                      <option>Madhu Ronanki (CIO)</option>
                       <option>Mike Johnson (CDO)</option>
                     </select>
                   </div>

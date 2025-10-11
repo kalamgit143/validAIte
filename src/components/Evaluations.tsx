@@ -47,7 +47,7 @@ const Evaluations: React.FC = () => {
           relevance: 92.8
         },
         cost: 12.45,
-        evaluator: 'Sarah Chen'
+        evaluator: 'Madhu Ronanki'
       },
       {
         id: 'eval_002',

@@ -38,7 +38,7 @@ const Alerts: React.FC = () => {
         triggeredAt: '2024-01-15T10:30:00Z',
         status: 'active',
         acknowledged: false,
-        assignedTo: 'Sarah Chen'
+        assignedTo: 'Madhu Ronanki'
       },
       {
         id: 'alert_002',

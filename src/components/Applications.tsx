@@ -734,7 +734,7 @@ const Applications: React.FC = () => {
                       Risk Owner (CIO/CDO)
                     </label>
                     <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500">
-                      <option>Sarah Chen (CIO)</option>
+                      <option>Madhu Ronanki (CIO)</option>
                       <option>Mike Johnson (CDO)</option>
                       <option>Alex Kim (CTO)</option>
                     </select>

@@ -34,7 +34,7 @@ const ModelDocumentation: React.FC = () => {
       version: '2.1.0',
       status: 'complete',
       lastUpdated: '2024-01-15T10:00:00Z',
-      updatedBy: 'Sarah Chen',
+      updatedBy: 'Madhu Ronanki',
       completeness: 95,
       sections: {
         'Model Details': { status: 'complete', lastUpdated: '2024-01-15T10:00:00Z' },

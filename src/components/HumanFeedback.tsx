@@ -107,7 +107,7 @@ const HumanFeedback: React.FC = () => {
       id: 'task_001',
       name: 'Customer Support Quality Review',
       description: 'Review customer support responses for quality and helpfulness',
-      assignedTo: 'Sarah Chen',
+      assignedTo: 'Madhu Ronanki',
       dueDate: '2024-01-20T23:59:59Z',
       progress: 75,
       totalSamples: 100,

@@ -7,7 +7,7 @@ const RecentActivity: React.FC = () => {
       type: 'experiment',
       title: 'Prompt A/B Test Started',
       description: 'Testing creative vs instructional prompts',
-      user: 'Sarah Chen',
+      user: 'Madhu Ronanki',
       time: '2 minutes ago',
       icon: Target
     },

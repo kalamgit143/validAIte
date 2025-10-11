@@ -49,10 +49,10 @@ function App() {
 
   const handleLogin = (credentials: any) => {
     setCurrentUser({
-      name: 'Sarah Chen',
+      name: 'Madhu Ronanki',
       email: credentials.email,
       role: credentials.role || 'Platform Admin',
-      tenant: 'Acme Corporation',
+      tenant: 'QualiZeal',
       avatar: null
     });
     setIsAuthenticated(true);

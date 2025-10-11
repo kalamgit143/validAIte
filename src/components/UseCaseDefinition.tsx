@@ -553,7 +553,7 @@ const UseCaseDefinition: React.FC<UseCaseDefinitionProps> = ({
                       type="text"
                       value={expertSession.expertName}
                       onChange={(e) => setExpertSession(prev => ({ ...prev, expertName: e.target.value }))}
-                      placeholder="Dr. Sarah Chen"
+                      placeholder="Dr. Madhu Ronanki"
                       className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
                     />
                   </div>

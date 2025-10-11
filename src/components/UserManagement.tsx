@@ -159,7 +159,7 @@ const UserManagement: React.FC = () => {
       description: 'Responsible for AI safety, ethics, and bias detection',
       memberCount: 5,
       applications: ['Customer Support Bot', 'Content Generator'],
-      lead: 'Sarah Chen',
+      lead: 'Madhu Ronanki',
       createdAt: '2024-01-01T09:00:00Z',
       permissions: ['safety_guardrails', 'bias_auditing', 'ethical_ai']
     },
