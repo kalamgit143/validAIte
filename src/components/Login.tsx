@@ -360,7 +360,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
               <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent block lg:inline"> Compliance Platform</span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Seven-stage lifecycle to classify, assess, test, validate, monitor, and report compliance for your GenAI applications
+              Comprehensive 10-stage workflow to setup, classify, assess, test, validate, authorize, monitor, and report compliance for your GenAI applications
               <strong className="text-gray-900 dark:text-white"> following NIST AI Risk Management Framework</strong>.
             </p>
             
@@ -390,9 +390,9 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
               <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               <span className="text-blue-800 dark:text-blue-200 font-semibold">NIST AI RMF Core Modules</span>
             </div>
-            <h3 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">7-Stage AI Governance Workflow</h3>
+            <h3 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">10-Stage AI Governance Workflow</h3>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              End-to-end NIST AI RMF lifecycle from archetype classification to compliance reporting
+              Complete NIST AI RMF lifecycle from application setup through deployment authorization to continuous monitoring
             </p>
           </div>
           
