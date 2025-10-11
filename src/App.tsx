@@ -218,7 +218,7 @@ function App() {
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className={`${sidebarOpen ? 'w-80' : 'w-0'} lg:w-80 transition-all duration-300 overflow-y-auto overflow-x-hidden bg-gradient-to-b from-gray-900 via-slate-900 to-gray-950 border-r border-gray-800/50 min-h-screen shadow-2xl backdrop-blur-xl`}>
+        <aside className={`fixed lg:static inset-y-0 left-0 z-50 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 w-80 transition-transform duration-300 overflow-y-auto overflow-x-hidden bg-gradient-to-b from-gray-900 via-slate-900 to-gray-950 border-r border-gray-800/50 min-h-screen shadow-2xl backdrop-blur-xl`}>
           <nav className="p-5 space-y-6 min-h-full">
             {navItems.map((section, sectionIndex) => (
               <div key={section.category} className="relative">
@@ -237,6 +237,9 @@ function App() {
                         key={item.id}
                         onClick={() => {
                           setActiveTab(item.id);
+                          if (window.innerWidth < 1024) {
+                            setSidebarOpen(false);
+                          }
                         }}
                         className={`w-full group relative flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-200 ${
                           activeTab === item.id
@@ -284,8 +287,16 @@ function App() {
           </nav>
         </aside>
 
+        {/* Mobile Overlay */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
         {/* Main Content */}
-        <main className="flex-1 p-6 bg-slate-50 dark:bg-slate-900">
+        <main className="flex-1 w-full lg:w-auto p-6 bg-slate-50 dark:bg-slate-900">
           {renderActiveComponent()}
         </main>
       </div>
