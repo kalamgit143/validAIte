@@ -218,18 +218,18 @@ function App() {
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className={`${sidebarOpen ? 'w-80' : 'w-0'} lg:w-80 transition-all duration-300 overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 border-r border-gray-200/50 dark:border-gray-700/50 min-h-screen shadow-2xl`}>
-          <nav className="p-6 space-y-8">
+        <aside className={`${sidebarOpen ? 'w-80' : 'w-0'} lg:w-80 transition-all duration-300 overflow-hidden bg-gradient-to-b from-gray-900 via-slate-900 to-gray-950 border-r border-gray-800/50 min-h-screen shadow-2xl backdrop-blur-xl`}>
+          <nav className="p-5 space-y-6">
             {navItems.map((section, sectionIndex) => (
               <div key={section.category} className="relative">
-                <div className="flex items-center space-x-3 mb-4 pb-2 border-b border-gray-200/50 dark:border-gray-700/50">
-                  <div className="h-2 w-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 animate-pulse"></div>
-                  <h3 className="text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-300 dark:to-gray-100 uppercase tracking-widest">
+                <div className="flex items-center space-x-2.5 mb-3 px-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400"></div>
+                  <h3 className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.15em] leading-tight">
                     {section.category}
                   </h3>
-                  <div className="flex-1 h-px bg-gradient-to-r from-gray-200 to-transparent dark:from-gray-700"></div>
+                  <div className="flex-1 h-px bg-gradient-to-r from-gray-800 via-gray-700 to-transparent"></div>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-1">
                   {section.items.map((item) => {
                     const Icon = item.icon;
                     return (
@@ -238,37 +238,42 @@ function App() {
                         onClick={() => {
                           setActiveTab(item.id);
                         }}
-                        className={`w-full group relative flex items-center space-x-3 px-4 py-3.5 rounded-xl transition-all duration-300 transform ${
+                        className={`w-full group relative flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-200 ${
                           activeTab === item.id
-                            ? 'bg-gradient-to-r from-blue-500 via-blue-600 to-cyan-500 text-white shadow-xl shadow-blue-500/40 scale-[1.02] border border-blue-400/20'
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-white hover:to-gray-50 dark:hover:from-gray-800 dark:hover:to-gray-750 hover:shadow-lg hover:scale-[1.01] border border-transparent hover:border-gray-200 dark:hover:border-gray-700'
+                            ? 'bg-gradient-to-r from-blue-600/20 via-blue-500/15 to-cyan-600/20 border border-blue-500/30 shadow-lg shadow-blue-500/10'
+                            : 'hover:bg-gray-800/50 border border-transparent hover:border-gray-700/50'
                         }`}
                       >
-                        <div className={`flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                        {activeTab === item.id && (
+                          <div className="absolute left-0 w-1 h-8 bg-gradient-to-b from-blue-400 via-blue-500 to-cyan-500 rounded-r-full shadow-lg shadow-blue-500/50"></div>
+                        )}
+                        <div className={`flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-200 ${
                           activeTab === item.id
-                            ? 'bg-white/20 backdrop-blur-sm shadow-inner'
-                            : 'bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 group-hover:from-blue-50 group-hover:to-cyan-50 dark:group-hover:from-blue-900/30 dark:group-hover:to-cyan-900/30'
+                            ? 'bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg shadow-blue-500/30'
+                            : 'bg-gray-800/80 group-hover:bg-gray-700/80'
                         }`}>
-                          <Icon className={`w-5 h-5 transition-all duration-300 ${
+                          <Icon className={`w-4.5 h-4.5 transition-all duration-200 ${
                             activeTab === item.id
-                              ? 'text-white drop-shadow-sm'
-                              : 'text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:scale-110'
+                              ? 'text-white'
+                              : 'text-gray-400 group-hover:text-blue-400'
                           }`} />
                         </div>
-                        <div className="flex-1 text-left">
-                          <span className={`block text-sm font-bold transition-colors duration-300 ${
+                        <div className="flex-1 text-left min-w-0">
+                          <span className={`block text-[13px] font-medium transition-colors duration-200 truncate ${
                             activeTab === item.id
-                              ? 'text-white drop-shadow-sm'
-                              : 'text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400'
+                              ? 'text-white'
+                              : 'text-gray-300 group-hover:text-white'
                           }`}>{item.label}</span>
-                          <span className={`block text-xs mt-0.5 transition-colors duration-300 ${
+                          <span className={`block text-[10px] mt-0.5 transition-colors duration-200 truncate ${
                             activeTab === item.id
-                              ? 'text-white/90'
-                              : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300'
+                              ? 'text-blue-300'
+                              : 'text-gray-500 group-hover:text-gray-400'
                           }`}>{item.description}</span>
                         </div>
                         {activeTab === item.id && (
-                          <div className="absolute right-3 w-1.5 h-10 bg-white/90 rounded-full shadow-lg"></div>
+                          <div className="flex-shrink-0">
+                            <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></div>
+                          </div>
                         )}
                       </button>
                     );
