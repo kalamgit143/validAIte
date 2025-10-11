@@ -24,6 +24,7 @@ import MetricsDefinition from './components/MetricsDefinition';
 import DatasetGeneration from './components/DatasetGeneration';
 import TestCaseCreation from './components/TestCaseCreation';
 import TrustScoreComputation from './components/TrustScoreComputation';
+import ExplainabilityAI from './components/ExplainabilityAI';
 import ModelGovernance from './components/ModelGovernance';
 import TrustMetricsEngine from './components/TrustMetricsEngine';
 import TEVVAutomationSuite from './components/TEVVAutomationSuite';
@@ -94,6 +95,7 @@ function App() {
         { id: 'dataset-generation', label: 'Dataset Generation', icon: FileText, description: 'Generate testable evaluation datasets' },
         { id: 'test-case-creation', label: 'Test Case Creation', icon: Code, description: 'Generate automation scripts' },
         { id: 'trust-score-computation', label: 'Trust Score Computation', icon: TrendingUp, description: 'Execute tests and compute scores' },
+        { id: 'explainability-evidence', label: 'Explainability & Evidence', icon: FileText, description: 'HITL evidence review' },
         { id: 'stage-1', label: 'Control Selection', icon: Target, description: 'Select controls based on archetype' },
         { id: 'stage-2', label: 'Configure TEVV Pack', icon: TestTube, description: 'Set tests and thresholds' },
         { id: 'stage-3', label: 'Execute Tests', icon: GitBranch, description: 'Run automated test suite' },
@@ -128,6 +130,8 @@ function App() {
           return <TestCaseCreation />;
         case 'trust-score-computation':
           return <TrustScoreComputation />;
+        case 'explainability-evidence':
+          return <ExplainabilityAI />;
         case 'stage-1':
           return <ModelGovernance />;
         case 'stage-2':
