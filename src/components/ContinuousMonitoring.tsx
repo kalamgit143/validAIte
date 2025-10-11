@@ -515,9 +515,18 @@ const ContinuousMonitoring: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Continuous Monitoring</h2>
-          <p className="text-gray-600 dark:text-gray-400">Real-time drift, anomalies, and incident response with governance integration</p>
+        <div className="flex-1">
+          <div className="flex items-center space-x-3 mb-2">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+              <Activity className="w-6 h-6" />
+            </div>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+              Continuous Monitoring
+            </h2>
+          </div>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">
+            Stage 10: Post-deployment real-time monitoring, drift detection, and incident response
+          </p>
         </div>
         <div className="flex items-center space-x-3">
           <div className={`flex items-center space-x-2 px-3 py-2 rounded-lg ${getStatusColor(monitoringStatus)}`}>

@@ -99,12 +99,7 @@ function App() {
         { id: 'explainability-evidence', label: 'Explainability & Evidence', icon: FileText, description: 'HITL evidence review' },
         { id: 'trust-matrix', label: 'Trust Matrix Dashboard', icon: Shield, description: 'Unified 360° trust view' },
         { id: 'authorization-engine', label: 'Authorization Engine', icon: CheckCircle, description: 'Deployment approval gate' },
-        { id: 'stage-1', label: 'Control Selection', icon: Target, description: 'Select controls based on archetype' },
-        { id: 'stage-2', label: 'Configure TEVV Pack', icon: TestTube, description: 'Set tests and thresholds' },
-        { id: 'stage-3', label: 'Execute Tests', icon: GitBranch, description: 'Run automated test suite' },
-        { id: 'stage-4', label: 'Human Review', icon: Users, description: 'Expert validation (HITL)' },
-        { id: 'stage-5', label: 'Authorization', icon: CheckCircle, description: 'Approve or reject deployment' },
-        { id: 'stage-6', label: 'Continuous Monitoring', icon: GitBranch, description: 'Monitor metrics and drift' },
+        { id: 'continuous-monitoring', label: 'Continuous Monitoring', icon: Activity, description: 'Post-deployment monitoring' },
       ]
     },
     {
@@ -139,17 +134,7 @@ function App() {
           return <TrustMatrix />;
         case 'authorization-engine':
           return <AuthorizationEngine />;
-        case 'stage-1':
-          return <ModelGovernance />;
-        case 'stage-2':
-          return <TrustMetricsEngine />;
-        case 'stage-3':
-          return <TEVVAutomationSuite />;
-        case 'stage-4':
-          return <ValidationLab />;
-        case 'stage-5':
-          return <AuthorizationEngine />;
-        case 'stage-6':
+        case 'continuous-monitoring':
           return <ContinuousMonitoring />;
 
         case 'rmf-reference':
