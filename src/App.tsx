@@ -83,16 +83,16 @@ function App() {
     {
       category: 'AI Governance Workflow',
       items: [
-        { id: 'stage-0', label: 'Stage 1: Application Setup', icon: Brain, description: 'Configure application information and setup' },
-        { id: 'risk-identification', label: 'Stage 2: Risk Identification', icon: Shield, description: 'Identify and classify potential risks' },
-        { id: 'metrics-definition', label: 'Stage 3: Metrics Definition', icon: TrendingUp, description: 'Define measurable trust metrics' },
-        { id: 'dataset-generation', label: 'Stage 4: Dataset Generation', icon: FileText, description: 'Generate testable evaluation datasets' },
-        { id: 'test-case-creation', label: 'Stage 5: Test Case Creation', icon: Code, description: 'Generate automation scripts' },
-        { id: 'trust-score-computation', label: 'Stage 6: Trust Score Computation', icon: TrendingUp, description: 'Execute tests and compute scores' },
-        { id: 'explainability-evidence', label: 'Stage 7: Explainability & Evidence', icon: FileText, description: 'HITL evidence review' },
-        { id: 'trust-matrix', label: 'Stage 8: Trust Matrix Dashboard', icon: Shield, description: 'Unified 360° trust view' },
-        { id: 'authorization-engine', label: 'Stage 9: Authorization Engine', icon: CheckCircle, description: 'Deployment approval gate' },
-        { id: 'continuous-monitoring', label: 'Stage 10: Continuous Monitoring', icon: Activity, description: 'Post-deployment monitoring' },
+        { id: 'stage-0', label: 'Application Setup', icon: Brain, description: 'Configure application information and setup' },
+        { id: 'risk-identification', label: 'Risk Identification', icon: Shield, description: 'Identify and classify potential risks' },
+        { id: 'metrics-definition', label: 'Metrics Definition', icon: TrendingUp, description: 'Define measurable trust metrics' },
+        { id: 'dataset-generation', label: 'Dataset Generation', icon: FileText, description: 'Generate testable evaluation datasets' },
+        { id: 'test-case-creation', label: 'Test Case Creation', icon: Code, description: 'Generate automation scripts' },
+        { id: 'trust-score-computation', label: 'Trust Score Computation', icon: TrendingUp, description: 'Execute tests and compute scores' },
+        { id: 'explainability-evidence', label: 'Explainability & Evidence', icon: FileText, description: 'HITL evidence review' },
+        { id: 'trust-matrix', label: 'Trust Matrix', icon: Shield, description: 'Unified 360° trust view' },
+        { id: 'authorization-engine', label: 'Authorization Engine', icon: CheckCircle, description: 'Deployment approval gate' },
+        { id: 'continuous-monitoring', label: 'Continuous Monitoring', icon: Activity, description: 'Post-deployment monitoring' },
       ]
     },
     {
@@ -206,15 +206,16 @@ function App() {
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className={`${sidebarOpen ? 'w-72' : 'w-0'} lg:w-72 transition-all duration-300 overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-gray-900 dark:to-gray-800 border-r border-gray-200 dark:border-gray-700 min-h-screen shadow-lg`}>
-          <nav className="p-6">
-            {navItems.map((section) => (
-              <div key={section.category} className="mb-8">
-                <div className="flex items-center space-x-2 mb-4">
-                  <div className="h-1 w-1 rounded-full bg-blue-500"></div>
-                  <h3 className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+        <aside className={`${sidebarOpen ? 'w-80' : 'w-0'} lg:w-80 transition-all duration-300 overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 border-r border-gray-200/50 dark:border-gray-700/50 min-h-screen shadow-2xl`}>
+          <nav className="p-6 space-y-8">
+            {navItems.map((section, sectionIndex) => (
+              <div key={section.category} className="relative">
+                <div className="flex items-center space-x-3 mb-4 pb-2 border-b border-gray-200/50 dark:border-gray-700/50">
+                  <div className="h-2 w-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 animate-pulse"></div>
+                  <h3 className="text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-300 dark:to-gray-100 uppercase tracking-widest">
                     {section.category}
                   </h3>
+                  <div className="flex-1 h-px bg-gradient-to-r from-gray-200 to-transparent dark:from-gray-700"></div>
                 </div>
                 <div className="space-y-2">
                   {section.items.map((item) => {
@@ -222,38 +223,40 @@ function App() {
                     return (
                       <button
                         key={item.id}
-                        onClick={() => setActiveTab(item.id)}
-                        className={`w-full group relative flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                        onClick={() => {
+                          setActiveTab(item.id);
+                        }}
+                        className={`w-full group relative flex items-center space-x-3 px-4 py-3.5 rounded-xl transition-all duration-300 transform ${
                           activeTab === item.id
-                            ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 scale-105'
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-800 hover:shadow-md hover:scale-102'
+                            ? 'bg-gradient-to-r from-blue-500 via-blue-600 to-cyan-500 text-white shadow-xl shadow-blue-500/40 scale-[1.02] border border-blue-400/20'
+                            : 'text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-white hover:to-gray-50 dark:hover:from-gray-800 dark:hover:to-gray-750 hover:shadow-lg hover:scale-[1.01] border border-transparent hover:border-gray-200 dark:hover:border-gray-700'
                         }`}
                       >
-                        <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
+                        <div className={`flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 ${
                           activeTab === item.id
-                            ? 'bg-white/20'
-                            : 'bg-gray-100 dark:bg-gray-700 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20'
+                            ? 'bg-white/20 backdrop-blur-sm shadow-inner'
+                            : 'bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 group-hover:from-blue-50 group-hover:to-cyan-50 dark:group-hover:from-blue-900/30 dark:group-hover:to-cyan-900/30'
                         }`}>
-                          <Icon className={`w-5 h-5 ${
+                          <Icon className={`w-5 h-5 transition-all duration-300 ${
                             activeTab === item.id
-                              ? 'text-white'
-                              : 'text-gray-600 dark:text-gray-400 group-hover:text-blue-500'
+                              ? 'text-white drop-shadow-sm'
+                              : 'text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:scale-110'
                           }`} />
                         </div>
                         <div className="flex-1 text-left">
-                          <span className={`block text-sm font-semibold ${
+                          <span className={`block text-sm font-bold transition-colors duration-300 ${
                             activeTab === item.id
-                              ? 'text-white'
-                              : 'text-gray-900 dark:text-gray-200'
+                              ? 'text-white drop-shadow-sm'
+                              : 'text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400'
                           }`}>{item.label}</span>
-                          <span className={`block text-xs ${
+                          <span className={`block text-xs mt-0.5 transition-colors duration-300 ${
                             activeTab === item.id
-                              ? 'text-white/80'
-                              : 'text-gray-500 dark:text-gray-400'
+                              ? 'text-white/90'
+                              : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300'
                           }`}>{item.description}</span>
                         </div>
                         {activeTab === item.id && (
-                          <div className="absolute right-2 w-1 h-8 bg-white rounded-full"></div>
+                          <div className="absolute right-3 w-1.5 h-10 bg-white/90 rounded-full shadow-lg"></div>
                         )}
                       </button>
                     );

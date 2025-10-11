@@ -362,7 +362,9 @@ const ApplicationSetup: React.FC = () => {
               Application Setup
             </h2>
           </div>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">Configure your GenAI application for comprehensive governance and validation</p>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">
+            Begin your AI governance journey with our comprehensive 10-stage workflow. Configure your GenAI application details, archetype classification, and technical specifications.
+          </p>
         </div>
 
         <div className="flex items-center space-x-3">
