@@ -427,7 +427,7 @@ const ApplicationSetup: React.FC = () => {
             <button
               onClick={() => {
                 setActiveSection(sectionNum);
-                if (!isExpanded) toggleSection(sectionNum);
+                toggleSection(sectionNum);
               }}
               className="w-full p-6 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors rounded-xl"
             >
