@@ -228,7 +228,7 @@ function App() {
         } ${
           sidebarOpen && !sidebarCollapsed ? 'w-80' : 'w-20'
         }`}>
-          <nav className="p-5 space-y-6 min-h-full">
+          <nav className={`p-5 min-h-full ${sidebarCollapsed ? 'space-y-4' : 'space-y-6'}`}>
             {navItems.map((section, sectionIndex) => (
               <div key={section.category} className="relative">
                 {!sidebarCollapsed && (
@@ -239,6 +239,9 @@ function App() {
                     </h3>
                     <div className="flex-1 h-px bg-gradient-to-r from-gray-800 via-gray-700 to-transparent"></div>
                   </div>
+                )}
+                {sidebarCollapsed && sectionIndex > 0 && (
+                  <div className="mb-3 mx-auto w-8 h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent"></div>
                 )}
                 <div className="space-y-1">
                   {section.items.map((item) => {
@@ -252,21 +255,28 @@ function App() {
                             setSidebarOpen(false);
                           }
                         }}
-                        className={`w-full group relative flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-200 ${
+                        className={`w-full group relative flex items-center rounded-lg transition-all duration-200 ${
+                          sidebarCollapsed ? 'justify-center px-2 py-3' : 'space-x-3 px-3 py-3'
+                        } ${
                           activeTab === item.id
                             ? 'bg-gradient-to-r from-blue-600/20 via-blue-500/15 to-cyan-600/20 border border-blue-500/30 shadow-lg shadow-blue-500/10'
                             : 'hover:bg-gray-800/50 border border-transparent hover:border-gray-700/50'
                         }`}
+                        title={sidebarCollapsed ? item.label : ''}
                       >
-                        {activeTab === item.id && (
+                        {activeTab === item.id && !sidebarCollapsed && (
                           <div className="absolute left-0 w-1 h-8 bg-gradient-to-b from-blue-400 via-blue-500 to-cyan-500 rounded-r-full shadow-lg shadow-blue-500/50"></div>
                         )}
-                        <div className={`flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                        <div className={`flex-shrink-0 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                          sidebarCollapsed ? 'w-10 h-10' : 'w-9 h-9'
+                        } ${
                           activeTab === item.id
                             ? 'bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg shadow-blue-500/30'
                             : 'bg-gray-800/80 group-hover:bg-gray-700/80'
                         }`}>
-                          <Icon className={`w-4.5 h-4.5 transition-all duration-200 ${
+                          <Icon className={`transition-all duration-200 ${
+                            sidebarCollapsed ? 'w-5 h-5' : 'w-4.5 h-4.5'
+                          } ${
                             activeTab === item.id
                               ? 'text-white'
                               : 'text-gray-400 group-hover:text-blue-400'
@@ -294,9 +304,10 @@ function App() {
                           </>
                         )}
                         {sidebarCollapsed && (
-                          <div className="absolute left-full ml-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-xl">
-                            <div className="font-medium">{item.label}</div>
-                            <div className="text-xs text-gray-400">{item.description}</div>
+                          <div className="absolute left-full ml-3 px-4 py-2.5 bg-gray-900 border border-gray-700 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 whitespace-nowrap z-[60] shadow-2xl">
+                            <div className="font-semibold text-white">{item.label}</div>
+                            <div className="text-xs text-gray-400 mt-0.5">{item.description}</div>
+                            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 border-l border-b border-gray-700 rotate-45"></div>
                           </div>
                         )}
                       </button>
