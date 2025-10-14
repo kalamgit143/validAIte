@@ -12,7 +12,9 @@ import {
   LogOut,
   FolderOpen,
   Layers,
-  Home
+  Home,
+  ChevronsLeft,
+  ChevronsRight
 } from 'lucide-react';
 
 // 10-Stage AI Governance Workflow
@@ -43,6 +45,7 @@ import Signup from './components/Signup';
 function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
@@ -216,19 +219,27 @@ function App() {
         </div>
       </header>
 
-      <div className="flex overflow-hidden h-[calc(100vh-4rem)]">
+      <div className="flex overflow-hidden h-[calc(100vh-4rem)] relative">
         {/* Sidebar */}
-        <aside className={`fixed lg:static inset-y-0 top-16 lg:top-0 left-0 z-50 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 w-80 transition-transform duration-300 overflow-y-auto overflow-x-hidden bg-gradient-to-b from-gray-900 via-slate-900 to-gray-950 border-r border-gray-800/50 h-full shadow-2xl backdrop-blur-xl`}>
+        <aside className={`fixed lg:static inset-y-0 top-16 lg:top-0 left-0 z-50 transition-all duration-300 overflow-y-auto overflow-x-hidden bg-gradient-to-b from-gray-900 via-slate-900 to-gray-950 border-r border-gray-800/50 h-full shadow-2xl backdrop-blur-xl ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } ${
+          sidebarCollapsed ? 'lg:w-20' : 'lg:w-80'
+        } ${
+          sidebarOpen && !sidebarCollapsed ? 'w-80' : 'w-20'
+        }`}>
           <nav className="p-5 space-y-6 min-h-full">
             {navItems.map((section, sectionIndex) => (
               <div key={section.category} className="relative">
-                <div className="flex items-center space-x-2.5 mb-3 px-2">
-                  <div className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400"></div>
-                  <h3 className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.15em] leading-tight">
-                    {section.category}
-                  </h3>
-                  <div className="flex-1 h-px bg-gradient-to-r from-gray-800 via-gray-700 to-transparent"></div>
-                </div>
+                {!sidebarCollapsed && (
+                  <div className="flex items-center space-x-2.5 mb-3 px-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400"></div>
+                    <h3 className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.15em] leading-tight">
+                      {section.category}
+                    </h3>
+                    <div className="flex-1 h-px bg-gradient-to-r from-gray-800 via-gray-700 to-transparent"></div>
+                  </div>
+                )}
                 <div className="space-y-1">
                   {section.items.map((item) => {
                     const Icon = item.icon;
@@ -261,21 +272,31 @@ function App() {
                               : 'text-gray-400 group-hover:text-blue-400'
                           }`} />
                         </div>
-                        <div className="flex-1 text-left min-w-0">
-                          <span className={`block text-[13px] font-medium transition-colors duration-200 truncate ${
-                            activeTab === item.id
-                              ? 'text-white'
-                              : 'text-gray-300 group-hover:text-white'
-                          }`}>{item.label}</span>
-                          <span className={`block text-[10px] mt-0.5 transition-colors duration-200 truncate ${
-                            activeTab === item.id
-                              ? 'text-blue-300'
-                              : 'text-gray-500 group-hover:text-gray-400'
-                          }`}>{item.description}</span>
-                        </div>
-                        {activeTab === item.id && (
-                          <div className="flex-shrink-0">
-                            <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></div>
+                        {!sidebarCollapsed && (
+                          <>
+                            <div className="flex-1 text-left min-w-0">
+                              <span className={`block text-[13px] font-medium transition-colors duration-200 truncate ${
+                                activeTab === item.id
+                                  ? 'text-white'
+                                  : 'text-gray-300 group-hover:text-white'
+                              }`}>{item.label}</span>
+                              <span className={`block text-[10px] mt-0.5 transition-colors duration-200 truncate ${
+                                activeTab === item.id
+                                  ? 'text-blue-300'
+                                  : 'text-gray-500 group-hover:text-gray-400'
+                              }`}>{item.description}</span>
+                            </div>
+                            {activeTab === item.id && (
+                              <div className="flex-shrink-0">
+                                <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></div>
+                              </div>
+                            )}
+                          </>
+                        )}
+                        {sidebarCollapsed && (
+                          <div className="absolute left-full ml-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-xl">
+                            <div className="font-medium">{item.label}</div>
+                            <div className="text-xs text-gray-400">{item.description}</div>
                           </div>
                         )}
                       </button>
@@ -286,6 +307,23 @@ function App() {
             ))}
           </nav>
         </aside>
+
+        {/* Sidebar Toggle Button - Desktop Only */}
+        <button
+          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          className="hidden lg:flex fixed left-0 top-1/2 -translate-y-1/2 z-50 items-center justify-center w-8 h-16 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-r-lg shadow-lg transition-all duration-300 group"
+          style={{
+            left: sidebarCollapsed ? '5rem' : '19.5rem',
+            transition: 'left 300ms ease-in-out'
+          }}
+          title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        >
+          {sidebarCollapsed ? (
+            <ChevronsRight className="w-5 h-5 group-hover:scale-110 transition-transform" />
+          ) : (
+            <ChevronsLeft className="w-5 h-5 group-hover:scale-110 transition-transform" />
+          )}
+        </button>
 
         {/* Mobile Overlay */}
         {sidebarOpen && (
