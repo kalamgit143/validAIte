@@ -14,7 +14,8 @@ import {
   Layers,
   Home,
   ChevronsLeft,
-  ChevronsRight
+  ChevronsRight,
+  BookOpen
 } from 'lucide-react';
 
 // 10-Stage AI Governance Workflow
@@ -37,6 +38,7 @@ import RMFValidAIteMapping from './components/RMFValidAIteMapping';
 import ControlLibrary from './components/ControlLibrary';
 import MetricsThresholdDashboard from './components/MetricsThresholdDashboard';
 import EvidencePackGenerator from './components/EvidencePackGenerator';
+import ArchetypesGuide from './components/ArchetypesGuide';
 
 // Authentication Components
 import Login from './components/Login';
@@ -111,6 +113,7 @@ function App() {
     {
       category: 'Reference & Tools',
       items: [
+        { id: 'archetypes-guide', label: 'Archetypes Guide', icon: BookOpen, description: '12 AI application patterns' },
         { id: 'rmf-reference', label: 'NIST RMF Reference', icon: Layers, description: 'RMF framework overview' },
         { id: 'control-library', label: 'Control Library', icon: Shield, description: 'Browse all ACC controls' },
         { id: 'metric-catalog', label: 'Metric Catalog', icon: TrendingUp, description: 'All trust metrics defined' },
@@ -145,6 +148,8 @@ function App() {
         case 'continuous-monitoring':
           return <ContinuousMonitoring />;
 
+        case 'archetypes-guide':
+          return <ArchetypesGuide />;
         case 'rmf-reference':
           return <RMFValidAIteMapping />;
         case 'control-library':
