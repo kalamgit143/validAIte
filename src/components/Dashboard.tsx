@@ -69,10 +69,6 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
   const mappedRole = userRole ? (roleToIdMap[userRole] || 'quality_compliance_lead') : null;
   const selectedRole = mappedRole || internalSelectedRole;
 
-  console.log('Dashboard - userRole:', userRole);
-  console.log('Dashboard - mappedRole:', mappedRole);
-  console.log('Dashboard - selectedRole:', selectedRole);
-
   const userRoles = [
     {
       id: 'quality_compliance_lead',

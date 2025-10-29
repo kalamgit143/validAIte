@@ -13,8 +13,11 @@ import {
   Archive,
   X,
   CheckCircle,
-  LogOut
+  LogOut,
+  UserPlus,
+  Trash2
 } from 'lucide-react';
+import { NIST_TEVV_ROLES } from '../utils/archetypes';
 
 interface Project {
   id: string;
@@ -36,6 +39,11 @@ interface User {
   tenant_id: string;
 }
 
+interface ProjectMember {
+  email: string;
+  role: string;
+}
+
 interface ProjectsListProps {
   user: User;
   onSelectProject: (projectId: string) => void;
@@ -49,6 +57,9 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject, onLo
     project_name: '',
     project_description: ''
   });
+  const [projectMembers, setProjectMembers] = useState<ProjectMember[]>([]);
+  const [newMemberEmail, setNewMemberEmail] = useState('');
+  const [newMemberRole, setNewMemberRole] = useState('TEVV Engineer');
 
   const mockProjects: Project[] = [
     {
@@ -123,10 +134,37 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject, onLo
     });
   };
 
+  const handleAddMember = () => {
+    if (newMemberEmail.trim() && !projectMembers.some(m => m.email === newMemberEmail)) {
+      setProjectMembers([...projectMembers, { email: newMemberEmail.trim(), role: newMemberRole }]);
+      setNewMemberEmail('');
+      setNewMemberRole('TEVV Engineer');
+    }
+  };
+
+  const handleRemoveMember = (email: string) => {
+    setProjectMembers(projectMembers.filter(m => m.email !== email));
+  };
+
   const handleCreateProject = () => {
     console.log('Creating project:', newProject);
+    console.log('Project members:', projectMembers);
     setShowCreateModal(false);
     setNewProject({ project_name: '', project_description: '' });
+    setProjectMembers([]);
+  };
+
+  const getRoleBadgeColor = (role: string) => {
+    const roleObj = NIST_TEVV_ROLES.find(r => r.name === role);
+    switch (roleObj?.color) {
+      case 'red': return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
+      case 'blue': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300';
+      case 'purple': return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300';
+      case 'green': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
+      case 'cyan': return 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300';
+      case 'orange': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+    }
   };
 
   return (
@@ -320,8 +358,8 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject, onLo
 
       {/* Create Project Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full border-2 border-gray-200 dark:border-gray-700">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full border-2 border-gray-200 dark:border-gray-700 my-8">
             <div className="flex items-center justify-between p-6 border-b-2 border-gray-200 dark:border-gray-700">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
@@ -362,6 +400,112 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject, onLo
                   rows={4}
                   className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
+              </div>
+
+              {/* Team Members Section */}
+              <div className="border-t-2 border-gray-200 dark:border-gray-700 pt-5">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h4 className="text-lg font-bold text-gray-900 dark:text-white flex items-center space-x-2">
+                      <Users className="w-5 h-5" />
+                      <span>Team Members</span>
+                    </h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      Add team members and assign their roles for this project
+                    </p>
+                  </div>
+                  <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
+                    {projectMembers.length} member{projectMembers.length !== 1 ? 's' : ''}
+                  </span>
+                </div>
+
+                {/* Add Member Form */}
+                <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 mb-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        value={newMemberEmail}
+                        onChange={(e) => setNewMemberEmail(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && handleAddMember()}
+                        placeholder="user@example.com"
+                        className="w-full px-3 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Role
+                      </label>
+                      <div className="flex space-x-2">
+                        <select
+                          value={newMemberRole}
+                          onChange={(e) => setNewMemberRole(e.target.value)}
+                          className="flex-1 px-3 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                        >
+                          {NIST_TEVV_ROLES.map((role) => (
+                            <option key={role.id} value={role.name}>
+                              {role.name}
+                            </option>
+                          ))}
+                        </select>
+                        <button
+                          onClick={handleAddMember}
+                          disabled={!newMemberEmail.trim()}
+                          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-1"
+                        >
+                          <UserPlus className="w-4 h-4" />
+                          <span className="text-sm font-medium">Add</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Members List */}
+                {projectMembers.length > 0 && (
+                  <div className="space-y-2 max-h-60 overflow-y-auto">
+                    {projectMembers.map((member, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg"
+                      >
+                        <div className="flex items-center space-x-3 flex-1 min-w-0">
+                          <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-white text-sm font-bold">
+                              {member.email.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                              {member.email}
+                            </p>
+                            <span className={`inline-block px-2 py-0.5 rounded text-xs font-semibold ${getRoleBadgeColor(member.role)}`}>
+                              {member.role}
+                            </span>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => handleRemoveMember(member.email)}
+                          className="p-2 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-lg transition-colors flex-shrink-0"
+                        >
+                          <Trash2 className="w-4 h-4 text-red-600 dark:text-red-400" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {projectMembers.length === 0 && (
+                  <div className="text-center py-8 bg-gray-50 dark:bg-gray-700/30 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600">
+                    <Users className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      No team members added yet
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div className="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-lg p-4">

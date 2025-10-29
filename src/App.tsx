@@ -167,9 +167,6 @@ function App() {
 
   const renderActiveComponent = () => {
     try {
-      console.log('App - currentUser:', currentUser);
-      console.log('App - passing role to Dashboard:', currentUser.role);
-
       switch (activeTab) {
         case 'home':
           return <Dashboard userRole={currentUser.role} />;
