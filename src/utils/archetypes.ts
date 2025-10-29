@@ -310,104 +310,123 @@ export const getArchetypeInsights = (archetypeId: string): ArchetypeInsight[] =>
 
 export const NIST_TEVV_ROLES = [
   {
-    id: 'quality_compliance_lead',
-    name: 'AI Quality & Compliance Lead',
-    title: 'AI Quality & Compliance Lead',
-    description: 'Owns overall AI quality and compliance strategy. Defines NIST RMF and EU TEVV alignment. Maintains model/system documentation and drives TEVV audits.',
+    id: 'ciso',
+    name: 'CISO',
+    title: 'Chief Information Security Officer',
+    description: 'Fortifies the AI ecosystem',
+    framework: 'Security + Risk Management + Compliance',
+    color: 'red',
+    icon: '🛡️',
+    responsibilities: [
+      'AI security strategy and oversight',
+      'Enterprise AI risk management',
+      'Security architecture and controls',
+      'Incident response and threat management',
+      'Security compliance and audit',
+      'AI ecosystem fortification',
+      'Security policy enforcement'
+    ]
+  },
+  {
+    id: 'quality_compliance_manager',
+    name: 'Quality & Compliance Manager',
+    title: 'Quality & Compliance Manager',
+    description: 'Defines trust and risk boundaries',
     framework: 'NIST RMF + EU AI Act + ISO 25010',
     color: 'blue',
-    icon: '1️⃣',
+    icon: '⚖️',
     responsibilities: [
       'AI quality and compliance strategy',
+      'Trust and risk boundary definition',
       'NIST RMF and EU TEVV alignment',
       'Model Cards and Annex IV documentation',
       'Risk Register maintenance',
       'TEVV audit coordination',
-      'Regulatory compliance oversight',
       'Quality standards definition'
     ]
   },
   {
-    id: 'test_evaluation_engineer',
-    name: 'AI Test & Evaluation Engineer',
-    title: 'AI Test & Evaluation Engineer',
-    description: 'Designs and executes functional, non-functional, and GenAI-specific tests. Tracks trust metrics like accuracy, fairness, and faithfulness.',
+    id: 'tevv_engineer',
+    name: 'TEVV Engineer',
+    title: 'TEVV Engineer',
+    description: 'Tests for truth and reliability',
     framework: 'EU AI Act Annex VII + NIST RMF Measure',
     color: 'purple',
-    icon: '2️⃣',
+    icon: '🔬',
     responsibilities: [
       'Functional and non-functional test design',
+      'Truth and reliability testing',
       'Prompt and hallucination testing',
       'Bias and robustness testing',
       'Explainability validation',
-      'Trust metrics tracking (accuracy, fairness, faithfulness)',
-      'Test execution and evidence collection',
-      'GenAI-specific test cases'
+      'Trust metrics tracking',
+      'GenAI-specific test execution'
     ]
   },
   {
-    id: 'data_ethics_steward',
-    name: 'Data & Ethics Steward',
-    title: 'Data & Ethics Steward',
-    description: 'Manages dataset governance, lineage, and consent. Ensures data quality, bias detection, and fairness validation in training and evaluation datasets.',
+    id: 'data_ethics_manager',
+    name: 'Data & Ethics Manager',
+    title: 'Data & Ethics Manager',
+    description: 'Guards ethical data flow',
     framework: 'Data Governance + Ethics + GDPR',
     color: 'green',
-    icon: '3️⃣',
+    icon: '🌱',
     responsibilities: [
       'Dataset governance and lineage',
+      'Ethical data flow management',
       'Data consent management',
-      'Data quality assessment',
       'Bias detection in datasets',
       'Fairness validation',
       'Training data evaluation',
-      'Evaluation dataset curation'
+      'Privacy and compliance oversight'
     ]
   },
   {
-    id: 'mlops_lifecycle_engineer',
-    name: 'MLOps & Lifecycle Engineer',
-    title: 'MLOps & Lifecycle Engineer',
-    description: 'Maintains AI lifecycle across environments. Handles version control, retraining, drift monitoring, and post-deployment TEVV automation.',
+    id: 'mlops_reliability_engineer',
+    name: 'MLOps & Reliability Engineer',
+    title: 'MLOps & Reliability Engineer',
+    description: 'Keeps the models alive and accountable',
     framework: 'MLOps + CI/CD + Monitoring',
     color: 'cyan',
-    icon: '4️⃣',
+    icon: '⚙️',
     responsibilities: [
-      'AI lifecycle management (training, validation, deployment)',
+      'AI lifecycle management',
+      'Model reliability and accountability',
       'Version control and model registry',
-      'Retraining pipeline automation',
       'Drift monitoring and alerts',
       'Post-deployment TEVV automation',
-      'Environment management',
+      'Retraining pipeline automation',
       'CI/CD pipeline integration'
     ]
   },
   {
-    id: 'governance_audit_advisor',
-    name: 'AI Governance & Audit Advisor',
-    title: 'AI Governance & Audit Advisor',
-    description: 'Provides periodic independent review for risk, ethics, compliance, and audit readiness. Supports regulatory traceability and documentation validation.',
+    id: 'ai_governance_auditor',
+    name: 'AI Governance Auditor',
+    title: 'AI Governance Auditor',
+    description: 'Verifies compliance and transparency',
     framework: 'Governance + Audit + Compliance',
     color: 'orange',
-    icon: '5️⃣',
+    icon: '🔍',
     responsibilities: [
-      'Independent risk review',
-      'Ethics and compliance assessment',
+      'Independent compliance verification',
+      'Transparency validation',
       'Audit readiness validation',
       'Regulatory traceability support',
       'Documentation validation',
       'Periodic governance review',
-      'Quality assurance audit'
+      'Ethics and compliance assessment'
     ]
   }
 ];
 
 export const getArchetypeFromRole = (role: string): string => {
   const roleMapping: { [key: string]: string } = {
-    'AI Quality & Compliance Lead': 'cio_cdo',
-    'AI Test & Evaluation Engineer': 'qa_tevv_engineer',
-    'Data & Ethics Steward': 'domain_ethics_reviewer',
-    'MLOps & Lifecycle Engineer': 'tevv_automation_engineer',
-    'AI Governance & Audit Advisor': 'cio_cdo'
+    'CISO': 'cio_cdo',
+    'Quality & Compliance Manager': 'cio_cdo',
+    'TEVV Engineer': 'qa_tevv_engineer',
+    'Data & Ethics Manager': 'domain_ethics_reviewer',
+    'MLOps & Reliability Engineer': 'tevv_automation_engineer',
+    'AI Governance Auditor': 'cio_cdo'
   };
 
   return roleMapping[role] || 'qa_tevv_engineer';

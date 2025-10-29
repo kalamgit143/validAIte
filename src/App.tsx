@@ -58,7 +58,7 @@ function App() {
     setCurrentUser({
       name: 'Madhu Ronanki',
       email: credentials.email,
-      role: credentials.role || 'AI Quality & Compliance Lead',
+      role: credentials.role || 'Quality & Compliance Manager',
       tenant: 'QualiZeal',
       avatar: null
     });

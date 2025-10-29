@@ -87,7 +87,7 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject }) =>
     }
   ];
 
-  const canCreateProjects = ['AI QA & Compliance Manager', 'AI Quality & Compliance Lead', 'Platform Admin'].includes(user.role);
+  const canCreateProjects = ['CISO', 'Quality & Compliance Manager', 'Platform Admin'].includes(user.role);
 
   const filteredProjects = mockProjects.filter(project =>
     project.project_name.toLowerCase().includes(searchQuery.toLowerCase()) ||

@@ -40,7 +40,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
     password: 'demo123',
     tenantDomain: '',
     rememberMe: false,
-    role: 'AI Quality & Compliance Lead'
+    role: 'Quality & Compliance Manager'
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
