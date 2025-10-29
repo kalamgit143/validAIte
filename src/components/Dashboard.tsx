@@ -49,15 +49,30 @@ import {
 import MetricCard from './MetricCard';
 import Chart from './Chart';
 
-const Dashboard: React.FC = () => {
-  const [selectedRole, setSelectedRole] = useState('quality_compliance_lead');
+interface DashboardProps {
+  userRole?: string;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
+  const roleToIdMap: Record<string, string> = {
+    'Quality & Compliance Manager': 'quality_compliance_lead',
+    'TEVV Engineer': 'test_evaluation_engineer',
+    'Data & Ethics Manager': 'data_ethics_steward',
+    'MLOps & Reliability Engineer': 'mlops_lifecycle_engineer',
+    'AI Governance Auditor': 'governance_audit_advisor',
+    'CISO': 'quality_compliance_lead'
+  };
+
+  const currentRoleId = userRole ? roleToIdMap[userRole] || 'quality_compliance_lead' : 'quality_compliance_lead';
+
+  const [selectedRole, setSelectedRole] = useState(currentRoleId);
   const [selectedTimeframe, setSelectedTimeframe] = useState('30d');
 
   const userRoles = [
     {
       id: 'quality_compliance_lead',
-      name: 'AI Quality & Compliance Lead',
-      title: 'AI Quality & Compliance Lead',
+      name: 'Quality & Compliance Manager',
+      title: 'Quality & Compliance Manager',
       description: 'Owns overall AI quality and compliance strategy, NIST RMF and EU TEVV alignment',
       icon: Crown,
       color: 'from-blue-600 to-indigo-700',
@@ -65,8 +80,8 @@ const Dashboard: React.FC = () => {
     },
     {
       id: 'test_evaluation_engineer',
-      name: 'AI Test & Evaluation Engineer',
-      title: 'AI Test & Evaluation Engineer',
+      name: 'TEVV Engineer',
+      title: 'TEVV Engineer',
       description: 'Designs and executes functional, non-functional, and GenAI-specific tests',
       icon: TestTube,
       color: 'from-purple-600 to-violet-700',
@@ -74,8 +89,8 @@ const Dashboard: React.FC = () => {
     },
     {
       id: 'data_ethics_steward',
-      name: 'Data & Ethics Steward',
-      title: 'Data & Ethics Steward',
+      name: 'Data & Ethics Manager',
+      title: 'Data & Ethics Manager',
       description: 'Manages dataset governance, lineage, and ensures data quality and fairness',
       icon: Database,
       color: 'from-green-600 to-emerald-700',
@@ -83,8 +98,8 @@ const Dashboard: React.FC = () => {
     },
     {
       id: 'mlops_lifecycle_engineer',
-      name: 'MLOps & Lifecycle Engineer',
-      title: 'MLOps & Lifecycle Engineer',
+      name: 'MLOps & Reliability Engineer',
+      title: 'MLOps & Reliability Engineer',
       description: 'Maintains AI lifecycle, version control, drift monitoring, and TEVV automation',
       icon: GitBranch,
       color: 'from-cyan-600 to-blue-700',
@@ -92,8 +107,8 @@ const Dashboard: React.FC = () => {
     },
     {
       id: 'governance_audit_advisor',
-      name: 'AI Governance & Audit Advisor',
-      title: 'AI Governance & Audit Advisor',
+      name: 'AI Governance Auditor',
+      title: 'AI Governance Auditor',
       description: 'Provides independent review for risk, ethics, compliance, and audit readiness',
       icon: Shield,
       color: 'from-orange-600 to-red-700',
