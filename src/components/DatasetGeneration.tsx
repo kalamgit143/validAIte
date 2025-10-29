@@ -251,6 +251,86 @@ const DatasetGeneration: React.FC = () => {
         </div>
       </div>
 
+      {/* Functional Use Case Catalog */}
+      <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/10 dark:to-blue-900/10 border-2 border-purple-200 dark:border-purple-800 rounded-xl p-6">
+        <div className="flex items-center space-x-3 mb-4">
+          <Target className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+          <h3 className="text-xl font-bold text-purple-900 dark:text-purple-100">
+            Functional Use Case Catalog
+          </h3>
+        </div>
+        <p className="text-gray-700 dark:text-gray-300 mb-6">
+          As a NIST RMF and TEVV expert, define functional use cases that represent real-world scenarios your GenAI application will handle. These use cases drive comprehensive testing, evaluation, validation, and verification activities.
+        </p>
+
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-5 border-2 border-purple-200 dark:border-purple-700 mb-4">
+          <h4 className="font-bold text-gray-900 dark:text-white mb-3 flex items-center space-x-2">
+            <Plus className="w-5 h-5 text-purple-600" />
+            <span>Define New Use Case</span>
+          </h4>
+          <div className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <input
+                type="text"
+                placeholder="Use Case Title (e.g., Policy Premium Inquiry)"
+                className="px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500"
+              />
+              <select
+                className="px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500"
+              >
+                <option value="high">High Priority</option>
+                <option value="medium" selected>Medium Priority</option>
+                <option value="low">Low Priority</option>
+              </select>
+            </div>
+            <textarea
+              placeholder="Use case description - Describe the functional scenario in detail"
+              rows={2}
+              className="w-full px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500"
+            />
+            <textarea
+              placeholder="Expected behavior - What should the AI system do in this scenario?"
+              rows={2}
+              className="w-full px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500"
+            />
+            <button
+              className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 font-medium shadow-lg"
+            >
+              <Plus className="w-5 h-5" />
+              <span>Add Use Case to Catalog</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          {mockUseCases.map((useCase, index) => (
+            <div
+              key={index}
+              className="p-4 bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-purple-400 dark:hover:border-purple-500 transition-all"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <span className="px-3 py-1 bg-purple-500 text-white rounded-lg text-xs font-bold">
+                      UC-{String(index + 1).padStart(2, '0')}
+                    </span>
+                    <h5 className="font-bold text-gray-900 dark:text-white">
+                      {useCase.name}
+                    </h5>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                    {useCase.description}
+                  </p>
+                </div>
+                <button className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Context Display */}
       <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/10 dark:to-cyan-900/10 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-6">
         <h3 className="font-bold text-blue-900 dark:text-blue-100 mb-4 flex items-center space-x-2">

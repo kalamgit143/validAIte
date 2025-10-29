@@ -312,14 +312,11 @@ const ApplicationSetup: React.FC = () => {
     if (technicalDetails.llm_model_name) completed++;
     if (technicalDetails.interface_type) completed++;
 
-    total += 1;
-    if (useCases.length > 0) completed++;
-
     return Math.round((completed / total) * 100);
   };
 
   const getSectionIcon = (section: number) => {
-    const icons = [Building, Code, Target, Upload, Award];
+    const icons = [Building, Code, Upload, Award];
     const Icon = icons[section - 1];
     return <Icon className="w-5 h-5" />;
   };
@@ -327,7 +324,6 @@ const ApplicationSetup: React.FC = () => {
   const sections = [
     'Basic Application Information',
     'Technical Details (UI/API)',
-    'Functional Use Case Catalog',
     'File Upload & Integrations',
     'Finalized Application Profile'
   ];
@@ -447,14 +443,13 @@ const ApplicationSetup: React.FC = () => {
                   <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                     {sectionNum === 1 && 'Core application information and business context'}
                     {sectionNum === 2 && 'Technical stack, LLM configuration, and integrations'}
-                    {sectionNum === 3 && 'Define and manage functional use cases'}
-                    {sectionNum === 4 && 'Upload knowledge base and configuration files'}
-                    {sectionNum === 5 && 'System-generated outputs with review and override'}
+                    {sectionNum === 3 && 'Upload knowledge base and configuration files'}
+                    {sectionNum === 4 && 'System-generated outputs with review and override'}
                   </p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
-                {sectionNum === 5 && isFinalized && (
+                {sectionNum === 4 && isFinalized && (
                   <span className="px-3 py-1 bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 rounded-full text-xs font-medium flex items-center space-x-1">
                     <CheckCircle className="w-3 h-3" />
                     <span>Generated</span>
@@ -960,194 +955,9 @@ const ApplicationSetup: React.FC = () => {
                     </div>
                   )}
 
-                  {/* SECTION 3: Use Cases */}
+                  {/* SECTION 3: File Uploads */}
                   {sectionNum === 3 && (
-                    <div className="space-y-5">
-                      <div className="p-5 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/10 dark:to-cyan-900/10 rounded-xl border-2 border-blue-200 dark:border-blue-800">
-                        <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-4 flex items-center space-x-2">
-                          <Plus className="w-5 h-5" />
-                          <span>Add New Use Case</span>
-                        </h4>
-                        <div className="space-y-4">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <input
-                              type="text"
-                              value={currentUseCase.use_case_title}
-                              onChange={e => setCurrentUseCase({ ...currentUseCase, use_case_title: e.target.value })}
-                              placeholder="Use Case Title"
-                              className="px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                            />
-                            <select
-                              value={currentUseCase.priority}
-                              onChange={e => setCurrentUseCase({ ...currentUseCase, priority: e.target.value })}
-                              className="px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                            >
-                              {priorities.map(p => (
-                                <option key={p} value={p.toLowerCase()}>{p}</option>
-                              ))}
-                            </select>
-                          </div>
-                          <textarea
-                            value={currentUseCase.use_case_description}
-                            onChange={e => setCurrentUseCase({ ...currentUseCase, use_case_description: e.target.value })}
-                            placeholder="Use case description"
-                            rows={2}
-                            className="w-full px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                          />
-                          <textarea
-                            value={currentUseCase.expected_behavior}
-                            onChange={e => setCurrentUseCase({ ...currentUseCase, expected_behavior: e.target.value })}
-                            placeholder="Expected behavior"
-                            rows={2}
-                            className="w-full px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                          />
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <select
-                              value={currentUseCase.data_source}
-                              onChange={e => setCurrentUseCase({ ...currentUseCase, data_source: e.target.value })}
-                              className="px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                            >
-                              <option value="">Select Data Source</option>
-                              {dataSources.map(source => (
-                                <option key={source} value={source.toLowerCase()}>{source}</option>
-                              ))}
-                            </select>
-                            <input
-                              type="text"
-                              value={currentUseCase.sme_owner}
-                              onChange={e => setCurrentUseCase({ ...currentUseCase, sme_owner: e.target.value })}
-                              placeholder="SME Owner"
-                              className="px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                              Risk Association
-                            </label>
-                            <div className="flex flex-wrap gap-2">
-                              {riskTypes.map(risk => (
-                                <button
-                                  key={risk}
-                                  onClick={() => toggleArrayValue(
-                                    currentUseCase.risk_association,
-                                    risk,
-                                    setCurrentUseCase,
-                                    'risk_association'
-                                  )}
-                                  className={`px-3 py-1.5 rounded-lg border text-sm font-medium transition-all ${
-                                    currentUseCase.risk_association.includes(risk)
-                                      ? 'bg-red-500 border-red-500 text-white shadow-md'
-                                      : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-red-400'
-                                  }`}
-                                >
-                                  {risk}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                              Evaluation Scope
-                            </label>
-                            <div className="flex flex-wrap gap-2">
-                              {evaluationScopes.map(scope => (
-                                <button
-                                  key={scope}
-                                  onClick={() => toggleArrayValue(
-                                    currentUseCase.evaluation_scope,
-                                    scope,
-                                    setCurrentUseCase,
-                                    'evaluation_scope'
-                                  )}
-                                  className={`px-3 py-1.5 rounded-lg border text-sm font-medium transition-all ${
-                                    currentUseCase.evaluation_scope.includes(scope)
-                                      ? 'bg-purple-500 border-purple-500 text-white shadow-md'
-                                      : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-purple-400'
-                                  }`}
-                                >
-                                  {scope}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                          <button
-                            onClick={addUseCase}
-                            className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg hover:from-blue-700 hover:to-cyan-700 font-medium shadow-lg"
-                          >
-                            <Plus className="w-5 h-5" />
-                            <span>Add Use Case</span>
-                          </button>
-                        </div>
-                      </div>
 
-                      <div className="space-y-4">
-                        <h4 className="font-bold text-gray-900 dark:text-white text-lg flex items-center space-x-2">
-                          <Target className="w-5 h-5 text-blue-600" />
-                          <span>Defined Use Cases ({useCases.length})</span>
-                        </h4>
-                        {useCases.length === 0 ? (
-                          <div className="text-center py-12 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl">
-                            <Target className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                            <p className="text-gray-500 dark:text-gray-400">No use cases defined yet</p>
-                            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">Add your first use case above</p>
-                          </div>
-                        ) : (
-                          useCases.map((useCase, index) => (
-                            <div
-                              key={index}
-                              className="p-5 bg-gradient-to-r from-white to-gray-50 dark:from-gray-700 dark:to-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-600 shadow-sm hover:shadow-md transition-all"
-                            >
-                              <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                  <div className="flex items-center space-x-2 mb-3">
-                                    <span className="px-3 py-1 bg-blue-500 text-white rounded-lg text-xs font-bold shadow-sm">
-                                      {useCase.use_case_id}
-                                    </span>
-                                    <h5 className="font-bold text-gray-900 dark:text-white text-lg">
-                                      {useCase.use_case_title}
-                                    </h5>
-                                    <span className={`px-3 py-1 rounded-lg text-xs font-bold shadow-sm ${
-                                      useCase.priority === 'high'
-                                        ? 'bg-red-500 text-white'
-                                        : useCase.priority === 'medium'
-                                        ? 'bg-yellow-500 text-white'
-                                        : 'bg-green-500 text-white'
-                                    }`}>
-                                      {useCase.priority.toUpperCase()}
-                                    </span>
-                                  </div>
-                                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 leading-relaxed">
-                                    {useCase.use_case_description}
-                                  </p>
-                                  {useCase.risk_association.length > 0 && (
-                                    <div className="flex flex-wrap gap-2">
-                                      {useCase.risk_association.map(risk => (
-                                        <span
-                                          key={risk}
-                                          className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 rounded-lg text-xs font-medium"
-                                        >
-                                          {risk}
-                                        </span>
-                                      ))}
-                                    </div>
-                                  )}
-                                </div>
-                                <button
-                                  onClick={() => removeUseCase(index)}
-                                  className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all"
-                                >
-                                  <X className="w-5 h-5" />
-                                </button>
-                              </div>
-                            </div>
-                          ))
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* SECTION 4: File Uploads */}
-                  {sectionNum === 4 && (
                     <div className="space-y-5">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         {[
@@ -1192,8 +1002,8 @@ const ApplicationSetup: React.FC = () => {
                     </div>
                   )}
 
-                  {/* SECTION 5: SYSTEM OUTPUTS - NEW COMPREHENSIVE DISPLAY */}
-                  {sectionNum === 5 && systemOutputs && (
+                  {/* SECTION 4: SYSTEM OUTPUTS - NEW COMPREHENSIVE DISPLAY */}
+                  {sectionNum === 4 && systemOutputs && (
                     <div className="space-y-6">
                       {/* System Outputs Header */}
                       <div className="bg-gradient-to-r from-blue-600 to-cyan-600 p-8 rounded-2xl text-white shadow-2xl">
@@ -1422,7 +1232,7 @@ const ApplicationSetup: React.FC = () => {
                   )}
 
                   {/* Before Finalization */}
-                  {sectionNum === 5 && !isFinalized && (
+                  {sectionNum === 4 && !isFinalized && (
                     <div className="space-y-6">
                       <div className="flex items-center justify-center p-12 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/10 dark:to-orange-900/10 border-2 border-yellow-200 dark:border-yellow-800 rounded-xl">
                         <div className="text-center">
