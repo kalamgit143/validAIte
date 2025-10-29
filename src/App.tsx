@@ -43,6 +43,7 @@ import ArchetypesGuide from './components/ArchetypesGuide';
 // Authentication Components
 import Login from './components/Login';
 import Signup from './components/Signup';
+import ProjectsList from './components/ProjectsList';
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -51,12 +52,13 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [selectedProject, setSelectedProject] = useState<string | null>(null);
 
   const handleLogin = (credentials: any) => {
     setCurrentUser({
       name: 'Madhu Ronanki',
       email: credentials.email,
-      role: credentials.role || 'Platform Admin',
+      role: credentials.role || 'AI Quality & Compliance Lead',
       tenant: 'QualiZeal',
       avatar: null
     });
@@ -77,7 +79,18 @@ function App() {
   const handleLogout = () => {
     setCurrentUser(null);
     setIsAuthenticated(false);
-    setActiveTab('stage-0');
+    setSelectedProject(null);
+    setActiveTab('home');
+  };
+
+  const handleSelectProject = (projectId: string) => {
+    setSelectedProject(projectId);
+    setActiveTab('home');
+  };
+
+  const handleBackToProjects = () => {
+    setSelectedProject(null);
+    setActiveTab('home');
   };
 
   // Show authentication screens if not logged in
@@ -86,6 +99,21 @@ function App() {
       return <Signup onSignup={handleSignup} onShowLogin={() => setShowSignup(false)} />;
     }
     return <Login onLogin={handleLogin} onShowSignup={() => setShowSignup(true)} />;
+  }
+
+  // Show projects list if no project is selected
+  if (!selectedProject) {
+    return (
+      <ProjectsList
+        user={{
+          email: currentUser.email,
+          full_name: currentUser.name,
+          role: currentUser.role,
+          tenant_id: currentUser.tenant
+        }}
+        onSelectProject={handleSelectProject}
+      />
+    );
   }
 
   const navItems = [
@@ -200,6 +228,16 @@ function App() {
           </div>
 
           <div className="flex items-center space-x-4">
+            {/* Back to Projects Button */}
+            <button
+              onClick={handleBackToProjects}
+              className="flex items-center space-x-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg transition-colors font-medium"
+              title="Back to Projects"
+            >
+              <FolderOpen className="w-4 h-4" />
+              <span className="hidden md:inline">Projects</span>
+            </button>
+
             {/* User Info */}
             <div className="hidden md:flex items-center space-x-3 px-3 py-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center">
@@ -209,7 +247,7 @@ function App() {
               </div>
               <div>
                 <div className="text-sm font-medium text-gray-900 dark:text-white">{currentUser?.name}</div>
-                <div className="text-xs text-gray-600 dark:text-gray-400">{currentUser?.tenant}</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400">{currentUser?.role}</div>
               </div>
             </div>
 
