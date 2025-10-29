@@ -89,7 +89,7 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject, onLo
     }
   ];
 
-  const canCreateProjects = ['CISO', 'Quality & Compliance Manager', 'Platform Admin'].includes(user.role);
+  const canCreateProjects = ['Quality & Compliance Manager'].includes(user.role);
 
   const filteredProjects = mockProjects.filter(project =>
     project.project_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
