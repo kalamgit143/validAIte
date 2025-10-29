@@ -462,9 +462,7 @@ const UserManagement: React.FC = () => {
                           </span>
                         )}
                       </div>
-                      
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{role.description}</p>
-                      
+
                       <div className="space-y-2">
                         <h4 className="text-sm font-medium text-gray-900 dark:text-white">Permissions</h4>
                         <div className="flex flex-wrap gap-2">

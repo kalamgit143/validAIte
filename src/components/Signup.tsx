@@ -230,14 +230,11 @@ const Signup: React.FC<SignupProps> = ({ onSignup, onShowLogin }) => {
           >
             {NIST_TEVV_ROLES.map((role) => (
               <option key={role.id} value={role.name}>
-                {role.icon} {role.name}
+                {role.name}
               </option>
             ))}
           </select>
         </div>
-        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-          {NIST_TEVV_ROLES.find(r => r.name === formData.role)?.description}
-        </p>
       </div>
 
       <div>
