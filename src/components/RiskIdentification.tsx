@@ -59,7 +59,7 @@ const RiskIdentification: React.FC = () => {
     severity: 'Medium',
     likelihood: 'Occasional',
     impact_notes: '',
-    owner_role: 'AI Risk Manager',
+    owner_role: 'Quality & Compliance Manager',
     status: 'Draft'
   });
 
@@ -104,7 +104,7 @@ const RiskIdentification: React.FC = () => {
         severity: 'Medium',
         likelihood: 'Occasional',
         impact_notes: '',
-        owner_role: 'AI Risk Manager',
+        owner_role: 'Quality & Compliance Manager',
         status: 'Draft'
       });
     }
@@ -609,19 +609,9 @@ const RiskIdentification: React.FC = () => {
                 className="md:col-span-2 px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
 
-              <select
-                value={newRisk.owner_role}
-                onChange={e => setNewRisk({ ...newRisk, owner_role: e.target.value })}
-                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              >
-                {OWNER_ROLES.map(role => (
-                  <option key={role} value={role}>{role}</option>
-                ))}
-              </select>
-
               <button
                 onClick={addCustomRisk}
-                className="md:col-span-1 px-6 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 font-medium shadow-lg"
+                className="md:col-span-2 px-6 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 font-medium shadow-lg"
               >
                 Add Risk
               </button>
