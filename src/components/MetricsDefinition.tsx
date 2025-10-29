@@ -444,96 +444,6 @@ const MetricsDefinition: React.FC<MetricsDefinitionProps> = ({ risks: inputRisks
 
         {/* Main Content */}
         <div className="lg:col-span-3 space-y-6">
-          {/* Add Custom Metric */}
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/10 dark:to-emerald-900/10 rounded-xl border-2 border-green-200 dark:border-green-800 p-6">
-            <h3 className="font-bold text-green-900 dark:text-green-100 mb-4 flex items-center space-x-2">
-              <Plus className="w-5 h-5" />
-              <span>Add Custom Metric</span>
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <select
-                value={newMetric.risk_name}
-                onChange={e => setNewMetric({ ...newMetric, risk_name: e.target.value, category: displayRisks.find(r => r.risk_name === e.target.value)?.category || 'Accuracy' })}
-                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              >
-                <option value="">Select Risk</option>
-                {displayRisks.map(risk => (
-                  <option key={risk.id} value={risk.risk_name}>{risk.risk_name}</option>
-                ))}
-              </select>
-
-              <input
-                type="text"
-                value={newMetric.metric_name}
-                onChange={e => setNewMetric({ ...newMetric, metric_name: e.target.value })}
-                placeholder="Metric Name"
-                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              />
-
-              <select
-                value={newMetric.metric_type}
-                onChange={e => setNewMetric({ ...newMetric, metric_type: e.target.value as MetricType })}
-                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              >
-                {METRIC_TYPES.map(type => (
-                  <option key={type} value={type}>{type}</option>
-                ))}
-              </select>
-
-              <select
-                value={newMetric.evidence_type}
-                onChange={e => setNewMetric({ ...newMetric, evidence_type: e.target.value as EvidenceType })}
-                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              >
-                {EVIDENCE_TYPES.map(type => (
-                  <option key={type} value={type}>{type}</option>
-                ))}
-              </select>
-
-              <input
-                type="text"
-                value={newMetric.threshold}
-                onChange={e => setNewMetric({ ...newMetric, threshold: e.target.value })}
-                placeholder="Threshold (e.g., ≥ 0.8)"
-                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              />
-
-              <input
-                type="number"
-                step="0.1"
-                min="0"
-                max="1"
-                value={newMetric.weight}
-                onChange={e => setNewMetric({ ...newMetric, weight: parseFloat(e.target.value) })}
-                placeholder="Weight (0-1)"
-                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              />
-
-              <textarea
-                value={newMetric.definition}
-                onChange={e => setNewMetric({ ...newMetric, definition: e.target.value })}
-                placeholder="Metric Definition"
-                rows={2}
-                className="md:col-span-2 px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              />
-
-              <input
-                type="text"
-                value={newMetric.formula}
-                onChange={e => setNewMetric({ ...newMetric, formula: e.target.value })}
-                placeholder="Formula (optional)"
-                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-mono text-sm"
-              />
-
-              <button
-                onClick={addCustomMetric}
-                className="px-6 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 font-medium shadow-lg"
-              >
-                Add Metric
-              </button>
-            </div>
-          </div>
-
           {/* Metrics Table */}
           <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 overflow-hidden">
             <div className="p-6 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 border-b border-gray-200 dark:border-gray-700">
@@ -671,6 +581,96 @@ const MetricsDefinition: React.FC<MetricsDefinitionProps> = ({ risks: inputRisks
                 </table>
               </div>
             )}
+          </div>
+
+          {/* Add Custom Metric */}
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/10 dark:to-emerald-900/10 rounded-xl border-2 border-green-200 dark:border-green-800 p-6">
+            <h3 className="font-bold text-green-900 dark:text-green-100 mb-4 flex items-center space-x-2">
+              <Plus className="w-5 h-5" />
+              <span>Add Custom Metric</span>
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <select
+                value={newMetric.risk_name}
+                onChange={e => setNewMetric({ ...newMetric, risk_name: e.target.value, category: displayRisks.find(r => r.risk_name === e.target.value)?.category || 'Accuracy' })}
+                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              >
+                <option value="">Select Risk</option>
+                {displayRisks.map(risk => (
+                  <option key={risk.id} value={risk.risk_name}>{risk.risk_name}</option>
+                ))}
+              </select>
+
+              <input
+                type="text"
+                value={newMetric.metric_name}
+                onChange={e => setNewMetric({ ...newMetric, metric_name: e.target.value })}
+                placeholder="Metric Name"
+                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              />
+
+              <select
+                value={newMetric.metric_type}
+                onChange={e => setNewMetric({ ...newMetric, metric_type: e.target.value as MetricType })}
+                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              >
+                {METRIC_TYPES.map(type => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
+              </select>
+
+              <select
+                value={newMetric.evidence_type}
+                onChange={e => setNewMetric({ ...newMetric, evidence_type: e.target.value as EvidenceType })}
+                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              >
+                {EVIDENCE_TYPES.map(type => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
+              </select>
+
+              <input
+                type="text"
+                value={newMetric.threshold}
+                onChange={e => setNewMetric({ ...newMetric, threshold: e.target.value })}
+                placeholder="Threshold (e.g., ≥ 0.8)"
+                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              />
+
+              <input
+                type="number"
+                step="0.1"
+                min="0"
+                max="1"
+                value={newMetric.weight}
+                onChange={e => setNewMetric({ ...newMetric, weight: parseFloat(e.target.value) })}
+                placeholder="Weight (0-1)"
+                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              />
+
+              <textarea
+                value={newMetric.definition}
+                onChange={e => setNewMetric({ ...newMetric, definition: e.target.value })}
+                placeholder="Metric Definition"
+                rows={2}
+                className="md:col-span-2 px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              />
+
+              <input
+                type="text"
+                value={newMetric.formula}
+                onChange={e => setNewMetric({ ...newMetric, formula: e.target.value })}
+                placeholder="Formula (optional)"
+                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-mono text-sm"
+              />
+
+              <button
+                onClick={addCustomMetric}
+                className="px-6 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 font-medium shadow-lg"
+              >
+                Add Metric
+              </button>
+            </div>
           </div>
 
           {/* Continue Button */}
