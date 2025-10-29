@@ -310,107 +310,104 @@ export const getArchetypeInsights = (archetypeId: string): ArchetypeInsight[] =>
 
 export const NIST_TEVV_ROLES = [
   {
-    id: 'management',
-    name: 'Management',
-    title: 'Management / Stakeholder',
-    description: 'Executive oversight and strategic decision-making with dashboard visibility',
-    framework: 'Business Intelligence + Governance',
-    color: 'slate',
-    icon: '📊',
-    responsibilities: [
-      'Executive dashboard monitoring',
-      'Strategic oversight and decisions',
-      'Budget and resource approval',
-      'Client relationships and reporting',
-      'Business performance tracking',
-      'Risk oversight',
-      'Quality standards approval'
-    ]
-  },
-  {
-    id: 'test_lead',
-    name: 'Test Lead',
-    title: 'Test Lead / Manager',
-    description: 'Manages testing projects, coordinates teams, and ensures quality standards',
+    id: 'quality_compliance_lead',
+    name: 'AI Quality & Compliance Lead',
+    title: 'AI Quality & Compliance Lead',
+    description: 'Owns overall AI quality and compliance strategy. Defines NIST RMF and EU TEVV alignment. Maintains model/system documentation and drives TEVV audits.',
     framework: 'NIST RMF + EU AI Act + ISO 25010',
     color: 'blue',
-    icon: '👔',
+    icon: '1️⃣',
     responsibilities: [
-      'Project planning and oversight',
-      'Resource allocation and team management',
-      'Client relationship management',
-      'Test strategy and plan creation',
-      'Quality metrics definition',
-      'Standards compliance',
-      'Risk assessment and reporting'
+      'AI quality and compliance strategy',
+      'NIST RMF and EU TEVV alignment',
+      'Model Cards and Annex IV documentation',
+      'Risk Register maintenance',
+      'TEVV audit coordination',
+      'Regulatory compliance oversight',
+      'Quality standards definition'
     ]
   },
   {
-    id: 'tevv_engineer',
-    name: 'TEVV Engineer',
-    title: 'Test, Evaluation, Validation & Verification Engineer',
-    description: 'Executes comprehensive testing including functional, security, and compliance validation',
-    framework: 'EU AI Act Annex VII + NIST RMF',
+    id: 'test_evaluation_engineer',
+    name: 'AI Test & Evaluation Engineer',
+    title: 'AI Test & Evaluation Engineer',
+    description: 'Designs and executes functional, non-functional, and GenAI-specific tests. Tracks trust metrics like accuracy, fairness, and faithfulness.',
+    framework: 'EU AI Act Annex VII + NIST RMF Measure',
     color: 'purple',
-    icon: '🔬',
+    icon: '2️⃣',
     responsibilities: [
-      'Test case design and execution',
-      'Manual and automated testing',
-      'Security vulnerability testing',
-      'Adversarial attack simulation',
-      'Evidence collection and documentation',
-      'Validation and verification',
-      'Regulatory compliance validation',
-      'Conformity assessment'
+      'Functional and non-functional test design',
+      'Prompt and hallucination testing',
+      'Bias and robustness testing',
+      'Explainability validation',
+      'Trust metrics tracking (accuracy, fairness, faithfulness)',
+      'Test execution and evidence collection',
+      'GenAI-specific test cases'
     ]
   },
   {
-    id: 'automation_engineer',
-    name: 'Automation Engineer',
-    title: 'Test Automation & Performance Engineer',
-    description: 'Develops test automation frameworks and conducts performance testing',
-    framework: 'Test Automation + DevOps + Performance',
-    color: 'cyan',
-    icon: '🤖',
-    responsibilities: [
-      'Test automation framework development',
-      'CI/CD pipeline integration',
-      'Script development and maintenance',
-      'Performance and load testing',
-      'Latency and throughput analysis',
-      'Scalability assessment',
-      'Tool evaluation and selection'
-    ]
-  },
-  {
-    id: 'qa_specialist',
-    name: 'QA Specialist',
-    title: 'Quality Assurance & Data Specialist',
-    description: 'Ensures quality standards, validates data integrity, and analyzes bias and fairness',
-    framework: 'ISO 25010 + Data Quality + Ethics',
+    id: 'data_ethics_steward',
+    name: 'Data & Ethics Steward',
+    title: 'Data & Ethics Steward',
+    description: 'Manages dataset governance, lineage, and consent. Ensures data quality, bias detection, and fairness validation in training and evaluation datasets.',
+    framework: 'Data Governance + Ethics + GDPR',
     color: 'green',
-    icon: '✅',
+    icon: '3️⃣',
     responsibilities: [
-      'Requirements analysis',
-      'Functional testing execution',
+      'Dataset governance and lineage',
+      'Data consent management',
       'Data quality assessment',
-      'Data validation and profiling',
-      'Data drift detection',
-      'Bias detection and measurement',
-      'Fairness metric evaluation',
-      'Defect reporting and tracking',
-      'Test documentation'
+      'Bias detection in datasets',
+      'Fairness validation',
+      'Training data evaluation',
+      'Evaluation dataset curation'
+    ]
+  },
+  {
+    id: 'mlops_lifecycle_engineer',
+    name: 'MLOps & Lifecycle Engineer',
+    title: 'MLOps & Lifecycle Engineer',
+    description: 'Maintains AI lifecycle across environments. Handles version control, retraining, drift monitoring, and post-deployment TEVV automation.',
+    framework: 'MLOps + CI/CD + Monitoring',
+    color: 'cyan',
+    icon: '4️⃣',
+    responsibilities: [
+      'AI lifecycle management (training, validation, deployment)',
+      'Version control and model registry',
+      'Retraining pipeline automation',
+      'Drift monitoring and alerts',
+      'Post-deployment TEVV automation',
+      'Environment management',
+      'CI/CD pipeline integration'
+    ]
+  },
+  {
+    id: 'governance_audit_advisor',
+    name: 'AI Governance & Audit Advisor',
+    title: 'AI Governance & Audit Advisor',
+    description: 'Provides periodic independent review for risk, ethics, compliance, and audit readiness. Supports regulatory traceability and documentation validation.',
+    framework: 'Governance + Audit + Compliance',
+    color: 'orange',
+    icon: '5️⃣',
+    responsibilities: [
+      'Independent risk review',
+      'Ethics and compliance assessment',
+      'Audit readiness validation',
+      'Regulatory traceability support',
+      'Documentation validation',
+      'Periodic governance review',
+      'Quality assurance audit'
     ]
   }
 ];
 
 export const getArchetypeFromRole = (role: string): string => {
   const roleMapping: { [key: string]: string } = {
-    'Management': 'cio_cdo',
-    'Test Lead': 'cio_cdo',
-    'TEVV Engineer': 'tevv_automation_engineer',
-    'Automation Engineer': 'tevv_automation_engineer',
-    'QA Specialist': 'qa_tevv_engineer'
+    'AI Quality & Compliance Lead': 'cio_cdo',
+    'AI Test & Evaluation Engineer': 'qa_tevv_engineer',
+    'Data & Ethics Steward': 'domain_ethics_reviewer',
+    'MLOps & Lifecycle Engineer': 'tevv_automation_engineer',
+    'AI Governance & Audit Advisor': 'cio_cdo'
   };
 
   return roleMapping[role] || 'qa_tevv_engineer';
@@ -421,8 +418,10 @@ export const getArchetypeNavigation = (archetypeId: string): string[] => {
     'cio_cdo': [
       'dashboard',
       'applications',
+      'model-documentation',
       'risk-assessment',
       'compliance-reporting',
+      'audit-trail',
       'analytics',
       'reports'
     ],
@@ -430,7 +429,9 @@ export const getArchetypeNavigation = (archetypeId: string): string[] => {
       'dashboard',
       'applications',
       'evaluations',
+      'prompt-testing',
       'model-validation',
+      'trust-evaluations',
       'datasets',
       'human-feedback',
       'reports'
@@ -440,22 +441,17 @@ export const getArchetypeNavigation = (archetypeId: string): string[] => {
       'applications',
       'tevv-automation',
       'continuous-monitoring',
+      'data-drift',
       'observability',
       'analytics'
-    ],
-    'ai_secops_engineer': [
-      'dashboard',
-      'applications',
-      'guardrails',
-      'alerts',
-      'observability',
-      'audit-trail'
     ],
     'domain_ethics_reviewer': [
       'dashboard',
       'applications',
+      'datasets',
       'ethical-ai',
       'bias-auditing',
+      'fairness-assessment',
       'human-feedback',
       'reports'
     ]
@@ -468,72 +464,66 @@ export const getArchetypeInputsOutputs = (archetypeId: string) => {
   const inputsOutputs: { [key: string]: { responsibilities: string[], outputs: string[] } } = {
     'cio_cdo': {
       responsibilities: [
-        'Strategic oversight of AI initiatives',
-        'Business impact assessment',
-        'Portfolio risk management',
-        'Compliance verification'
+        'AI quality and compliance strategy',
+        'NIST RMF and EU TEVV alignment',
+        'Model Cards and Risk Register maintenance',
+        'TEVV audit coordination',
+        'Independent governance review'
       ],
       outputs: [
-        'Application business criticality classification',
-        'Strategic alignment validation',
-        'ROI projections and business value assessment',
-        'Executive approval for high-risk deployments'
+        'Quality and compliance strategy documents',
+        'Model Cards and Annex IV documentation',
+        'Risk assessment reports',
+        'Audit readiness documentation',
+        'Regulatory compliance validation'
       ]
     },
     'qa_tevv_engineer': {
       responsibilities: [
-        'Manual quality validation',
-        'ISO 25010 quality assessment',
-        'Evidence collection',
-        'Test case design and execution'
+        'Functional and non-functional test design',
+        'Prompt and hallucination testing',
+        'Bias and robustness testing',
+        'Trust metrics tracking',
+        'GenAI-specific test execution'
       ],
       outputs: [
-        'Quality metrics and test coverage reports',
-        'Manual validation evidence',
-        'Defect identification and tracking',
+        'Test execution reports',
+        'Trust metrics dashboards (accuracy, fairness, faithfulness)',
+        'Prompt testing evidence',
+        'Explainability validation reports',
         'Quality assurance certification'
       ]
     },
     'tevv_automation_engineer': {
       responsibilities: [
-        'CI/CD pipeline integration',
-        'EU AI Act automation',
-        'Automated evidence collection',
-        'Pipeline health monitoring'
+        'AI lifecycle management',
+        'Version control and model registry',
+        'Drift monitoring and alerts',
+        'Post-deployment TEVV automation',
+        'CI/CD pipeline integration'
       ],
       outputs: [
-        'Automated TEVV pipeline configuration',
-        'EU AI Act compliance automation',
-        'Evidence automation frameworks',
-        'Pipeline performance metrics'
-      ]
-    },
-    'ai_secops_engineer': {
-      responsibilities: [
-        'Security testing and validation',
-        'Threat detection and response',
-        'Adversarial testing',
-        'Vulnerability assessment'
-      ],
-      outputs: [
-        'Security posture assessment',
-        'Threat detection reports',
-        'Incident response documentation',
-        'Security remediation plans'
+        'MLOps pipeline configuration',
+        'Model version tracking',
+        'Drift monitoring reports',
+        'Retraining automation frameworks',
+        'Environment deployment logs'
       ]
     },
     'domain_ethics_reviewer': {
       responsibilities: [
-        'Ethics review and validation',
-        'Domain accuracy assessment',
-        'Fairness evaluation',
-        'Expert consensus building'
+        'Dataset governance and lineage',
+        'Data consent management',
+        'Bias detection in datasets',
+        'Fairness validation',
+        'Training and evaluation data quality'
       ],
       outputs: [
-        'Ethics assessment reports',
-        'Domain-specific validation',
+        'Dataset governance reports',
+        'Data lineage documentation',
+        'Bias detection reports',
         'Fairness assessment scores',
-        'Expert panel consensus documentation'
+        'Data quality certifications'
       ]
     }
   };
