@@ -66,7 +66,12 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
   const [internalSelectedRole, setInternalSelectedRole] = useState('quality_compliance_lead');
   const [selectedTimeframe, setSelectedTimeframe] = useState('30d');
 
-  const selectedRole = userRole ? roleToIdMap[userRole] || 'quality_compliance_lead' : internalSelectedRole;
+  const mappedRole = userRole ? (roleToIdMap[userRole] || 'quality_compliance_lead') : null;
+  const selectedRole = mappedRole || internalSelectedRole;
+
+  console.log('Dashboard - userRole:', userRole);
+  console.log('Dashboard - mappedRole:', mappedRole);
+  console.log('Dashboard - selectedRole:', selectedRole);
 
   const userRoles = [
     {
