@@ -112,11 +112,12 @@ function App() {
           tenant_id: currentUser.tenant
         }}
         onSelectProject={handleSelectProject}
+        onLogout={handleLogout}
       />
     );
   }
 
-  const navItems = [
+  const allNavItems = [
     {
       category: 'Overview',
       items: [
@@ -149,6 +150,20 @@ function App() {
       ]
     }
   ];
+
+  const fullAccessRoles = ['Quality & Compliance Manager', 'TEVV Engineer'];
+  const hasFullAccess = fullAccessRoles.includes(currentUser.role);
+
+  const navItems = hasFullAccess
+    ? allNavItems
+    : [
+        {
+          category: 'Overview',
+          items: [
+            { id: 'home', label: 'Dashboard', icon: Home, description: 'Role-based governance overview' },
+          ]
+        }
+      ];
 
   const renderActiveComponent = () => {
     try {

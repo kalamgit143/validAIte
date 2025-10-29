@@ -12,7 +12,8 @@ import {
   Settings,
   Archive,
   X,
-  CheckCircle
+  CheckCircle,
+  LogOut
 } from 'lucide-react';
 
 interface Project {
@@ -38,9 +39,10 @@ interface User {
 interface ProjectsListProps {
   user: User;
   onSelectProject: (projectId: string) => void;
+  onLogout: () => void;
 }
 
-const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject }) => {
+const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject, onLogout }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newProject, setNewProject] = useState({
@@ -145,15 +147,25 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject }) =>
               </p>
             </div>
 
-            {canCreateProjects && (
+            <div className="flex items-center space-x-3">
+              {canCreateProjects && (
+                <button
+                  onClick={() => setShowCreateModal(true)}
+                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 font-medium shadow-lg hover:shadow-xl transition-all"
+                >
+                  <Plus className="w-5 h-5" />
+                  <span>New Project</span>
+                </button>
+              )}
+
               <button
-                onClick={() => setShowCreateModal(true)}
-                className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 font-medium shadow-lg hover:shadow-xl transition-all"
+                onClick={onLogout}
+                className="p-3 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors border-2 border-red-200 dark:border-red-800"
+                title="Sign Out"
               >
-                <Plus className="w-5 h-5" />
-                <span>New Project</span>
+                <LogOut className="w-5 h-5" />
               </button>
-            )}
+            </div>
           </div>
 
           {/* Search Bar */}
