@@ -358,9 +358,9 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject, onLo
 
       {/* Create Project Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full border-2 border-gray-200 dark:border-gray-700 my-8">
-            <div className="flex items-center justify-between p-6 border-b-2 border-gray-200 dark:border-gray-700">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full border-2 border-gray-200 dark:border-gray-700 my-8 max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between p-6 border-b-2 border-gray-200 dark:border-gray-700 flex-shrink-0">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                   <Plus className="w-6 h-6 text-white" />
@@ -375,7 +375,7 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject, onLo
               </button>
             </div>
 
-            <div className="p-6 space-y-5">
+            <div className="p-6 space-y-5 overflow-y-auto flex-1">
               <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                   Project Name
@@ -521,7 +521,7 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject, onLo
               </div>
             </div>
 
-            <div className="flex items-center justify-end space-x-3 p-6 border-t-2 border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-end space-x-3 p-6 border-t-2 border-gray-200 dark:border-gray-700 flex-shrink-0">
               <button
                 onClick={() => setShowCreateModal(false)}
                 className="px-6 py-2.5 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 font-medium transition-colors"
