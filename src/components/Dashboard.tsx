@@ -63,10 +63,10 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
     'CISO': 'quality_compliance_lead'
   };
 
-  const currentRoleId = userRole ? roleToIdMap[userRole] || 'quality_compliance_lead' : 'quality_compliance_lead';
-
-  const [selectedRole, setSelectedRole] = useState(currentRoleId);
+  const [internalSelectedRole, setInternalSelectedRole] = useState('quality_compliance_lead');
   const [selectedTimeframe, setSelectedTimeframe] = useState('30d');
+
+  const selectedRole = userRole ? roleToIdMap[userRole] || 'quality_compliance_lead' : internalSelectedRole;
 
   const userRoles = [
     {
@@ -502,7 +502,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
             <div className="relative">
               <select
                 value={selectedRole}
-                onChange={(e) => setSelectedRole(e.target.value)}
+                onChange={(e) => setInternalSelectedRole(e.target.value)}
                 className="px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 appearance-none pr-10 min-w-80 text-sm font-medium shadow-sm"
               >
                 {userRoles.map((role) => (

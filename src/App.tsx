@@ -169,7 +169,7 @@ function App() {
     try {
       switch (activeTab) {
         case 'home':
-          return <Dashboard />;
+          return <Dashboard userRole={currentUser.role} />;
         case 'stage-0':
           return <ApplicationSetup />;
         case 'risk-identification':
