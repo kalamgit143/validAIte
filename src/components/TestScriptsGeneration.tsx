@@ -29,7 +29,7 @@ import {
   getInterfaceColor
 } from '../utils/testCaseGeneration';
 
-const TestCaseCreation: React.FC = () => {
+const TestScriptsGeneration: React.FC = () => {
   const mockDatasets = [
     {
       id: 'DS-01-1',
@@ -158,7 +158,7 @@ const TestCaseCreation: React.FC = () => {
               <Code className="w-6 h-6" />
             </div>
             <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-              Test Case Creation (Automation Generation)
+              Test Scripts Generation (Automation Generation)
             </h2>
           </div>
           <p className="text-gray-600 dark:text-gray-400 text-lg">
@@ -480,4 +480,4 @@ const TestCaseCreation: React.FC = () => {
   );
 };
 
-export default TestCaseCreation;
+export default TestScriptsGeneration;

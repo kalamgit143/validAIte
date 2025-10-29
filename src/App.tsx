@@ -23,7 +23,7 @@ import ApplicationSetup from './components/ApplicationSetup';
 import RiskIdentification from './components/RiskIdentification';
 import MetricsDefinition from './components/MetricsDefinition';
 import DatasetGeneration from './components/DatasetGeneration';
-import TestCaseCreation from './components/TestCaseCreation';
+import TestScriptsGeneration from './components/TestScriptsGeneration';
 import TrustScoreComputation from './components/TrustScoreComputation';
 import ExplainabilityAI from './components/ExplainabilityAI';
 import TrustMatrix from './components/TrustMatrix';
@@ -136,7 +136,7 @@ function App() {
         case 'dataset-generation':
           return <DatasetGeneration />;
         case 'test-case-creation':
-          return <TestCaseCreation />;
+          return <TestScriptsGeneration />;
         case 'trust-score-computation':
           return <TrustScoreComputation />;
         case 'explainability-evidence':
