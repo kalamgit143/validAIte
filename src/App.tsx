@@ -170,6 +170,16 @@ function App() {
           items: [
             { id: 'home', label: 'Dashboard', icon: Home, description: 'Role-based governance overview' },
           ]
+        },
+        {
+          category: 'Reference & Tools',
+          items: [
+            { id: 'rmf-reference', label: 'NIST RMF Reference', icon: Layers, description: 'RMF framework overview' },
+            { id: 'archetypes-guide', label: 'Archetypes Guide', icon: BookOpen, description: '12 AI application patterns' },
+            { id: 'control-library', label: 'Control Library', icon: Shield, description: 'Browse all ACC controls' },
+            { id: 'metric-catalog', label: 'Metric Catalog', icon: TrendingUp, description: 'All trust metrics defined' },
+            { id: 'evidence-export', label: 'Evidence Export', icon: FolderOpen, description: 'Generate compliance bundle' },
+          ]
         }
       ];
 
