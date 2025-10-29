@@ -310,6 +310,24 @@ export const getArchetypeInsights = (archetypeId: string): ArchetypeInsight[] =>
 
 export const NIST_TEVV_ROLES = [
   {
+    id: 'management',
+    name: 'Management',
+    title: 'Management / Stakeholder',
+    description: 'Executive oversight and strategic decision-making with dashboard visibility',
+    framework: 'Business Intelligence + Governance',
+    color: 'slate',
+    icon: '📊',
+    responsibilities: [
+      'Executive dashboard monitoring',
+      'Strategic oversight and decisions',
+      'Budget and resource approval',
+      'Client relationships and reporting',
+      'Business performance tracking',
+      'Risk oversight',
+      'Quality standards approval'
+    ]
+  },
+  {
     id: 'test_lead',
     name: 'Test Lead',
     title: 'Test Lead / Manager',
@@ -388,6 +406,7 @@ export const NIST_TEVV_ROLES = [
 
 export const getArchetypeFromRole = (role: string): string => {
   const roleMapping: { [key: string]: string } = {
+    'Management': 'cio_cdo',
     'Test Lead': 'cio_cdo',
     'TEVV Engineer': 'tevv_automation_engineer',
     'Automation Engineer': 'tevv_automation_engineer',
