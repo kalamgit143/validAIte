@@ -394,78 +394,6 @@ const RiskIdentification: React.FC = () => {
 
         {/* Main Content: Risk Register */}
         <div className="lg:col-span-3 space-y-6">
-          {/* Add Custom Risk */}
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/10 dark:to-emerald-900/10 rounded-xl border-2 border-green-200 dark:border-green-800 p-6">
-            <h3 className="font-bold text-green-900 dark:text-green-100 mb-4 flex items-center space-x-2">
-              <Plus className="w-5 h-5" />
-              <span>Add Custom Risk</span>
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <select
-                value={newRisk.category}
-                onChange={e => setNewRisk({ ...newRisk, category: e.target.value as RiskCategory })}
-                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              >
-                {RISK_CATEGORIES.map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
-              </select>
-
-              <input
-                type="text"
-                value={newRisk.risk_name}
-                onChange={e => setNewRisk({ ...newRisk, risk_name: e.target.value })}
-                placeholder="Risk Name"
-                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              />
-
-              <select
-                value={newRisk.severity}
-                onChange={e => setNewRisk({ ...newRisk, severity: e.target.value as Severity })}
-                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              >
-                {SEVERITIES.map(sev => (
-                  <option key={sev} value={sev}>{sev}</option>
-                ))}
-              </select>
-
-              <select
-                value={newRisk.likelihood}
-                onChange={e => setNewRisk({ ...newRisk, likelihood: e.target.value as Likelihood })}
-                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              >
-                {LIKELIHOODS.map(lik => (
-                  <option key={lik} value={lik}>{lik}</option>
-                ))}
-              </select>
-
-              <textarea
-                value={newRisk.description}
-                onChange={e => setNewRisk({ ...newRisk, description: e.target.value })}
-                placeholder="Risk Description"
-                rows={2}
-                className="md:col-span-2 px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              />
-
-              <select
-                value={newRisk.owner_role}
-                onChange={e => setNewRisk({ ...newRisk, owner_role: e.target.value })}
-                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              >
-                {OWNER_ROLES.map(role => (
-                  <option key={role} value={role}>{role}</option>
-                ))}
-              </select>
-
-              <button
-                onClick={addCustomRisk}
-                className="md:col-span-1 px-6 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 font-medium shadow-lg"
-              >
-                Add Risk
-              </button>
-            </div>
-          </div>
-
           {/* Risk Register Table */}
           <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 overflow-hidden">
             <div className="p-6 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 border-b border-gray-200 dark:border-gray-700">
@@ -626,6 +554,78 @@ const RiskIdentification: React.FC = () => {
                 </table>
               </div>
             )}
+          </div>
+
+          {/* Add Custom Risk */}
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/10 dark:to-emerald-900/10 rounded-xl border-2 border-green-200 dark:border-green-800 p-6">
+            <h3 className="font-bold text-green-900 dark:text-green-100 mb-4 flex items-center space-x-2">
+              <Plus className="w-5 h-5" />
+              <span>Add Custom Risk</span>
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <select
+                value={newRisk.category}
+                onChange={e => setNewRisk({ ...newRisk, category: e.target.value as RiskCategory })}
+                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              >
+                {RISK_CATEGORIES.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+
+              <input
+                type="text"
+                value={newRisk.risk_name}
+                onChange={e => setNewRisk({ ...newRisk, risk_name: e.target.value })}
+                placeholder="Risk Name"
+                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              />
+
+              <select
+                value={newRisk.severity}
+                onChange={e => setNewRisk({ ...newRisk, severity: e.target.value as Severity })}
+                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              >
+                {SEVERITIES.map(sev => (
+                  <option key={sev} value={sev}>{sev}</option>
+                ))}
+              </select>
+
+              <select
+                value={newRisk.likelihood}
+                onChange={e => setNewRisk({ ...newRisk, likelihood: e.target.value as Likelihood })}
+                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              >
+                {LIKELIHOODS.map(lik => (
+                  <option key={lik} value={lik}>{lik}</option>
+                ))}
+              </select>
+
+              <textarea
+                value={newRisk.description}
+                onChange={e => setNewRisk({ ...newRisk, description: e.target.value })}
+                placeholder="Risk Description"
+                rows={2}
+                className="md:col-span-2 px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              />
+
+              <select
+                value={newRisk.owner_role}
+                onChange={e => setNewRisk({ ...newRisk, owner_role: e.target.value })}
+                className="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              >
+                {OWNER_ROLES.map(role => (
+                  <option key={role} value={role}>{role}</option>
+                ))}
+              </select>
+
+              <button
+                onClick={addCustomRisk}
+                className="md:col-span-1 px-6 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 font-medium shadow-lg"
+              >
+                Add Risk
+              </button>
+            </div>
           </div>
 
           {/* Continue Button */}
