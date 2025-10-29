@@ -308,13 +308,215 @@ export const getArchetypeInsights = (archetypeId: string): ArchetypeInsight[] =>
   return insights[archetypeId] || [];
 };
 
+export const NIST_TEVV_ROLES = [
+  {
+    id: 'ai_governance_lead',
+    name: 'AI Governance Lead',
+    title: 'AI Governance & Risk Management Lead',
+    description: 'Strategic oversight, risk governance, and compliance coordination per NIST AI RMF',
+    framework: 'NIST RMF - Govern Function',
+    color: 'blue',
+    icon: '🔵',
+    responsibilities: [
+      'AI risk management strategy and policy',
+      'Governance structure establishment',
+      'Stakeholder coordination',
+      'Regulatory compliance oversight',
+      'Risk acceptance decisions'
+    ]
+  },
+  {
+    id: 'ai_system_owner',
+    name: 'AI System Owner',
+    title: 'AI System Owner / Product Manager',
+    description: 'Business owner responsible for AI system objectives and operational requirements',
+    framework: 'NIST RMF - Map Function',
+    color: 'green',
+    icon: '🟢',
+    responsibilities: [
+      'Define business objectives and use cases',
+      'Set acceptable risk thresholds',
+      'Approve system requirements',
+      'Monitor business impact',
+      'Stakeholder communication'
+    ]
+  },
+  {
+    id: 'ai_developer',
+    name: 'AI Developer',
+    title: 'AI/ML Developer & Engineer',
+    description: 'Technical development and implementation of AI systems',
+    framework: 'NIST RMF - Measure Function',
+    color: 'purple',
+    icon: '🟣',
+    responsibilities: [
+      'Model development and training',
+      'Feature engineering',
+      'Integration with data pipelines',
+      'Technical documentation',
+      'Performance optimization'
+    ]
+  },
+  {
+    id: 'tevv_engineer',
+    name: 'TEVV Engineer',
+    title: 'Test, Evaluation, Validation & Verification Engineer',
+    description: 'Independent TEVV per EU AI Act Annex VII and NIST AI RMF',
+    framework: 'EU AI Act Annex VII + NIST RMF Measure',
+    color: 'cyan',
+    icon: '🔷',
+    responsibilities: [
+      'Independent testing and evaluation',
+      'Quality metrics validation',
+      'Conformity assessment',
+      'Evidence documentation',
+      'Test automation and CI/CD integration'
+    ]
+  },
+  {
+    id: 'ai_security_engineer',
+    name: 'AI Security Engineer',
+    title: 'AI Security & Adversarial Testing Engineer',
+    description: 'Security testing, threat modeling, and adversarial validation',
+    framework: 'NIST RMF - Manage Function',
+    color: 'red',
+    icon: '🔴',
+    responsibilities: [
+      'Adversarial robustness testing',
+      'Security threat modeling',
+      'Red team exercises',
+      'Incident response',
+      'Security controls validation'
+    ]
+  },
+  {
+    id: 'data_scientist',
+    name: 'Data Scientist',
+    title: 'Data Scientist & Analytics Lead',
+    description: 'Data quality, model performance, and bias analysis',
+    framework: 'NIST RMF - Measure Function',
+    color: 'orange',
+    icon: '🟠',
+    responsibilities: [
+      'Data quality assessment',
+      'Bias and fairness analysis',
+      'Model performance evaluation',
+      'Statistical validation',
+      'Drift detection and monitoring'
+    ]
+  },
+  {
+    id: 'domain_expert',
+    name: 'Domain Expert',
+    title: 'Domain Subject Matter Expert',
+    description: 'Domain-specific validation and contextual accuracy assessment',
+    framework: 'NIST RMF - Measure Function',
+    color: 'yellow',
+    icon: '🟡',
+    responsibilities: [
+      'Domain accuracy validation',
+      'Context appropriateness review',
+      'Expert judgment on outputs',
+      'Use case feasibility',
+      'Real-world applicability'
+    ]
+  },
+  {
+    id: 'ethics_reviewer',
+    name: 'Ethics Reviewer',
+    title: 'AI Ethics & Responsible AI Reviewer',
+    description: 'Ethics assessment, fairness evaluation, and societal impact analysis',
+    framework: 'NIST RMF - Govern Function',
+    color: 'pink',
+    icon: '🩷',
+    responsibilities: [
+      'Ethical impact assessment',
+      'Fairness and equity evaluation',
+      'Human rights considerations',
+      'Societal impact analysis',
+      'Transparency and explainability review'
+    ]
+  },
+  {
+    id: 'compliance_officer',
+    name: 'Compliance Officer',
+    title: 'AI Compliance & Regulatory Affairs Officer',
+    description: 'Regulatory compliance, audit coordination, and conformity assessment',
+    framework: 'EU AI Act + GDPR + Sector Regulations',
+    color: 'teal',
+    icon: '🔶',
+    responsibilities: [
+      'Regulatory compliance verification',
+      'Audit trail management',
+      'Conformity documentation',
+      'Notified body coordination',
+      'Legal risk assessment'
+    ]
+  },
+  {
+    id: 'quality_assurance',
+    name: 'Quality Assurance',
+    title: 'Quality Assurance & Validation Lead',
+    description: 'Quality management system and ISO standards compliance',
+    framework: 'ISO 25010 + ISO/IEC 42001',
+    color: 'indigo',
+    icon: '🟦',
+    responsibilities: [
+      'QMS implementation',
+      'ISO 25010 quality assessment',
+      'Validation and verification',
+      'Quality metrics monitoring',
+      'Continuous improvement'
+    ]
+  },
+  {
+    id: 'operations_lead',
+    name: 'Operations Lead',
+    title: 'AI Operations & Monitoring Lead',
+    description: 'Production monitoring, incident management, and operational excellence',
+    framework: 'NIST RMF - Manage Function',
+    color: 'gray',
+    icon: '⚙️',
+    responsibilities: [
+      'Production monitoring',
+      'Incident response and management',
+      'Performance optimization',
+      'SLA compliance',
+      'Operational reporting'
+    ]
+  },
+  {
+    id: 'legal_counsel',
+    name: 'Legal Counsel',
+    title: 'Legal Counsel - AI & Data Privacy',
+    description: 'Legal review, liability assessment, and contract management',
+    framework: 'Legal & Regulatory Framework',
+    color: 'slate',
+    icon: '⚖️',
+    responsibilities: [
+      'Legal risk assessment',
+      'Liability and indemnification',
+      'Contract review',
+      'IP and data rights',
+      'Litigation support'
+    ]
+  }
+];
+
 export const getArchetypeFromRole = (role: string): string => {
   const roleMapping: { [key: string]: string } = {
-    '🔵 AI Governance Lead (Risk + Compliance)': 'cio_cdo',
-    '🟢 QA/TEVV Engineer (ISO 25010, Manual Validation)': 'qa_tevv_engineer',
-    '🟣 TEVV Automation Engineer (EU AI Act, Test Automation)': 'tevv_automation_engineer',
-    '🔴 AI SecOps Engineer (Security + DevSecOps)': 'ai_secops_engineer',
-    '🟡 Domain & Ethics Reviewer (Domain + Ethics)': 'domain_ethics_reviewer'
+    'AI Governance Lead': 'cio_cdo',
+    'AI System Owner': 'cio_cdo',
+    'AI Developer': 'qa_tevv_engineer',
+    'TEVV Engineer': 'tevv_automation_engineer',
+    'AI Security Engineer': 'ai_secops_engineer',
+    'Data Scientist': 'qa_tevv_engineer',
+    'Domain Expert': 'domain_ethics_reviewer',
+    'Ethics Reviewer': 'domain_ethics_reviewer',
+    'Compliance Officer': 'cio_cdo',
+    'Quality Assurance': 'qa_tevv_engineer',
+    'Operations Lead': 'tevv_automation_engineer',
+    'Legal Counsel': 'cio_cdo'
   };
 
   return roleMapping[role] || 'cio_cdo';

@@ -16,8 +16,10 @@ import {
   Users,
   Crown,
   Star,
-  Github
+  Github,
+  UserCircle
 } from 'lucide-react';
+import { NIST_TEVV_ROLES } from '../utils/archetypes';
 
 interface SignupProps {
   onSignup: (data: any) => void;
@@ -35,6 +37,7 @@ const Signup: React.FC<SignupProps> = ({ onSignup, onShowLogin }) => {
     tenantName: '',
     tenantDomain: '',
     plan: 'professional',
+    role: 'AI Governance Lead',
     acceptTerms: false
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -211,6 +214,30 @@ const Signup: React.FC<SignupProps> = ({ onSignup, onShowLogin }) => {
             {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
           </button>
         </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Your Role
+        </label>
+        <div className="relative">
+          <UserCircle className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+          <select
+            value={formData.role}
+            onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
+            required
+            className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
+          >
+            {NIST_TEVV_ROLES.map((role) => (
+              <option key={role.id} value={role.name}>
+                {role.icon} {role.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+          {NIST_TEVV_ROLES.find(r => r.name === formData.role)?.description}
+        </p>
       </div>
 
       <div>
