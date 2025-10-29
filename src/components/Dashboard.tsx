@@ -60,7 +60,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
     'Data & Ethics Manager': 'data_ethics_steward',
     'MLOps & Reliability Engineer': 'mlops_lifecycle_engineer',
     'AI Governance Auditor': 'governance_audit_advisor',
-    'CISO': 'quality_compliance_lead'
+    'CISO': 'ciso'
   };
 
   const [internalSelectedRole, setInternalSelectedRole] = useState('quality_compliance_lead');
@@ -118,6 +118,15 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
       icon: Shield,
       color: 'from-orange-600 to-red-700',
       focus: ['Independent Review', 'Risk Assessment', 'Audit Readiness', 'Regulatory Traceability']
+    },
+    {
+      id: 'ciso',
+      name: 'CISO',
+      title: 'Chief Information Security Officer',
+      description: 'Enterprise AI security strategy, risk management, and incident response oversight',
+      icon: Shield,
+      color: 'from-red-600 to-pink-700',
+      focus: ['Security Strategy', 'Risk Management', 'Incident Response', 'Threat Detection', 'Access Control']
     }
   ];
 
@@ -444,6 +453,78 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
           description: '3 systems need updated compliance documentation',
           action: 'Update Docs',
           priority: 'high'
+        }
+      ]
+    },
+    ciso: {
+      title: 'AI Security & Risk Management Dashboard',
+      subtitle: 'Enterprise AI security oversight, risk management, and compliance validation',
+      keyMetrics: [
+        {
+          title: 'Security Posture',
+          value: '94.7%',
+          change: '+3.2%',
+          trend: 'up' as const,
+          icon: Shield,
+          color: 'green',
+          description: 'Overall AI security health score'
+        },
+        {
+          title: 'Critical Vulnerabilities',
+          value: '2',
+          change: '-5',
+          trend: 'up' as const,
+          icon: AlertTriangle,
+          color: 'red',
+          description: 'Active critical security issues'
+        },
+        {
+          title: 'Incident Response Time',
+          value: '4.2min',
+          change: '-1.8min',
+          trend: 'up' as const,
+          icon: Activity,
+          color: 'blue',
+          description: 'Average AI incident response time'
+        },
+        {
+          title: 'Threat Detection Rate',
+          value: '99.8%',
+          change: '+0.3%',
+          trend: 'up' as const,
+          icon: Target,
+          color: 'purple',
+          description: 'AI threat and attack detection'
+        }
+      ],
+      insights: [
+        {
+          type: 'urgent',
+          title: 'Adversarial Attack Pattern Detected',
+          description: 'Unusual prompt injection attempts on production GenAI endpoints',
+          action: 'Review Security Logs',
+          priority: 'critical'
+        },
+        {
+          type: 'success',
+          title: 'Security Audit Passed',
+          description: 'AI security controls validated against NIST AI RMF standards',
+          action: 'View Audit Report',
+          priority: 'low'
+        },
+        {
+          type: 'attention',
+          title: 'Model Access Control Review Required',
+          description: '3 high-risk models need updated authentication policies',
+          action: 'Update Access Policies',
+          priority: 'high'
+        },
+        {
+          type: 'info',
+          title: 'Security Training Completion',
+          description: '95% of AI team completed adversarial testing certification',
+          action: 'View Training Stats',
+          priority: 'low'
         }
       ]
     }
