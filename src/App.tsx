@@ -15,7 +15,8 @@ import {
   Home,
   ChevronsLeft,
   ChevronsRight,
-  BookOpen
+  BookOpen,
+  Lock
 } from 'lucide-react';
 
 // 10-Stage AI Governance Workflow
@@ -153,6 +154,13 @@ function App() {
 
   const fullAccessRoles = ['Quality & Compliance Manager', 'TEVV Engineer'];
   const hasFullAccess = fullAccessRoles.includes(currentUser.role);
+
+  const readOnlyStagesForTEVV = ['stage-0', 'risk-identification', 'metrics-definition'];
+  const isTEVVEngineer = currentUser.role === 'TEVV Engineer';
+
+  const isStageReadOnly = (itemId: string) => {
+    return isTEVVEngineer && readOnlyStagesForTEVV.includes(itemId);
+  };
 
   const navItems = hasFullAccess
     ? allNavItems
@@ -304,23 +312,29 @@ function App() {
                 <div className="space-y-1">
                   {section.items.map((item) => {
                     const Icon = item.icon;
+                    const isReadOnly = isStageReadOnly(item.id);
                     return (
                       <button
                         key={item.id}
                         onClick={() => {
-                          setActiveTab(item.id);
-                          if (window.innerWidth < 1024) {
-                            setSidebarOpen(false);
+                          if (!isReadOnly) {
+                            setActiveTab(item.id);
+                            if (window.innerWidth < 1024) {
+                              setSidebarOpen(false);
+                            }
                           }
                         }}
+                        disabled={isReadOnly}
                         className={`w-full group relative flex items-center rounded-lg transition-all duration-200 ${
                           sidebarCollapsed ? 'justify-center px-2 py-3' : 'space-x-3 px-3 py-3'
                         } ${
-                          activeTab === item.id
+                          isReadOnly
+                            ? 'opacity-50 cursor-not-allowed border border-gray-800/30'
+                            : activeTab === item.id
                             ? 'bg-gradient-to-r from-blue-600/20 via-blue-500/15 to-cyan-600/20 border border-blue-500/30 shadow-lg shadow-blue-500/10'
                             : 'hover:bg-gray-800/50 border border-transparent hover:border-gray-700/50'
                         }`}
-                        title={sidebarCollapsed ? item.label : ''}
+                        title={sidebarCollapsed ? (isReadOnly ? `${item.label} (Read Only - Set by Q&C Manager)` : item.label) : ''}
                       >
                         {activeTab === item.id && !sidebarCollapsed && (
                           <div className="absolute left-0 w-1 h-8 bg-gradient-to-b from-blue-400 via-blue-500 to-cyan-500 rounded-r-full shadow-lg shadow-blue-500/50"></div>
@@ -328,14 +342,18 @@ function App() {
                         <div className={`flex-shrink-0 rounded-lg flex items-center justify-center transition-all duration-200 ${
                           sidebarCollapsed ? 'w-10 h-10' : 'w-9 h-9'
                         } ${
-                          activeTab === item.id
+                          isReadOnly
+                            ? 'bg-gray-800/50'
+                            : activeTab === item.id
                             ? 'bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg shadow-blue-500/30'
                             : 'bg-gray-800/80 group-hover:bg-gray-700/80'
                         }`}>
                           <Icon className={`transition-all duration-200 ${
                             sidebarCollapsed ? 'w-5 h-5' : 'w-4.5 h-4.5'
                           } ${
-                            activeTab === item.id
+                            isReadOnly
+                              ? 'text-gray-600'
+                              : activeTab === item.id
                               ? 'text-white'
                               : 'text-gray-400 group-hover:text-blue-400'
                           }`} />
@@ -343,18 +361,29 @@ function App() {
                         {!sidebarCollapsed && (
                           <>
                             <div className="flex-1 text-left min-w-0">
-                              <span className={`block text-[13px] font-medium transition-colors duration-200 truncate ${
-                                activeTab === item.id
-                                  ? 'text-white'
-                                  : 'text-gray-300 group-hover:text-white'
-                              }`}>{item.label}</span>
+                              <div className="flex items-center space-x-2">
+                                <span className={`block text-[13px] font-medium transition-colors duration-200 truncate ${
+                                  activeTab === item.id
+                                    ? 'text-white'
+                                    : isReadOnly
+                                    ? 'text-gray-500'
+                                    : 'text-gray-300 group-hover:text-white'
+                                }`}>{item.label}</span>
+                                {isReadOnly && (
+                                  <Lock className="w-3 h-3 text-orange-500 flex-shrink-0" />
+                                )}
+                              </div>
                               <span className={`block text-[10px] mt-0.5 transition-colors duration-200 truncate ${
                                 activeTab === item.id
                                   ? 'text-blue-300'
+                                  : isReadOnly
+                                  ? 'text-gray-600'
                                   : 'text-gray-500 group-hover:text-gray-400'
-                              }`}>{item.description}</span>
+                              }`}>
+                                {isReadOnly ? 'Read Only - Set by Q&C Manager' : item.description}
+                              </span>
                             </div>
-                            {activeTab === item.id && (
+                            {activeTab === item.id && !isReadOnly && (
                               <div className="flex-shrink-0">
                                 <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></div>
                               </div>
@@ -363,8 +392,15 @@ function App() {
                         )}
                         {sidebarCollapsed && (
                           <div className="absolute left-full ml-3 px-4 py-2.5 bg-gray-900 border border-gray-700 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 whitespace-nowrap z-[60] shadow-2xl">
-                            <div className="font-semibold text-white">{item.label}</div>
-                            <div className="text-xs text-gray-400 mt-0.5">{item.description}</div>
+                            <div className="flex items-center space-x-2">
+                              <div className="font-semibold text-white">{item.label}</div>
+                              {isReadOnly && (
+                                <Lock className="w-3 h-3 text-orange-500" />
+                              )}
+                            </div>
+                            <div className="text-xs text-gray-400 mt-0.5">
+                              {isReadOnly ? 'Read Only - Set by Q&C Manager' : item.description}
+                            </div>
                             <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 border-l border-b border-gray-700 rotate-45"></div>
                           </div>
                         )}
