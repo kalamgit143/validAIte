@@ -25,7 +25,6 @@ import RiskIdentification from './components/RiskIdentification';
 import MetricsDefinition from './components/MetricsDefinition';
 import DatasetGeneration from './components/DatasetGeneration';
 import TestScriptsGeneration from './components/TestScriptsGeneration';
-import ExplainabilityAI from './components/ExplainabilityAI';
 import TrustMatrix from './components/TrustMatrix';
 import AuthorizationEngine from './components/AuthorizationEngine';
 import ContinuousMonitoring from './components/ContinuousMonitoring';
@@ -132,8 +131,7 @@ function App() {
         { id: 'metrics-definition', label: 'Metrics Definition', icon: TrendingUp, description: 'Define measurable trust metrics' },
         { id: 'dataset-generation', label: 'Dataset Generation', icon: FileText, description: 'Generate testable evaluation datasets' },
         { id: 'test-case-creation', label: 'Test Lab', icon: Code, description: 'Interactive playground and trust score execution' },
-        { id: 'explainability-evidence', label: 'Explainability & Evidence', icon: FileText, description: 'HITL evidence review' },
-        { id: 'trust-matrix', label: 'Trust Matrix', icon: Shield, description: 'Unified 360° trust view' },
+        { id: 'trust-matrix', label: 'Trust Matrix & Evidence', icon: Shield, description: 'Unified trust view with explainability evidence' },
         { id: 'authorization-engine', label: 'Authorization Engine', icon: CheckCircle, description: 'Deployment approval gate' },
         { id: 'continuous-monitoring', label: 'Continuous Monitoring', icon: Activity, description: 'Post-deployment monitoring' },
       ]
@@ -196,8 +194,6 @@ function App() {
           return <DatasetGeneration />;
         case 'test-case-creation':
           return <TestScriptsGeneration />;
-        case 'explainability-evidence':
-          return <ExplainabilityAI />;
         case 'trust-matrix':
           return <TrustMatrix />;
         case 'authorization-engine':
