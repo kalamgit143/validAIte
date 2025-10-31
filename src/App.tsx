@@ -136,6 +136,7 @@ function App() {
         { id: 'trust-matrix', label: 'Trust Matrix & Evidence', icon: Shield, description: 'Unified trust view with explainability evidence' },
         { id: 'authorization-engine', label: 'Authorization Engine', icon: CheckCircle, description: 'Deployment approval gate' },
         { id: 'continuous-monitoring', label: 'Continuous Monitoring', icon: Activity, description: 'Post-deployment monitoring' },
+        { id: 'evidence-export', label: 'Evidence Export', icon: FolderOpen, description: 'Generate compliance evidence pack' },
       ]
     },
     {
@@ -146,13 +147,12 @@ function App() {
         { id: 'control-library', label: 'Control Library', icon: Shield, description: 'Browse all ACC controls' },
         { id: 'metric-catalog', label: 'Metric Catalog', icon: TrendingUp, description: 'All trust metrics defined' },
         { id: 'access-control-matrix', label: 'Access Control Matrix', icon: Lock, description: 'Role-based permissions matrix' },
-        { id: 'evidence-export', label: 'Evidence Export', icon: FolderOpen, description: 'Generate compliance bundle' },
       ]
     }
   ];
 
   const getReadOnlyPermissions = (role: string) => {
-    const workflowStages = ['stage-0', 'risk-identification', 'metrics-definition', 'dataset-generation', 'test-case-creation', 'trust-matrix', 'authorization-engine', 'continuous-monitoring'];
+    const workflowStages = ['stage-0', 'risk-identification', 'metrics-definition', 'dataset-generation', 'test-case-creation', 'trust-matrix', 'authorization-engine', 'continuous-monitoring', 'evidence-export'];
 
     switch (role) {
       case 'Quality & Compliance Manager':
@@ -160,10 +160,17 @@ function App() {
       case 'TEVV Engineer':
         return ['stage-0', 'risk-identification', 'metrics-definition'];
       case 'CIO':
-      case 'CISO':
         return workflowStages;
+      case 'CISO':
+        return ['stage-0', 'metrics-definition', 'dataset-generation', 'test-case-creation', 'trust-matrix'];
       case 'AI SecOps Engineer':
         return ['stage-0', 'risk-identification', 'metrics-definition', 'dataset-generation'];
+      case 'Data & Ethics Manager':
+        return ['stage-0', 'risk-identification', 'metrics-definition', 'test-case-creation', 'authorization-engine'];
+      case 'MLOps & Reliability Engineer':
+        return ['stage-0', 'metrics-definition', 'authorization-engine'];
+      case 'AI Governance Auditor':
+        return workflowStages;
       case 'Domain & Ethics Reviewer':
         return ['stage-0', 'risk-identification', 'metrics-definition', 'dataset-generation', 'test-case-creation'];
       default:

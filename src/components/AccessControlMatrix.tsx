@@ -225,6 +225,16 @@ const AccessControlMatrix: React.FC = () => {
       dem: 'read',
       mlops: 'edit',
       auditor: 'read'
+    },
+    {
+      component: 'Evidence Export',
+      cio: 'govern',
+      ciso: 'edit',
+      qcm: 'edit',
+      tevv: 'edit',
+      dem: 'edit',
+      mlops: 'edit',
+      auditor: 'govern'
     }
   ];
 
@@ -274,7 +284,7 @@ const AccessControlMatrix: React.FC = () => {
             </h2>
           </div>
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Role-based permissions across AI Governance Workflow (NIST AI RMF & EU AI Act TEVV)
+            Role-based permissions across 10-stage AI Governance Workflow (NIST AI RMF & EU AI Act TEVV)
           </p>
         </div>
 
@@ -343,7 +353,7 @@ const AccessControlMatrix: React.FC = () => {
         <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-b-2 border-gray-200 dark:border-gray-700">
           <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center space-x-2">
             <BarChart3 className="w-6 h-6 text-blue-600" />
-            <span>Permission Matrix ({matrixData.length} Components × {roles.length} Roles)</span>
+            <span>Permission Matrix (10 Components × 7 Roles = 70 Permissions)</span>
           </h3>
         </div>
 
