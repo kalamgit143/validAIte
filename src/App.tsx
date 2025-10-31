@@ -16,7 +16,8 @@ import {
   ChevronsLeft,
   ChevronsRight,
   BookOpen,
-  Lock
+  Lock,
+  Eye
 } from 'lucide-react';
 
 // 10-Stage AI Governance Workflow
@@ -148,36 +149,33 @@ function App() {
     }
   ];
 
-  const fullAccessRoles = ['Quality & Compliance Manager', 'TEVV Engineer'];
-  const hasFullAccess = fullAccessRoles.includes(currentUser.role);
+  const getReadOnlyPermissions = (role: string) => {
+    const workflowStages = ['stage-0', 'risk-identification', 'metrics-definition', 'dataset-generation', 'test-case-creation', 'trust-matrix', 'authorization-engine', 'continuous-monitoring'];
 
-  const readOnlyStagesForTEVV = ['stage-0', 'risk-identification', 'metrics-definition'];
-  const isTEVVEngineer = currentUser.role === 'TEVV Engineer';
-
-  const isStageReadOnly = (itemId: string) => {
-    return isTEVVEngineer && readOnlyStagesForTEVV.includes(itemId);
+    switch (role) {
+      case 'Quality & Compliance Manager':
+        return [];
+      case 'TEVV Engineer':
+        return ['stage-0', 'risk-identification', 'metrics-definition'];
+      case 'CIO':
+      case 'CISO':
+        return workflowStages;
+      case 'AI SecOps Engineer':
+        return ['stage-0', 'risk-identification', 'metrics-definition', 'dataset-generation'];
+      case 'Domain & Ethics Reviewer':
+        return ['stage-0', 'risk-identification', 'metrics-definition', 'dataset-generation', 'test-case-creation'];
+      default:
+        return workflowStages;
+    }
   };
 
-  const navItems = hasFullAccess
-    ? allNavItems
-    : [
-        {
-          category: 'Overview',
-          items: [
-            { id: 'home', label: 'Dashboard', icon: Home, description: 'Role-based governance overview' },
-          ]
-        },
-        {
-          category: 'Reference & Tools',
-          items: [
-            { id: 'rmf-reference', label: 'NIST RMF Reference', icon: Layers, description: 'RMF framework overview' },
-            { id: 'archetypes-guide', label: 'Archetypes Guide', icon: BookOpen, description: '12 AI application patterns' },
-            { id: 'control-library', label: 'Control Library', icon: Shield, description: 'Browse all ACC controls' },
-            { id: 'metric-catalog', label: 'Metric Catalog', icon: TrendingUp, description: 'All trust metrics defined' },
-            { id: 'evidence-export', label: 'Evidence Export', icon: FolderOpen, description: 'Generate compliance bundle' },
-          ]
-        }
-      ];
+  const readOnlyItems = getReadOnlyPermissions(currentUser.role);
+
+  const isStageReadOnly = (itemId: string) => {
+    return readOnlyItems.includes(itemId);
+  };
+
+  const navItems = allNavItems;
 
   const renderActiveComponent = () => {
     try {
@@ -319,24 +317,21 @@ function App() {
                       <button
                         key={item.id}
                         onClick={() => {
-                          if (!isReadOnly) {
-                            setActiveTab(item.id);
-                            if (window.innerWidth < 1024) {
-                              setSidebarOpen(false);
-                            }
+                          setActiveTab(item.id);
+                          if (window.innerWidth < 1024) {
+                            setSidebarOpen(false);
                           }
                         }}
-                        disabled={isReadOnly}
                         className={`w-full group relative flex items-center rounded-lg transition-all duration-200 ${
                           sidebarCollapsed ? 'justify-center px-2 py-3' : 'space-x-3 px-3 py-3'
                         } ${
                           isReadOnly
-                            ? 'opacity-50 cursor-not-allowed border border-gray-800/30'
+                            ? 'border border-orange-500/30 bg-orange-500/5 hover:bg-orange-500/10'
                             : activeTab === item.id
                             ? 'bg-gradient-to-r from-blue-600/20 via-blue-500/15 to-cyan-600/20 border border-blue-500/30 shadow-lg shadow-blue-500/10'
                             : 'hover:bg-gray-800/50 border border-transparent hover:border-gray-700/50'
                         }`}
-                        title={sidebarCollapsed ? (isReadOnly ? `${item.label} (Read Only - Set by Q&C Manager)` : item.label) : ''}
+                        title={sidebarCollapsed ? (isReadOnly ? `${item.label} (Read Only - Managed by ${currentUser.role === 'TEVV Engineer' ? 'Q&C Manager' : 'Authorized Roles'})` : item.label) : ''}
                       >
                         {activeTab === item.id && !sidebarCollapsed && (
                           <div className="absolute left-0 w-1 h-8 bg-gradient-to-b from-blue-400 via-blue-500 to-cyan-500 rounded-r-full shadow-lg shadow-blue-500/50"></div>
@@ -345,7 +340,7 @@ function App() {
                           sidebarCollapsed ? 'w-10 h-10' : 'w-9 h-9'
                         } ${
                           isReadOnly
-                            ? 'bg-gray-800/50'
+                            ? 'bg-orange-500/10'
                             : activeTab === item.id
                             ? 'bg-gradient-to-br from-blue-500 to-cyan-600 shadow-lg shadow-blue-500/30'
                             : 'bg-gray-800/80 group-hover:bg-gray-700/80'
@@ -354,7 +349,7 @@ function App() {
                             sidebarCollapsed ? 'w-5 h-5' : 'w-4.5 h-4.5'
                           } ${
                             isReadOnly
-                              ? 'text-gray-600'
+                              ? 'text-orange-500'
                               : activeTab === item.id
                               ? 'text-white'
                               : 'text-gray-400 group-hover:text-blue-400'
@@ -401,7 +396,7 @@ function App() {
                               )}
                             </div>
                             <div className="text-xs text-gray-400 mt-0.5">
-                              {isReadOnly ? 'Read Only - Set by Q&C Manager' : item.description}
+                              {isReadOnly ? 'Read-only access for oversight' : item.description}
                             </div>
                             <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 border-l border-b border-gray-700 rotate-45"></div>
                           </div>
@@ -442,7 +437,44 @@ function App() {
 
         {/* Main Content */}
         <main className="flex-1 w-full lg:w-auto p-6 bg-slate-50 dark:bg-slate-900 overflow-y-auto h-full">
-          {renderActiveComponent()}
+          {/* Read-Only Banner */}
+          {isStageReadOnly(activeTab) && (
+            <div className="mb-6 bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 border-2 border-orange-300 dark:border-orange-700 rounded-xl p-4 shadow-lg">
+              <div className="flex items-start space-x-3">
+                <div className="flex-shrink-0 w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+                  <Eye className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-orange-900 dark:text-orange-100 mb-1">
+                    Read-Only Access
+                  </h3>
+                  <p className="text-sm text-orange-800 dark:text-orange-200 mb-2">
+                    You are viewing this section in read-only mode.
+                    {currentUser.role === 'TEVV Engineer'
+                      ? ' This stage is configured and managed by the Quality & Compliance Manager.'
+                      : currentUser.role === 'CIO' || currentUser.role === 'CISO'
+                      ? ' As a strategic leader, you have oversight access to monitor progress and review outcomes.'
+                      : ' You have view-only permissions for this workflow stage.'}
+                  </p>
+                  <div className="flex items-center space-x-2 text-xs text-orange-700 dark:text-orange-300">
+                    <Lock className="w-3 h-3" />
+                    <span>
+                      {currentUser.role === 'TEVV Engineer'
+                        ? 'Contact Q&C Manager for configuration changes'
+                        : currentUser.role === 'CIO' || currentUser.role === 'CISO'
+                        ? 'For strategic oversight and governance review'
+                        : 'Contact authorized team members for modifications'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Component Content with Read-Only Overlay */}
+          <div className={isStageReadOnly(activeTab) ? 'pointer-events-none select-none opacity-90' : ''}>
+            {renderActiveComponent()}
+          </div>
         </main>
       </div>
     </div>
