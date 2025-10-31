@@ -25,7 +25,6 @@ import RiskIdentification from './components/RiskIdentification';
 import MetricsDefinition from './components/MetricsDefinition';
 import DatasetGeneration from './components/DatasetGeneration';
 import TestScriptsGeneration from './components/TestScriptsGeneration';
-import TrustScoreComputation from './components/TrustScoreComputation';
 import ExplainabilityAI from './components/ExplainabilityAI';
 import TrustMatrix from './components/TrustMatrix';
 import AuthorizationEngine from './components/AuthorizationEngine';
@@ -132,8 +131,7 @@ function App() {
         { id: 'risk-identification', label: 'Risk Identification', icon: Shield, description: 'Identify and classify potential risks' },
         { id: 'metrics-definition', label: 'Metrics Definition', icon: TrendingUp, description: 'Define measurable trust metrics' },
         { id: 'dataset-generation', label: 'Dataset Generation', icon: FileText, description: 'Generate testable evaluation datasets' },
-        { id: 'test-case-creation', label: 'Test Lab', icon: Code, description: 'Generate automation scripts and Run' },
-        { id: 'trust-score-computation', label: 'Trust Score Computation', icon: TrendingUp, description: 'Execute tests and compute scores' },
+        { id: 'test-case-creation', label: 'Test Lab', icon: Code, description: 'Interactive playground and trust score execution' },
         { id: 'explainability-evidence', label: 'Explainability & Evidence', icon: FileText, description: 'HITL evidence review' },
         { id: 'trust-matrix', label: 'Trust Matrix', icon: Shield, description: 'Unified 360° trust view' },
         { id: 'authorization-engine', label: 'Authorization Engine', icon: CheckCircle, description: 'Deployment approval gate' },
@@ -198,8 +196,6 @@ function App() {
           return <DatasetGeneration />;
         case 'test-case-creation':
           return <TestScriptsGeneration />;
-        case 'trust-score-computation':
-          return <TrustScoreComputation />;
         case 'explainability-evidence':
           return <ExplainabilityAI />;
         case 'trust-matrix':
