@@ -39,6 +39,7 @@ import ControlLibrary from './components/ControlLibrary';
 import MetricsThresholdDashboard from './components/MetricsThresholdDashboard';
 import EvidencePackGenerator from './components/EvidencePackGenerator';
 import ArchetypesGuide from './components/ArchetypesGuide';
+import AccessControlMatrix from './components/AccessControlMatrix';
 
 // Authentication Components
 import Login from './components/Login';
@@ -144,6 +145,7 @@ function App() {
         { id: 'archetypes-guide', label: 'Archetypes Guide', icon: BookOpen, description: '12 AI application patterns' },
         { id: 'control-library', label: 'Control Library', icon: Shield, description: 'Browse all ACC controls' },
         { id: 'metric-catalog', label: 'Metric Catalog', icon: TrendingUp, description: 'All trust metrics defined' },
+        { id: 'access-control-matrix', label: 'Access Control Matrix', icon: Lock, description: 'Role-based permissions matrix' },
         { id: 'evidence-export', label: 'Evidence Export', icon: FolderOpen, description: 'Generate compliance bundle' },
       ]
     }
@@ -207,6 +209,8 @@ function App() {
           return <ControlLibrary />;
         case 'metric-catalog':
           return <MetricsThresholdDashboard />;
+        case 'access-control-matrix':
+          return <AccessControlMatrix />;
         case 'evidence-export':
           return <EvidencePackGenerator />;
 
