@@ -25,7 +25,7 @@ import ApplicationSetup from './components/ApplicationSetup';
 import RiskIdentification from './components/RiskIdentification';
 import MetricsDefinition from './components/MetricsDefinition';
 import DatasetGeneration from './components/DatasetGeneration';
-import TestScriptsGeneration from './components/TestScriptsGeneration';
+import Playground from './components/Playground';
 import TrustMatrix from './components/TrustMatrix';
 import AuthorizationEngine from './components/AuthorizationEngine';
 import ContinuousMonitoring from './components/ContinuousMonitoring';
@@ -200,7 +200,7 @@ function App() {
         case 'dataset-generation':
           return <DatasetGeneration />;
         case 'test-case-creation':
-          return <TestScriptsGeneration />;
+          return <Playground />;
         case 'trust-matrix':
           return <TrustMatrix />;
         case 'authorization-engine':
