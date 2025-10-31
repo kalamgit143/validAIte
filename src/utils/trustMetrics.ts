@@ -29,9 +29,6 @@ export const EVIDENCE_TYPES: EvidenceType[] = [
 export const METRIC_STATUSES: MetricStatus[] = ['Draft', 'Reviewed', 'Approved'];
 
 export const METRIC_OWNER_ROLES = [
-  'CIO',
-  'CISO',
-  'Quality & Compliance Manager',
   'QA Engineer',
   'Governance Lead',
   'Domain Expert',

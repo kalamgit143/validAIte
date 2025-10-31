@@ -310,24 +310,6 @@ export const getArchetypeInsights = (archetypeId: string): ArchetypeInsight[] =>
 
 export const NIST_TEVV_ROLES = [
   {
-    id: 'cio',
-    name: 'CIO',
-    title: 'Chief Information Officer',
-    description: 'Oversees strategic AI governance',
-    framework: 'Strategic Governance + Portfolio Management',
-    color: 'indigo',
-    icon: '👔',
-    responsibilities: [
-      'Strategic AI governance and oversight',
-      'Enterprise AI portfolio management',
-      'Resource allocation and ROI assessment',
-      'Cross-functional AI initiative coordination',
-      'Executive reporting and stakeholder communication',
-      'AI program risk oversight',
-      'Technology roadmap alignment'
-    ]
-  },
-  {
     id: 'ciso',
     name: 'CISO',
     title: 'Chief Information Security Officer',

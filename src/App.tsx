@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Brain,
   Shield,
@@ -16,8 +16,7 @@ import {
   ChevronsLeft,
   ChevronsRight,
   BookOpen,
-  Lock,
-  Users
+  Lock
 } from 'lucide-react';
 
 // 10-Stage AI Governance Workflow
@@ -41,16 +40,11 @@ import ControlLibrary from './components/ControlLibrary';
 import MetricsThresholdDashboard from './components/MetricsThresholdDashboard';
 import EvidencePackGenerator from './components/EvidencePackGenerator';
 import ArchetypesGuide from './components/ArchetypesGuide';
-import AccessMatrix from './components/AccessMatrix';
-import AccessControlAdmin from './components/AccessControlAdmin';
 
 // Authentication Components
 import Login from './components/Login';
 import Signup from './components/Signup';
 import ProjectsList from './components/ProjectsList';
-
-// Permission Utilities
-import { getUserPermissions, hasPermission, getComponentPermission, componentIdMap, type UserPermissions, type AccessLevel } from './utils/permissionChecker';
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -60,35 +54,27 @@ function App() {
   const [showSignup, setShowSignup] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
-  const [userPermissions, setUserPermissions] = useState<UserPermissions | null>(null);
-  const [loadingPermissions, setLoadingPermissions] = useState(false);
 
-  const handleLogin = async (credentials: any) => {
-    const user = {
+  const handleLogin = (credentials: any) => {
+    setCurrentUser({
       name: 'Madhu Ronanki',
       email: credentials.email,
       role: credentials.role || 'Quality & Compliance Manager',
       tenant: 'QualiZeal',
       avatar: null
-    };
-    setCurrentUser(user);
+    });
     setIsAuthenticated(true);
-
-    await loadUserPermissions(user.email);
   };
 
-  const handleSignup = async (data: any) => {
-    const user = {
+  const handleSignup = (data: any) => {
+    setCurrentUser({
       name: `${data.firstName} ${data.lastName}`,
       email: data.email,
       role: data.role || 'Platform Admin',
       tenant: data.tenantName,
       avatar: null
-    };
-    setCurrentUser(user);
+    });
     setIsAuthenticated(true);
-
-    await loadUserPermissions(user.email);
   };
 
   const handleLogout = () => {
@@ -96,26 +82,7 @@ function App() {
     setIsAuthenticated(false);
     setSelectedProject(null);
     setActiveTab('home');
-    setUserPermissions(null);
   };
-
-  const loadUserPermissions = async (email: string) => {
-    setLoadingPermissions(true);
-    try {
-      const permissions = await getUserPermissions(email);
-      setUserPermissions(permissions);
-    } catch (error) {
-      console.error('Error loading user permissions:', error);
-    } finally {
-      setLoadingPermissions(false);
-    }
-  };
-
-  useEffect(() => {
-    if (currentUser?.email && !userPermissions && !loadingPermissions) {
-      loadUserPermissions(currentUser.email);
-    }
-  }, [currentUser]);
 
   const handleSelectProject = (projectId: string) => {
     setSelectedProject(projectId);
@@ -151,89 +118,70 @@ function App() {
     );
   }
 
-  const allWorkflowItems = [
-    { id: 'stage-0', label: 'Application Setup', icon: Brain, description: 'Configure application information and setup', componentId: 'application_setup' },
-    { id: 'risk-identification', label: 'Risk Identification', icon: Shield, description: 'Identify and classify potential risks', componentId: 'risk_identification' },
-    { id: 'metrics-definition', label: 'Metrics Definition', icon: TrendingUp, description: 'Define measurable trust metrics', componentId: 'metrics_definition' },
-    { id: 'dataset-generation', label: 'Dataset Generation', icon: FileText, description: 'Generate testable evaluation datasets', componentId: 'dataset_generation' },
-    { id: 'test-case-creation', label: 'Test Lab', icon: Code, description: 'Generate automation scripts and Run', componentId: 'test_lab' },
-    { id: 'trust-score-computation', label: 'Trust Score Computation', icon: TrendingUp, description: 'Execute tests and compute scores', componentId: 'trust_score' },
-    { id: 'explainability-evidence', label: 'Explainability & Evidence', icon: FileText, description: 'HITL evidence review', componentId: 'explainability' },
-    { id: 'trust-matrix', label: 'Trust Matrix', icon: Shield, description: 'Unified 360° trust view', componentId: 'trust_matrix' },
-    { id: 'authorization-engine', label: 'Authorization Engine', icon: CheckCircle, description: 'Deployment approval gate', componentId: 'authorization' },
-    { id: 'continuous-monitoring', label: 'Continuous Monitoring', icon: Activity, description: 'Post-deployment monitoring', componentId: 'monitoring' },
-  ];
-
-  const getFilteredNavItems = () => {
-    if (!userPermissions) {
-      return [{
-        category: 'Overview',
-        items: [
-          { id: 'home', label: 'Dashboard', icon: Home, description: 'Role-based governance overview' },
-        ]
-      }];
-    }
-
-    const filteredWorkflow = allWorkflowItems.filter(item =>
-      hasPermission(userPermissions, item.componentId, 'read')
-    ).map(item => ({
-      ...item,
-      permission: getComponentPermission(userPermissions, item.id)
-    }));
-
-    const navItems = [
-      {
-        category: 'Overview',
-        items: [
-          { id: 'home', label: 'Dashboard', icon: Home, description: 'Role-based governance overview' },
-        ]
-      }
-    ];
-
-    if (filteredWorkflow.length > 0) {
-      navItems.push({
-        category: 'AI Governance Workflow',
-        items: filteredWorkflow
-      });
-    }
-
-    navItems.push({
+  const allNavItems = [
+    {
+      category: 'Overview',
+      items: [
+        { id: 'home', label: 'Dashboard', icon: Home, description: 'Role-based governance overview' },
+      ]
+    },
+    {
+      category: 'AI Governance Workflow',
+      items: [
+        { id: 'stage-0', label: 'Application Setup', icon: Brain, description: 'Configure application information and setup' },
+        { id: 'risk-identification', label: 'Risk Identification', icon: Shield, description: 'Identify and classify potential risks' },
+        { id: 'metrics-definition', label: 'Metrics Definition', icon: TrendingUp, description: 'Define measurable trust metrics' },
+        { id: 'dataset-generation', label: 'Dataset Generation', icon: FileText, description: 'Generate testable evaluation datasets' },
+        { id: 'test-case-creation', label: 'Test Lab', icon: Code, description: 'Generate automation scripts and Run' },
+        { id: 'trust-score-computation', label: 'Trust Score Computation', icon: TrendingUp, description: 'Execute tests and compute scores' },
+        { id: 'explainability-evidence', label: 'Explainability & Evidence', icon: FileText, description: 'HITL evidence review' },
+        { id: 'trust-matrix', label: 'Trust Matrix', icon: Shield, description: 'Unified 360° trust view' },
+        { id: 'authorization-engine', label: 'Authorization Engine', icon: CheckCircle, description: 'Deployment approval gate' },
+        { id: 'continuous-monitoring', label: 'Continuous Monitoring', icon: Activity, description: 'Post-deployment monitoring' },
+      ]
+    },
+    {
       category: 'Reference & Tools',
       items: [
-        { id: 'access-matrix', label: 'Access Control Matrix', icon: Users, description: 'Role-based access privileges' },
-        { id: 'access-control-admin', label: 'Access Control Admin', icon: Shield, description: 'Live database access control' },
         { id: 'rmf-reference', label: 'NIST RMF Reference', icon: Layers, description: 'RMF framework overview' },
         { id: 'archetypes-guide', label: 'Archetypes Guide', icon: BookOpen, description: '12 AI application patterns' },
         { id: 'control-library', label: 'Control Library', icon: Shield, description: 'Browse all ACC controls' },
         { id: 'metric-catalog', label: 'Metric Catalog', icon: TrendingUp, description: 'All trust metrics defined' },
         { id: 'evidence-export', label: 'Evidence Export', icon: FolderOpen, description: 'Generate compliance bundle' },
       ]
-    });
-
-    return navItems;
-  };
-
-  const navItems = getFilteredNavItems();
-
-  const getItemAccessLevel = (itemId: string): AccessLevel | null => {
-    const componentId = componentIdMap[itemId] || itemId;
-    const permission = userPermissions?.permissions.get(componentId);
-    return permission?.access_level || null;
-  };
-
-  const isItemReadOnly = (itemId: string): boolean => {
-    const accessLevel = getItemAccessLevel(itemId);
-    return accessLevel === 'read';
-  };
-
-  const canAccessItem = (itemId: string): boolean => {
-    if (itemId === 'home') return true;
-    if (['access-matrix', 'access-control-admin', 'rmf-reference', 'archetypes-guide', 'control-library', 'metric-catalog', 'evidence-export'].includes(itemId)) {
-      return true;
     }
-    const componentId = componentIdMap[itemId] || itemId;
-    return hasPermission(userPermissions, componentId, 'read');
+  ];
+
+  const fullAccessRoles = ['Quality & Compliance Manager', 'TEVV Engineer'];
+  const hasFullAccess = fullAccessRoles.includes(currentUser.role);
+
+  const readOnlyStagesForTEVV = ['stage-0', 'risk-identification', 'metrics-definition'];
+  const isTEVVEngineer = currentUser.role === 'TEVV Engineer';
+
+  const isStageReadOnly = (itemId: string) => {
+    return isTEVVEngineer && readOnlyStagesForTEVV.includes(itemId);
   };
+
+  const navItems = hasFullAccess
+    ? allNavItems
+    : [
+        {
+          category: 'Overview',
+          items: [
+            { id: 'home', label: 'Dashboard', icon: Home, description: 'Role-based governance overview' },
+          ]
+        },
+        {
+          category: 'Reference & Tools',
+          items: [
+            { id: 'rmf-reference', label: 'NIST RMF Reference', icon: Layers, description: 'RMF framework overview' },
+            { id: 'archetypes-guide', label: 'Archetypes Guide', icon: BookOpen, description: '12 AI application patterns' },
+            { id: 'control-library', label: 'Control Library', icon: Shield, description: 'Browse all ACC controls' },
+            { id: 'metric-catalog', label: 'Metric Catalog', icon: TrendingUp, description: 'All trust metrics defined' },
+            { id: 'evidence-export', label: 'Evidence Export', icon: FolderOpen, description: 'Generate compliance bundle' },
+          ]
+        }
+      ];
 
   const renderActiveComponent = () => {
     try {
@@ -261,10 +209,6 @@ function App() {
         case 'continuous-monitoring':
           return <ContinuousMonitoring />;
 
-        case 'access-matrix':
-          return <AccessMatrix />;
-        case 'access-control-admin':
-          return <AccessControlAdmin />;
         case 'archetypes-guide':
           return <ArchetypesGuide />;
         case 'rmf-reference':
@@ -378,9 +322,7 @@ function App() {
                 <div className="space-y-1">
                   {section.items.map((item) => {
                     const Icon = item.icon;
-                    const isReadOnly = isItemReadOnly(item.id);
-                    const accessLevel = getItemAccessLevel(item.id);
-                    const accessLevelEmoji = accessLevel === 'read' ? '👁️' : accessLevel === 'edit' ? '✏️' : accessLevel === 'govern' ? '🔒' : '';
+                    const isReadOnly = isStageReadOnly(item.id);
                     return (
                       <button
                         key={item.id}
@@ -437,8 +379,8 @@ function App() {
                                     ? 'text-gray-500'
                                     : 'text-gray-300 group-hover:text-white'
                                 }`}>{item.label}</span>
-                                {accessLevel && (
-                                  <span className="text-xs" title={accessLevel}>{accessLevelEmoji}</span>
+                                {isReadOnly && (
+                                  <Lock className="w-3 h-3 text-orange-500 flex-shrink-0" />
                                 )}
                               </div>
                               <span className={`block text-[10px] mt-0.5 transition-colors duration-200 truncate ${
@@ -448,7 +390,7 @@ function App() {
                                   ? 'text-gray-600'
                                   : 'text-gray-500 group-hover:text-gray-400'
                               }`}>
-                                {isReadOnly ? `Read Only Access (${userPermissions?.role})` : accessLevel ? `${accessLevel.charAt(0).toUpperCase() + accessLevel.slice(1)} Access` : item.description}
+                                {isReadOnly ? 'Read Only - Set by Q&C Manager' : item.description}
                               </span>
                             </div>
                             {activeTab === item.id && !isReadOnly && (
@@ -462,12 +404,12 @@ function App() {
                           <div className="absolute left-full ml-3 px-4 py-2.5 bg-gray-900 border border-gray-700 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 whitespace-nowrap z-[60] shadow-2xl">
                             <div className="flex items-center space-x-2">
                               <div className="font-semibold text-white">{item.label}</div>
-                              {accessLevel && (
-                                <span className="text-xs">{accessLevelEmoji}</span>
+                              {isReadOnly && (
+                                <Lock className="w-3 h-3 text-orange-500" />
                               )}
                             </div>
                             <div className="text-xs text-gray-400 mt-0.5">
-                              {accessLevel ? `${accessLevel.charAt(0).toUpperCase() + accessLevel.slice(1)} Access - ${userPermissions?.role}` : item.description}
+                              {isReadOnly ? 'Read Only - Set by Q&C Manager' : item.description}
                             </div>
                             <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 border-l border-b border-gray-700 rotate-45"></div>
                           </div>

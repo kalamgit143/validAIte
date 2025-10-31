@@ -107,54 +107,6 @@ const UserManagement: React.FC = () => {
     },
     {
       id: 'role_002',
-      name: 'CIO',
-      description: 'Strategic AI governance and portfolio oversight',
-      level: 'admin',
-      userCount: 1,
-      permissions: [
-        'Strategic Oversight',
-        'Portfolio Management',
-        'All Projects View',
-        'Executive Reports',
-        'Resource Allocation',
-        'ROI Analytics'
-      ],
-      isCustom: false
-    },
-    {
-      id: 'role_003',
-      name: 'CISO',
-      description: 'AI security strategy and risk management',
-      level: 'admin',
-      userCount: 1,
-      permissions: [
-        'Security Oversight',
-        'Risk Management',
-        'Security Controls',
-        'Incident Response',
-        'Compliance Audit',
-        'Security Reports'
-      ],
-      isCustom: false
-    },
-    {
-      id: 'role_004',
-      name: 'Quality & Compliance Manager',
-      description: 'Trust and risk boundary definition',
-      level: 'manager',
-      userCount: 2,
-      permissions: [
-        'Project Creation',
-        'Risk Register',
-        'TEVV Coordination',
-        'Model Cards',
-        'Quality Standards',
-        'Compliance Reports'
-      ],
-      isCustom: false
-    },
-    {
-      id: 'role_005',
       name: 'AI Engineer',
       description: 'AI model development and evaluation access',
       level: 'manager',
@@ -169,7 +121,22 @@ const UserManagement: React.FC = () => {
       isCustom: false
     },
     {
-      id: 'role_006',
+      id: 'role_003',
+      name: 'Compliance Manager',
+      description: 'Compliance, governance, and audit access',
+      level: 'manager',
+      userCount: 2,
+      permissions: [
+        'Compliance Reports',
+        'Audit Trail Access',
+        'Risk Assessment',
+        'Governance Controls',
+        'Evidence Packs'
+      ],
+      isCustom: false
+    },
+    {
+      id: 'role_004',
       name: 'Data Analyst',
       description: 'Analytics and reporting access',
       level: 'analyst',
