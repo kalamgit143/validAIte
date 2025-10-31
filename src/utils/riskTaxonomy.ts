@@ -38,6 +38,9 @@ export const SEVERITIES: Severity[] = ['High', 'Medium', 'Low'];
 export const LIKELIHOODS: Likelihood[] = ['Frequent', 'Occasional', 'Rare'];
 export const RISK_STATUSES: RiskStatus[] = ['Draft', 'Reviewed', 'Approved'];
 export const OWNER_ROLES = [
+  'CIO',
+  'CISO',
+  'Quality & Compliance Manager',
   'Governance Lead',
   'QA Engineer',
   'Domain Expert',
