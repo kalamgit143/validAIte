@@ -42,6 +42,7 @@ import MetricsThresholdDashboard from './components/MetricsThresholdDashboard';
 import EvidencePackGenerator from './components/EvidencePackGenerator';
 import ArchetypesGuide from './components/ArchetypesGuide';
 import AccessMatrix from './components/AccessMatrix';
+import AccessControlAdmin from './components/AccessControlAdmin';
 
 // Authentication Components
 import Login from './components/Login';
@@ -146,6 +147,7 @@ function App() {
       category: 'Reference & Tools',
       items: [
         { id: 'access-matrix', label: 'Access Control Matrix', icon: Users, description: 'Role-based access privileges' },
+        { id: 'access-control-admin', label: 'Access Control Admin', icon: Shield, description: 'Live database access control' },
         { id: 'rmf-reference', label: 'NIST RMF Reference', icon: Layers, description: 'RMF framework overview' },
         { id: 'archetypes-guide', label: 'Archetypes Guide', icon: BookOpen, description: '12 AI application patterns' },
         { id: 'control-library', label: 'Control Library', icon: Shield, description: 'Browse all ACC controls' },
@@ -178,6 +180,7 @@ function App() {
           category: 'Reference & Tools',
           items: [
             { id: 'access-matrix', label: 'Access Control Matrix', icon: Users, description: 'Role-based access privileges' },
+            { id: 'access-control-admin', label: 'Access Control Admin', icon: Shield, description: 'Live database access control' },
             { id: 'rmf-reference', label: 'NIST RMF Reference', icon: Layers, description: 'RMF framework overview' },
             { id: 'archetypes-guide', label: 'Archetypes Guide', icon: BookOpen, description: '12 AI application patterns' },
             { id: 'control-library', label: 'Control Library', icon: Shield, description: 'Browse all ACC controls' },
@@ -215,6 +218,8 @@ function App() {
 
         case 'access-matrix':
           return <AccessMatrix />;
+        case 'access-control-admin':
+          return <AccessControlAdmin />;
         case 'archetypes-guide':
           return <ArchetypesGuide />;
         case 'rmf-reference':
