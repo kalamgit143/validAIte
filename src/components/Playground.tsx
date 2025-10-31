@@ -40,9 +40,10 @@ import {
   getStatusColor,
   getScoreColor
 } from '../utils/trustScoreComputation';
+import TestScriptsGeneration from './TestScriptsGeneration';
 
 const Playground: React.FC = () => {
-  const [activeMainTab, setActiveMainTab] = useState<'playground' | 'execution'>('playground');
+  const [activeMainTab, setActiveMainTab] = useState<'playground' | 'execution' | 'scripts'>('playground');
 
   const [selectedModel, setSelectedModel] = useState('gpt-4');
   const [prompt, setPrompt] = useState('');
@@ -301,6 +302,22 @@ const Playground: React.FC = () => {
             </div>
             {activeMainTab === 'execution' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-600 dark:bg-emerald-400"></div>
+            )}
+          </button>
+          <button
+            onClick={() => setActiveMainTab('scripts')}
+            className={`px-6 py-3 font-medium transition-colors relative ${
+              activeMainTab === 'scripts'
+                ? 'text-purple-600 dark:text-purple-400'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+            }`}
+          >
+            <div className="flex items-center space-x-2">
+              <Code className="w-5 h-5" />
+              <span>Test Scripts Generation</span>
+            </div>
+            {activeMainTab === 'scripts' && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-600 dark:bg-purple-400"></div>
             )}
           </button>
         </div>
@@ -751,6 +768,11 @@ const Playground: React.FC = () => {
             )}
           </div>
         </>
+      )}
+
+      {/* Test Scripts Generation Tab Content */}
+      {activeMainTab === 'scripts' && (
+        <TestScriptsGeneration />
       )}
     </div>
   );
