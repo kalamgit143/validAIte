@@ -378,13 +378,9 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
         <div className="mb-16 text-center">
           <div className="max-w-4xl mx-auto">
             <img
-              src="/image.png"
-              alt="ValidAIte NIST AI RMF Platform"
-              className="w-full h-auto max-h-[500px] object-contain rounded-3xl shadow-2xl border-2 border-gray-200 dark:border-gray-700 hover:shadow-3xl hover:scale-105 transition-all duration-500"
-              onError={(e) => {
-                console.error('Image failed to load');
-                e.currentTarget.style.display = 'none';
-              }}
+              src="https://images.pexels.com/photos/8438922/pexels-photo-8438922.jpeg?auto=compress&cs=tinysrgb&w=1200"
+              alt="ValidAIte NIST AI RMF Platform - AI Governance and Compliance"
+              className="w-full h-auto max-h-[500px] object-cover rounded-3xl shadow-2xl border-2 border-gray-200 dark:border-gray-700 hover:shadow-3xl hover:scale-105 transition-all duration-500"
             />
             <p className="text-xl text-gray-600 dark:text-gray-400 mt-6 italic font-medium">
               "Bridging human expertise with AI capabilities through structured governance"
