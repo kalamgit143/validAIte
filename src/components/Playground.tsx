@@ -43,7 +43,7 @@ import {
 import TestScriptsGeneration from './TestScriptsGeneration';
 
 const Playground: React.FC = () => {
-  const [activeMainTab, setActiveMainTab] = useState<'playground' | 'execution' | 'scripts'>('playground');
+  const [activeMainTab, setActiveMainTab] = useState<'scripts' | 'execution'>('scripts');
 
   const [selectedModel, setSelectedModel] = useState('gpt-4');
   const [prompt, setPrompt] = useState('');
@@ -264,7 +264,7 @@ const Playground: React.FC = () => {
             </h2>
           </div>
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Interactive AI testing playground and automated trust score computation
+            Test Scripts Generation and Trust Score Execution for AI validation
           </p>
         </div>
       </div>
@@ -273,18 +273,18 @@ const Playground: React.FC = () => {
       <div className="border-b border-gray-200 dark:border-gray-700">
         <div className="flex space-x-1">
           <button
-            onClick={() => setActiveMainTab('playground')}
+            onClick={() => setActiveMainTab('scripts')}
             className={`px-6 py-3 font-medium transition-colors relative ${
-              activeMainTab === 'playground'
+              activeMainTab === 'scripts'
                 ? 'text-blue-600 dark:text-blue-400'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
             }`}
           >
             <div className="flex items-center space-x-2">
-              <Brain className="w-5 h-5" />
-              <span>Interactive Playground</span>
+              <Code className="w-5 h-5" />
+              <span>Test Scripts Generation</span>
             </div>
-            {activeMainTab === 'playground' && (
+            {activeMainTab === 'scripts' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400"></div>
             )}
           </button>
@@ -304,236 +304,12 @@ const Playground: React.FC = () => {
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-600 dark:bg-emerald-400"></div>
             )}
           </button>
-          <button
-            onClick={() => setActiveMainTab('scripts')}
-            className={`px-6 py-3 font-medium transition-colors relative ${
-              activeMainTab === 'scripts'
-                ? 'text-purple-600 dark:text-purple-400'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-            }`}
-          >
-            <div className="flex items-center space-x-2">
-              <Code className="w-5 h-5" />
-              <span>Test Scripts Generation</span>
-            </div>
-            {activeMainTab === 'scripts' && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-600 dark:bg-purple-400"></div>
-            )}
-          </button>
         </div>
       </div>
 
-      {/* Playground Tab Content */}
-      {activeMainTab === 'playground' && (
-        <>
-          <div className="flex items-center space-x-3 flex-wrap">
-            <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2">
-              <History className="w-4 h-4" />
-              <span>History</span>
-            </button>
-            <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2">
-              <Bookmark className="w-4 h-4" />
-              <span>Saved</span>
-            </button>
-            <button onClick={handleShare} className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2">
-              <Share2 className="w-4 h-4" />
-              <span>Share</span>
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Model Configuration</h3>
-                  <select
-                    value={selectedModel}
-                    onChange={(e) => setSelectedModel(e.target.value)}
-                    className="px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
-                  >
-                    {models.map((model) => (
-                      <option key={model.id} value={model.id}>
-                        {model.name} ({model.provider})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Prompt
-                    </label>
-                    <textarea
-                      value={prompt}
-                      onChange={(e) => setPrompt(e.target.value)}
-                      placeholder="Enter your prompt here..."
-                      className="w-full h-40 px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  <div className="flex items-center space-x-3">
-                    <button
-                      onClick={handleRun}
-                      disabled={isLoading || !prompt}
-                      className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 font-medium shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
-                    >
-                      {isLoading ? (
-                        <>
-                          <RefreshCw className="w-5 h-5 animate-spin" />
-                          <span>Processing...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Play className="w-5 h-5" />
-                          <span>Run Prompt</span>
-                        </>
-                      )}
-                    </button>
-                    <button
-                      onClick={handleSave}
-                      className="flex items-center space-x-2 px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                    >
-                      <Save className="w-5 h-5" />
-                      <span>Save</span>
-                    </button>
-                    <button className="flex items-center space-x-2 px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                      <Copy className="w-5 h-5" />
-                      <span>Copy</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {response && (
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Response</h3>
-                  <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <p className="text-gray-900 dark:text-white whitespace-pre-wrap">{response}</p>
-                  </div>
-
-                  <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                    <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-3">Response Metrics</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-                      <span>Latency: 1.2s</span>
-                      <span>Tokens: 124</span>
-                      <span>Quality: 94%</span>
-                      <span>Toxicity: 0.1%</span>
-                      <span>Fairness: 92%</span>
-                      <span>Safety: 98%</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-6">
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Parameters</h3>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Temperature: {temperature}
-                    </label>
-                    <input
-                      type="range"
-                      min="0"
-                      max="2"
-                      step="0.1"
-                      value={temperature}
-                      onChange={(e) => setTemperature(parseFloat(e.target.value))}
-                      className="w-full"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Max Tokens: {maxTokens}
-                    </label>
-                    <input
-                      type="range"
-                      min="100"
-                      max="4000"
-                      step="100"
-                      value={maxTokens}
-                      onChange={(e) => setMaxTokens(parseInt(e.target.value))}
-                      className="w-full"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Top P: {topP}
-                    </label>
-                    <input
-                      type="range"
-                      min="0"
-                      max="1"
-                      step="0.1"
-                      value={topP}
-                      onChange={(e) => setTopP(parseFloat(e.target.value))}
-                      className="w-full"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Prompt Templates</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {promptTemplates.map((category, index) => (
-                <div key={index}>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-3">{category.category}</h4>
-                  <div className="space-y-2">
-                    {category.templates.map((template, templateIndex) => (
-                      <button
-                        key={templateIndex}
-                        onClick={() => setPrompt(template.prompt)}
-                        className="w-full text-left p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-                      >
-                        <div className="font-medium text-gray-900 dark:text-white text-sm">{template.name}</div>
-                        <div className="text-xs text-gray-600 dark:text-gray-400 mt-1 truncate">{template.prompt}</div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {response && (
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Trust Evaluation Results</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                {[
-                  { name: 'Accuracy', score: 94, color: 'emerald' },
-                  { name: 'Fairness', score: 92, color: 'blue' },
-                  { name: 'Robustness', score: 89, color: 'purple' },
-                  { name: 'Transparency', score: 87, color: 'yellow' },
-                  { name: 'Privacy', score: 96, color: 'green' },
-                  { name: 'Safety', score: 98, color: 'red' }
-                ].map((metric, index) => (
-                  <div key={index} className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <div className={`text-2xl font-bold text-${metric.color}-600 dark:text-${metric.color}-400`}>
-                      {metric.score}%
-                    </div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400">{metric.name}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-                <div className="flex items-center space-x-2 mb-2">
-                  <Target className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                  <span className="font-medium text-emerald-900 dark:text-emerald-100">Overall Trust Score: 92.7%</span>
-                </div>
-                <p className="text-sm text-emerald-800 dark:text-emerald-200">
-                  High trust score indicates reliable, safe, and fair AI behavior suitable for production deployment.
-                </p>
-              </div>
-            </div>
-          )}
-        </>
+      {/* Test Scripts Generation Tab Content */}
+      {activeMainTab === 'scripts' && (
+        <TestScriptsGeneration />
       )}
 
       {/* Trust Score Execution Tab Content */}
@@ -768,11 +544,6 @@ const Playground: React.FC = () => {
             )}
           </div>
         </>
-      )}
-
-      {/* Test Scripts Generation Tab Content */}
-      {activeMainTab === 'scripts' && (
-        <TestScriptsGeneration />
       )}
     </div>
   );
