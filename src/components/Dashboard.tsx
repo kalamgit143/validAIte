@@ -60,7 +60,8 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
     'Data & Ethics Manager': 'data_ethics_steward',
     'MLOps & Reliability Engineer': 'mlops_lifecycle_engineer',
     'AI Governance Auditor': 'governance_audit_advisor',
-    'CISO': 'ciso'
+    'CISO': 'ciso',
+    'CIO': 'cio'
   };
 
   const [internalSelectedRole, setInternalSelectedRole] = useState('quality_compliance_lead');
@@ -123,6 +124,15 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
       icon: Shield,
       color: 'from-red-600 to-pink-700',
       focus: ['Security Strategy', 'Risk Management', 'Incident Response', 'Threat Detection', 'Access Control']
+    },
+    {
+      id: 'cio',
+      name: 'CIO',
+      title: 'Chief Information Officer',
+      description: 'Strategic AI governance, portfolio management, and enterprise-wide NIST RMF oversight',
+      icon: Building,
+      color: 'from-slate-600 to-gray-700',
+      focus: ['Strategic Oversight', 'Portfolio Management', 'ROI & Value', 'Technology Roadmap', 'Executive Reporting']
     }
   ];
 
@@ -521,6 +531,78 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
           description: '95% of AI team completed adversarial testing certification',
           action: 'View Training Stats',
           priority: 'low'
+        }
+      ]
+    },
+    cio: {
+      title: 'AI Strategic Governance Dashboard',
+      subtitle: 'Enterprise AI portfolio oversight aligned with NIST AI RMF',
+      keyMetrics: [
+        {
+          title: 'AI Portfolio Value',
+          value: '$4.8M',
+          change: '+$1.2M',
+          trend: 'up' as const,
+          icon: DollarSign,
+          color: 'green',
+          description: 'Total AI initiative ROI (annual)'
+        },
+        {
+          title: 'NIST RMF Maturity',
+          value: '4.2/5',
+          change: '+0.3',
+          trend: 'up' as const,
+          icon: Award,
+          color: 'blue',
+          description: 'Enterprise NIST AI RMF maturity score'
+        },
+        {
+          title: 'Active AI Projects',
+          value: '23',
+          change: '+5',
+          trend: 'up' as const,
+          icon: Layers,
+          color: 'purple',
+          description: 'AI initiatives across organization'
+        },
+        {
+          title: 'Risk Coverage',
+          value: '89%',
+          change: '+7%',
+          trend: 'up' as const,
+          icon: Shield,
+          color: 'yellow',
+          description: 'AI systems with complete risk assessment'
+        }
+      ],
+      insights: [
+        {
+          type: 'strategic',
+          title: 'NIST AI RMF Implementation Ahead of Target',
+          description: 'Organization exceeds industry benchmarks for AI risk management framework adoption',
+          action: 'View Benchmarks',
+          priority: 'low'
+        },
+        {
+          type: 'opportunity',
+          title: 'High-Value AI Initiative Proposal',
+          description: 'New customer service AI project estimated $2.1M annual value',
+          action: 'Review Business Case',
+          priority: 'medium'
+        },
+        {
+          type: 'attention',
+          title: 'Resource Allocation Required',
+          description: '3 critical AI projects need additional TEVV engineering resources',
+          action: 'Allocate Resources',
+          priority: 'high'
+        },
+        {
+          type: 'info',
+          title: 'Board Presentation Scheduled',
+          description: 'Quarterly AI governance report due for executive committee',
+          action: 'Prepare Report',
+          priority: 'medium'
         }
       ]
     }
