@@ -58,14 +58,12 @@ function App() {
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
 
   const handleLogin = (credentials: any) => {
-    const isAdmin = credentials.email === 'admin@validaite.com' && credentials.password === 'admin123';
     setCurrentUser({
-      name: isAdmin ? 'Platform Admin' : 'Madhu Ronanki',
+      name: 'Madhu Ronanki',
       email: credentials.email,
-      role: isAdmin ? 'Platform Admin' : (credentials.role || 'Quality & Compliance Manager'),
-      tenant: isAdmin ? 'ValidAIte' : 'QualiZeal',
-      avatar: null,
-      isAdmin: isAdmin
+      role: credentials.role || 'Quality & Compliance Manager',
+      tenant: 'QualiZeal',
+      avatar: null
     });
     setIsAuthenticated(true);
   };

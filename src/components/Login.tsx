@@ -36,8 +36,8 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ onLogin, onShowAdminLogin }) => {
   const [currentView, setCurrentView] = useState<'homepage' | 'login' | 'signup'>('homepage');
   const [formData, setFormData] = useState({
-    email: 'admin@validaite.com',
-    password: 'admin123',
+    email: 'demo@validaite.com',
+    password: 'demo123',
     tenantDomain: '',
     rememberMe: false,
     role: 'Quality & Compliance Manager'
