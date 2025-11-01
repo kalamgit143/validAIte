@@ -30,10 +30,10 @@ import { NIST_TEVV_ROLES } from '../utils/archetypes';
 
 interface LoginProps {
   onLogin: (credentials: any) => void;
-  onShowSignup: () => void;
+  onShowAdminLogin: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
+const Login: React.FC<LoginProps> = ({ onLogin, onShowAdminLogin }) => {
   const [currentView, setCurrentView] = useState<'homepage' | 'login' | 'signup'>('homepage');
   const [formData, setFormData] = useState({
     email: 'demo@validaite.com',
@@ -225,10 +225,11 @@ const Login: React.FC<LoginProps> = ({ onLogin, onShowSignup }) => {
               Sign In
             </button>
             <button
-              onClick={onShowSignup}
-              className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg"
+              onClick={onShowAdminLogin}
+              className="px-6 py-2.5 bg-gradient-to-r from-slate-700 to-slate-900 text-white rounded-lg font-medium hover:from-slate-800 hover:to-black transition-all shadow-lg flex items-center space-x-2"
             >
-              Sign Up
+              <Shield className="w-4 h-4" />
+              <span>Admin Login</span>
             </button>
           </div>
         </div>

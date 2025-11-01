@@ -17,7 +17,8 @@ import {
   ChevronsRight,
   BookOpen,
   Lock,
-  Eye
+  Eye,
+  Users
 } from 'lucide-react';
 
 // 10-Stage AI Governance Workflow
@@ -43,15 +44,16 @@ import AccessControlMatrix from './components/AccessControlMatrix';
 
 // Authentication Components
 import Login from './components/Login';
-import Signup from './components/Signup';
+import AdminLogin from './components/AdminLogin';
 import ProjectsList from './components/ProjectsList';
+import UserManagement from './components/UserManagement';
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showSignup, setShowSignup] = useState(false);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
 
@@ -66,13 +68,14 @@ function App() {
     setIsAuthenticated(true);
   };
 
-  const handleSignup = (data: any) => {
+  const handleAdminLogin = (data: any) => {
     setCurrentUser({
-      name: `${data.firstName} ${data.lastName}`,
+      name: data.name,
       email: data.email,
-      role: data.role || 'Platform Admin',
-      tenant: data.tenantName,
-      avatar: null
+      role: data.role,
+      tenant: data.tenant,
+      avatar: null,
+      isAdmin: data.isAdmin
     });
     setIsAuthenticated(true);
   };
@@ -96,10 +99,10 @@ function App() {
 
   // Show authentication screens if not logged in
   if (!isAuthenticated) {
-    if (showSignup) {
-      return <Signup onSignup={handleSignup} onShowLogin={() => setShowSignup(false)} />;
+    if (showAdminLogin) {
+      return <AdminLogin onAdminLogin={handleAdminLogin} onShowLogin={() => setShowAdminLogin(false)} />;
     }
-    return <Login onLogin={handleLogin} onShowSignup={() => setShowSignup(true)} />;
+    return <Login onLogin={handleLogin} onShowAdminLogin={() => setShowAdminLogin(true)} />;
   }
 
   // Show projects list if no project is selected
@@ -148,7 +151,13 @@ function App() {
         { id: 'metric-catalog', label: 'Metric Catalog', icon: TrendingUp, description: 'All trust metrics defined' },
         { id: 'access-control-matrix', label: 'Access Control Matrix', icon: Lock, description: 'Role-based permissions matrix' },
       ]
-    }
+    },
+    ...(currentUser?.isAdmin ? [{
+      category: 'Administration',
+      items: [
+        { id: 'user-management', label: 'User Management', icon: Users, description: 'Manage platform users and roles' },
+      ]
+    }] : [])
   ];
 
   const getReadOnlyPermissions = (role: string) => {
@@ -220,6 +229,8 @@ function App() {
           return <AccessControlMatrix />;
         case 'evidence-export':
           return <EvidencePackGenerator />;
+        case 'user-management':
+          return <UserManagement />;
 
         default:
           return <ApplicationSetup />;
