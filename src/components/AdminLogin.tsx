@@ -15,8 +15,8 @@ interface AdminLoginProps {
 
 const AdminLogin: React.FC<AdminLoginProps> = ({ onAdminLogin, onShowLogin }) => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: 'admin@validaite.com',
+    password: 'admin123'
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

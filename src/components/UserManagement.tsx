@@ -232,19 +232,19 @@ const UserManagement: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-400">Manage users, roles, and team access across your organization</p>
         </div>
         <div className="flex items-center space-x-3">
-          <button 
+          <button
             onClick={() => setShowRoleModal(true)}
             className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2"
           >
             <Shield className="w-4 h-4" />
-            <span>Manage Roles</span>
+            <span>Create Role</span>
           </button>
-          <button 
+          <button
             onClick={() => setShowInviteModal(true)}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
           >
             <UserPlus className="w-4 h-4" />
-            <span>Invite User</span>
+            <span>Create User</span>
           </button>
         </div>
       </div>
@@ -548,14 +548,14 @@ const UserManagement: React.FC = () => {
         </div>
       </div>
 
-      {/* Invite User Modal */}
+      {/* Create User Modal */}
       {showInviteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Invite Team Member</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Create New User</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                Send an invitation to join your organization
+                Add a new user to your organization
               </p>
             </div>
             
@@ -612,17 +612,111 @@ const UserManagement: React.FC = () => {
 
             <div className="p-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
               <div className="text-sm text-gray-600 dark:text-gray-400">
-                Invitation will be sent via email
+                User will be created and can log in immediately
               </div>
               <div className="flex items-center space-x-3">
-                <button 
+                <button
                   onClick={() => setShowInviteModal(false)}
                   className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
                 >
                   Cancel
                 </button>
                 <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                  Send Invitation
+                  Create User
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create Role Modal */}
+      {showRoleModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Create New Role</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                Define a new role with specific permissions
+              </p>
+            </div>
+
+            <div className="p-6 space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Role Name *
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g., Senior AI Engineer"
+                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Description
+                </label>
+                <textarea
+                  placeholder="Describe the role and its responsibilities..."
+                  className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 h-20 resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Role Level *
+                </label>
+                <select className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500">
+                  <option value="">Select level...</option>
+                  <option value="admin">Administrator</option>
+                  <option value="manager">Manager</option>
+                  <option value="engineer">Engineer</option>
+                  <option value="analyst">Analyst</option>
+                  <option value="viewer">Viewer</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                  Permissions *
+                </label>
+                <div className="space-y-3 max-h-60 overflow-y-auto">
+                  {[
+                    { id: 'user_management', label: 'User Management', description: 'Create, edit, and delete users' },
+                    { id: 'project_management', label: 'Project Management', description: 'Create and manage projects' },
+                    { id: 'evaluations', label: 'Run Evaluations', description: 'Execute trust evaluations' },
+                    { id: 'datasets', label: 'Dataset Management', description: 'Create and edit datasets' },
+                    { id: 'models', label: 'Model Configuration', description: 'Configure AI models' },
+                    { id: 'compliance', label: 'Compliance Reports', description: 'Generate compliance reports' },
+                    { id: 'analytics', label: 'View Analytics', description: 'Access analytics dashboards' },
+                    { id: 'api_access', label: 'API Access', description: 'Use API endpoints' },
+                  ].map(permission => (
+                    <label key={permission.id} className="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                      <input type="checkbox" className="mt-1 rounded border-gray-300" />
+                      <div>
+                        <div className="text-sm font-medium text-gray-700 dark:text-gray-300">{permission.label}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">{permission.description}</div>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Role will be available for user assignment
+              </div>
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={() => setShowRoleModal(false)}
+                  className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                >
+                  Cancel
+                </button>
+                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                  Create Role
                 </button>
               </div>
             </div>

@@ -58,8 +58,16 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject, onLo
     project_description: ''
   });
   const [projectMembers, setProjectMembers] = useState<ProjectMember[]>([]);
-  const [newMemberEmail, setNewMemberEmail] = useState('');
+  const [selectedUserEmail, setSelectedUserEmail] = useState('');
   const [newMemberRole, setNewMemberRole] = useState('TEVV Engineer');
+
+  const availableUsers = [
+    { email: 'john.doe@validaite.com', full_name: 'John Doe', role: 'AI Quality Engineer' },
+    { email: 'jane.smith@validaite.com', full_name: 'Jane Smith', role: 'TEVV Engineer' },
+    { email: 'mike.johnson@validaite.com', full_name: 'Mike Johnson', role: 'AI SecOps Engineer' },
+    { email: 'sarah.williams@validaite.com', full_name: 'Sarah Williams', role: 'Data & Ethics Manager' },
+    { email: 'david.brown@validaite.com', full_name: 'David Brown', role: 'MLOps & Reliability Engineer' },
+  ];
 
   const mockProjects: Project[] = [
     {
@@ -135,9 +143,9 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject, onLo
   };
 
   const handleAddMember = () => {
-    if (newMemberEmail.trim() && !projectMembers.some(m => m.email === newMemberEmail)) {
-      setProjectMembers([...projectMembers, { email: newMemberEmail.trim(), role: newMemberRole }]);
-      setNewMemberEmail('');
+    if (selectedUserEmail && !projectMembers.some(m => m.email === selectedUserEmail)) {
+      setProjectMembers([...projectMembers, { email: selectedUserEmail, role: newMemberRole }]);
+      setSelectedUserEmail('');
       setNewMemberRole('TEVV Engineer');
     }
   };
@@ -424,16 +432,23 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject, onLo
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                        Email Address
+                        Select User
                       </label>
-                      <input
-                        type="email"
-                        value={newMemberEmail}
-                        onChange={(e) => setNewMemberEmail(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && handleAddMember()}
-                        placeholder="user@example.com"
+                      <select
+                        value={selectedUserEmail}
+                        onChange={(e) => setSelectedUserEmail(e.target.value)}
                         className="w-full px-3 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                      />
+                      >
+                        <option value="">Choose a user...</option>
+                        {availableUsers
+                          .filter(u => !projectMembers.some(m => m.email === u.email))
+                          .map((user) => (
+                            <option key={user.email} value={user.email}>
+                              {user.full_name} ({user.role})
+                            </option>
+                          ))
+                        }
+                      </select>
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -453,7 +468,7 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ user, onSelectProject, onLo
                         </select>
                         <button
                           onClick={handleAddMember}
-                          disabled={!newMemberEmail.trim()}
+                          disabled={!selectedUserEmail}
                           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-1"
                         >
                           <UserPlus className="w-4 h-4" />
